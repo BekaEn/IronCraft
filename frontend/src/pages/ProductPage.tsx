@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useGetProductByIdQuery, useGetProductsQuery } from '../services/productsApi';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
-import { FaArrowLeft, FaShoppingCart, FaHeart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaChevronDown, FaChevronUp, FaSearchPlus, FaSearchMinus, FaShare } from 'react-icons/fa';
+import { FaArrowLeft, FaShoppingCart, FaHeart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaSearchPlus, FaSearchMinus, FaShare, FaBatteryFull, FaWifi } from 'react-icons/fa';
 import { useAppDispatch } from '../hooks/redux';
 import { addToCart, openCart } from '../store/cartSlice';
 import { formatPrice } from '../utils/formatters';
@@ -13,7 +13,7 @@ const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  // const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);

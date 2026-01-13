@@ -51,7 +51,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
         stock: product.stock?.toString() || '',
-        category: product.category || 'fingerprint',
+        category: (product.category || 'fingerprint') as 'fingerprint' | 'faceid' | 'combo',
         features: product.features && product.features.length > 0 ? product.features : [''],
         images: product.images && product.images.length > 0 ? product.images : [''],
         specifications: {

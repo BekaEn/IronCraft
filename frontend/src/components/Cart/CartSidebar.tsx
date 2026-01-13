@@ -7,10 +7,8 @@ import {
   removeFromCart, 
   updateQuantity, 
   clearCart,
-  selectCartItems,
   selectCartTotal,
-  selectCartItemsCount,
-  selectIsCartOpen
+  selectCartItemsCount
 } from '../../store/cartSlice';
 
 const CartSidebar: React.FC = () => {
