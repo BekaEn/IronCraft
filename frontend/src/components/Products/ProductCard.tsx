@@ -33,7 +33,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:5001${imagePath}`;
+    const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001';
+    return `${API_BASE}${imagePath}`;
   };
 
   return (

@@ -37,7 +37,8 @@ const ProductPage: React.FC = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:5001${imagePath}`;
+    const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001';
+    return `${API_BASE}${imagePath}`;
   };
 
   const handleAddToCart = () => {
@@ -124,8 +125,9 @@ const ProductPage: React.FC = () => {
   // Generate meta tags data
   const pageTitle = product ? `${product.name} | IronCraft` : 'პროდუქტი | IronCraft';
   const pageDescription = product ? product.description : 'მეტალის კედლის ხელოვნება საქართველოში';
-  const pageImage = product && product.images.length > 0 ? getImageUrl(product.images[0]) : 'http://localhost:5001/default-og-image.jpg';
-  const pageUrl = `http://localhost:3000/product/${id}`;
+  const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001';
+  const pageImage = product && product.images.length > 0 ? getImageUrl(product.images[0]) : `${API_BASE}/default-og-image.jpg`;
+  const pageUrl = `${window.location.origin}/product/${id}`;
 
   if (isLoading) {
     return (
