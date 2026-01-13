@@ -13,7 +13,7 @@ export const listSlides = async (req: Request, res: Response): Promise<void> => 
 
 export const getSlideById = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const slide = await HeroSlide.findByPk(id);
     if (!slide) {
       res.status(404).json({ message: 'Slide not found' });
@@ -70,7 +70,7 @@ export const createSlide = async (req: Request, res: Response): Promise<void> =>
 
 export const updateSlide = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const existing = await HeroSlide.findByPk(id);
     if (!existing) {
       res.status(404).json({ message: 'Slide not found' });
@@ -115,7 +115,7 @@ export const updateSlide = async (req: Request, res: Response): Promise<void> =>
 
 export const deleteSlide = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const slide = await HeroSlide.findByPk(id);
     if (!slide) {
       res.status(404).json({ message: 'Slide not found' });

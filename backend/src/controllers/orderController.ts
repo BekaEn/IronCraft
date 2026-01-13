@@ -116,7 +116,7 @@ export const getOrderById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const order = await Order.findByPk(id, {
+    const order = await Order.findByPk(String(id), {
       include: [
         {
           model: User,
@@ -158,7 +158,7 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { status, paymentStatus } = req.body;
 
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(String(id));
 
     if (!order) {
       return res.status(404).json({
@@ -201,7 +201,7 @@ export const deleteOrder = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(String(id));
 
     if (!order) {
       return res.status(404).json({

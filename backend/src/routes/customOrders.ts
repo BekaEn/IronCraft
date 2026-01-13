@@ -109,7 +109,7 @@ router.get('/', authenticateToken, requireAdmin, async (req, res) => {
 // Get a single custom order by ID (admin only)
 router.get('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const order = await CustomOrder.findByPk(req.params.id);
+    const order = await CustomOrder.findByPk(String(req.params.id));
     
     if (!order) {
       return res.status(404).json({ message: 'Custom order not found' });
@@ -127,7 +127,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { status, estimatedPrice, adminNotes } = req.body;
     
-    const order = await CustomOrder.findByPk(req.params.id);
+    const order = await CustomOrder.findByPk(String(req.params.id));
     
     if (!order) {
       return res.status(404).json({ message: 'Custom order not found' });
@@ -152,7 +152,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
 // Delete custom order (admin only)
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const order = await CustomOrder.findByPk(req.params.id);
+    const order = await CustomOrder.findByPk(String(req.params.id));
     
     if (!order) {
       return res.status(404).json({ message: 'Custom order not found' });

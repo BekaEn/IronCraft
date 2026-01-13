@@ -107,7 +107,7 @@ export const getContactById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
-    const contact = await Contact.findByPk(id);
+    const contact = await Contact.findByPk(String(id));
     
     if (!contact) {
       return res.status(404).json({
@@ -149,7 +149,7 @@ export const updateContactStatus = async (req: Request, res: Response) => {
       });
     }
 
-    const contact = await Contact.findByPk(id);
+    const contact = await Contact.findByPk(String(id));
     
     if (!contact) {
       return res.status(404).json({
@@ -188,7 +188,7 @@ export const deleteContact = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
-    const contact = await Contact.findByPk(id);
+    const contact = await Contact.findByPk(String(id));
     
     if (!contact) {
       return res.status(404).json({

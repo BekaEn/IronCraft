@@ -51,15 +51,16 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const idStr = String(id);
     
     // Check if id is numeric or a slug
     let product;
-    if (/^\d+$/.test(id)) {
+    if (/^\d+$/.test(idStr)) {
       // Numeric ID
-      product = await Product.findByPk(id);
+      product = await Product.findByPk(idStr);
     } else {
       // Slug
-      product = await Product.findOne({ where: { slug: id } });
+      product = await Product.findOne({ where: { slug: idStr } });
     }
     
     if (!product) {
@@ -82,7 +83,7 @@ export const getProductSpecsRaw = async (req: Request, res: Response): Promise<v
     const { id } = req.params;
     const { sequelize } = require('../config/database');
     const [rows] = await sequelize.query('SELECT specifications FROM products WHERE id = ?', {
-      replacements: [parseInt(id)],
+      replacements: [parseInt(String(id))],
     });
     const row = Array.isArray(rows) && rows.length ? rows[0] : null;
     res.json({ rawSpecifications: row ? row.specifications : null });
@@ -154,13 +155,14 @@ export const createProduct = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    const idNum = parseInt(String(id));
     
     console.log('=== UPDATE PRODUCT ===');
     console.log('ID:', id);
     console.log('Request body:', req.body);
 
     // Get existing product first
-    const existingProduct = await Product.findByPk(parseInt(id));
+    const existingProduct = await Product.findByPk(idNum);
     if (!existingProduct) {
       res.status(404).json({ message: 'Product not found' });
       return;
@@ -174,7 +176,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
         const { sequelize } = require('../config/database');
         const [result] = await sequelize.query(
           'UPDATE products SET specifications = CAST(? AS JSON), updatedAt = NOW() WHERE id = ?;',
-          { replacements: [JSON.stringify(specs), parseInt(id)] }
+          { replacements: [JSON.stringify(specs), idNum] }
         );
         console.log('RAW SQL update result:', result);
       } catch (e) {
