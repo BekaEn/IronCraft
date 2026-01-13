@@ -35,11 +35,15 @@ app.use(helmet({
 }));
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests from same network (192.168.x.x) or localhost
-    if (!origin || 
-        origin.includes('localhost') || 
-        origin.includes('127.0.0.1') ||
-        origin.includes('192.168.0.')) {
+    const allowedOrigins = [
+      process.env.FRONTEND_URL,
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:3000'
+    ].filter(Boolean);
+    
+    // Allow requests with no origin (mobile apps, Postman, etc.) or from allowed origins
+    if (!origin || allowedOrigins.some(allowed => origin.includes(allowed as string))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
