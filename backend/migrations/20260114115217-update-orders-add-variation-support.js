@@ -41,7 +41,7 @@ module.exports = {
           defaultValue: 'pending',
         },
         paymentMethod: {
-          type: Sequelize.ENUM('online', 'cash'),
+          type: Sequelize.ENUM('online', 'cash', 'bank_transfer'),
           allowNull: false,
           defaultValue: 'cash',
         },
