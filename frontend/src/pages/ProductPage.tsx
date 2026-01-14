@@ -344,10 +344,7 @@ const ProductPage: React.FC = () => {
               )}
             </div>
 
-            {/* Description */}
-            <div className="glassmorphism-card p-4 md:p-6">
-              <p className="text-blue-100 text-sm md:text-base leading-relaxed font-medium">{product.description}</p>
-            </div>
+           
 
             {/* Quantity and Add to Cart */}
             <div className="glassmorphism-card p-4 md:p-6 space-y-4 md:space-y-6">
@@ -378,17 +375,10 @@ const ProductPage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3 md:gap-4">
-                <button className="glassmorphism-button px-3 md:px-4 py-2 md:py-3 flex items-center justify-center space-x-2 text-white hover:text-pink-300 transition-colors group">
-                  <FaHeart className="group-hover:animate-pulse text-sm md:text-base" />
-                  <span className="font-medium text-xs md:text-sm">სურვილების სიაში</span>
-                </button>
-                <button className="glassmorphism-button px-3 md:px-4 py-2 md:py-3 flex items-center justify-center space-x-2 text-white hover:text-blue-300 transition-colors group">
-                  <FaShare className="group-hover:animate-bounce text-sm md:text-base" />
-                  <span className="font-medium text-xs md:text-sm">გაზიარება</span>
-                </button>
-              </div>
+               {/* Description */}
+            <div className="glassmorphism-card p-4 md:p-6">
+              <p className="text-blue-100 text-sm md:text-base leading-relaxed font-medium">{product.description}</p>
+            </div>
             </div>
 
             {/* Trust Indicators */}

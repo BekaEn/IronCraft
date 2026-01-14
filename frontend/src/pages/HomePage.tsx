@@ -238,7 +238,7 @@ const HomePage: React.FC = () => {
 
             <div className="glassmorphism-card p-4 sm:p-6 md:p-8 text-center group hover:scale-105 transition-transform duration-300">
               <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 group-hover:scale-110 transition-transform duration-300">
-                1000+
+                500+
               </div>
               <div className="text-blue-200 font-bold text-xs sm:text-sm md:text-base lg:text-lg">კმაყოფილი მომხმარებლები</div>
             </div>

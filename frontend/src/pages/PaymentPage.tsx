@@ -178,7 +178,7 @@ const PaymentPage: React.FC = () => {
                 {cartItems.map((item) => (
                   <div key={item.product.id} className="flex items-center space-x-4 py-3 border-b border-white/10">
                     <img
-                      src={item.product.images?.[0]?.startsWith('http') ? item.product.images[0] : `http://localhost:5001${item.product.images?.[0]}`}
+                      src={item.product.images?.[0]?.startsWith('http') ? item.product.images[0] : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001'}${item.product.images?.[0]}`}
                       alt={item.product.name}
                       className="w-16 h-16 object-cover rounded-lg"
                       onError={(e) => {
@@ -368,14 +368,23 @@ const PaymentPage: React.FC = () => {
                       <div className="space-y-3">
                         <div>
                           <p className="text-blue-200 text-sm mb-1">IBAN:</p>
-                          <div className="flex items-center justify-between bg-black/30 rounded-lg p-3">
-                            <p className="text-white font-mono text-lg">GE00BG0000000000000000</p>
+                          <div className="flex items-center justify-between bg-black/30 rounded-lg p-3 gap-2">
+                            <p 
+                              className="text-white font-mono text-sm sm:text-base md:text-lg cursor-pointer hover:text-cyan-300 transition-colors flex-1"
+                              onClick={() => {
+                                navigator.clipboard.writeText('GE00BG0000000000000000');
+                                toast.success('IBAN დაკოპირდა!');
+                              }}
+                              title="დააკლიკეთ კოპირებისთვის"
+                            >
+                              GE00BG0000000000000000
+                            </p>
                             <button
                               onClick={() => {
                                 navigator.clipboard.writeText('GE00BG0000000000000000');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
-                              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                              className="text-cyan-400 hover:text-cyan-300 transition-colors flex-shrink-0"
                             >
                               <FaCopy />
                             </button>
@@ -397,14 +406,23 @@ const PaymentPage: React.FC = () => {
                       <div className="space-y-3">
                         <div>
                           <p className="text-blue-200 text-sm mb-1">IBAN:</p>
-                          <div className="flex items-center justify-between bg-black/30 rounded-lg p-3">
-                            <p className="text-white font-mono text-lg">GE00TB0000000000000000</p>
+                          <div className="flex items-center justify-between bg-black/30 rounded-lg p-3 gap-2">
+                            <p 
+                              className="text-white font-mono text-sm sm:text-base md:text-lg cursor-pointer hover:text-cyan-300 transition-colors flex-1"
+                              onClick={() => {
+                                navigator.clipboard.writeText('GE00TB0000000000000000');
+                                toast.success('IBAN დაკოპირდა!');
+                              }}
+                              title="დააკლიკეთ კოპირებისთვის"
+                            >
+                              GE00TB0000000000000000
+                            </p>
                             <button
                               onClick={() => {
                                 navigator.clipboard.writeText('GE00TB0000000000000000');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
-                              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                              className="text-cyan-400 hover:text-cyan-300 transition-colors flex-shrink-0"
                             >
                               <FaCopy />
                             </button>

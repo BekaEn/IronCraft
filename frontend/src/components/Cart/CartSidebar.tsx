@@ -163,7 +163,7 @@ const CartSidebar: React.FC = () => {
               }}
               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
-              გადახდასთან გასვლა
+              შეუკვეთე ახლავე
             </button>
 
             {/* Continue Shopping */}
@@ -171,7 +171,7 @@ const CartSidebar: React.FC = () => {
               onClick={() => dispatch(setCartOpen(false))}
               className="w-full border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              სავაჭროდ გაგრძელება
+              დაამატე სხვა პროდუქტი
             </button>
           </div>
         )}

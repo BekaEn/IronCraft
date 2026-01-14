@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
 import { addToCart, openCart } from '../../store/cartSlice';
 import { useGetProductByIdQuery } from '../../services/productsApi';
+import toast from 'react-hot-toast';
 
 const MobileBottomNav: React.FC = () => {
   const location = useLocation();
@@ -16,9 +17,14 @@ const MobileBottomNav: React.FC = () => {
 
   const handleBuyNow = () => {
     if (product) {
+      if (product.stock === 0) {
+        toast.error('პროდუქტი მარაგში არ არის');
+        return;
+      }
       dispatch(addToCart({ product, quantity: 1 }));
+      toast.success(`${product.name} კალათაში დაემატა!`);
+      navigate('/payment');
     }
-    navigate('/payment');
   };
 
   return (
