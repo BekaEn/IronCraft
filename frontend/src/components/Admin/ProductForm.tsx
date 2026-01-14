@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes, FaPlus, FaMinus } from 'react-icons/fa';
 import type { Product } from '../../services/productsApi';
 import toast from 'react-hot-toast';
+import ProductVariationsManager from './ProductVariationsManager';
 
 interface ProductFormProps {
   isOpen: boolean;
@@ -25,7 +26,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
     description: '',
     detailedDescription: [''],
     price: '',
-    stock: '',
     category: 'fingerprint' as 'fingerprint' | 'faceid' | 'combo',
     features: [''],
     images: [''],
@@ -41,6 +41,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [variations, setVariations] = useState<any[]>([]);
 
   // Initialize form data when product changes
   useEffect(() => {
@@ -50,7 +51,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: product.description || '',
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
-        stock: product.stock?.toString() || '',
         category: (product.category || 'fingerprint') as 'fingerprint' | 'faceid' | 'combo',
         features: product.features && product.features.length > 0 ? product.features : [''],
         images: product.images && product.images.length > 0 ? product.images : [''],
@@ -75,7 +75,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: '',
         detailedDescription: [''],
         price: '',
-        stock: '',
         category: 'fingerprint',
         features: [''],
         images: [''],
@@ -208,16 +207,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
         toast.error('Valid price is required');
         return;
       }
-      if (!formData.stock || parseInt(formData.stock) < 0) {
-        toast.error('Valid stock quantity is required');
-        return;
-      }
 
       // Clean up empty array items
       const cleanedData = {
         ...formData,
         price: formData.price, // Keep as string since API expects string
-        stock: parseInt(formData.stock),
         salePrice: formData.salePrice ? formData.salePrice : '',
         features: formData.features.filter(f => f.trim() !== ''),
         detailedDescription: formData.detailedDescription.filter(d => d.trim() !== ''),
@@ -229,7 +223,35 @@ const ProductForm: React.FC<ProductFormProps> = ({
         },
       };
 
-      await onSubmit(cleanedData);
+      const savedProduct = await onSubmit(cleanedData);
+      
+      // Save variations if any exist
+      if (variations.length > 0 && (savedProduct as any)?.id) {
+        const productId = (savedProduct as any).id || product?.id;
+        if (productId) {
+          try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/${productId}/variations/bulk`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify({ variations }),
+            });
+            
+            if (response.ok) {
+              toast.success('ვარიაციები წარმატებით შეინახა!');
+            } else {
+              toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
+            }
+          } catch (varError) {
+            console.error('Error saving variations:', varError);
+            toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
+          }
+        }
+      }
+      
       onClose();
     } catch (error) {
       console.error('Form submission error:', error);
@@ -305,23 +327,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 required
               />
             </div>
-
-            <div>
-              <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-2">
-                Stock Quantity *
-              </label>
-              <input
-                type="number"
-                id="stock"
-                name="stock"
-                value={formData.stock}
-                onChange={handleInputChange}
-                min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
           </div>
+
+          {/* Product Variations Manager */}
+          <ProductVariationsManager 
+            productId={product?.id}
+            onVariationsChange={(newVariations) => {
+              setVariations(newVariations);
+            }}
+          />
 
           {/* Sale Controls */}
           <div className="border-t pt-6">

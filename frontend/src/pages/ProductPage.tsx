@@ -2,24 +2,32 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useGetProductByIdQuery, useGetProductsQuery } from '../services/productsApi';
+import { useGetProductVariationsQuery, type ProductVariation } from '../services/variationsApi';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { FaArrowLeft, FaShoppingCart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaSearchPlus, FaSearchMinus, FaBatteryFull, FaWifi } from 'react-icons/fa';
 import { useAppDispatch } from '../hooks/redux';
 import { addToCart, openCart } from '../store/cartSlice';
 import { formatPrice } from '../utils/formatters';
 import toast from 'react-hot-toast';
+import ProductVariationSelector from '../components/Products/ProductVariationSelector';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  // const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
   const dispatch = useAppDispatch();
   
   const { data: product, isLoading, error } = useGetProductByIdQuery(id!);
+  
+  // Fetch product variations
+  const { data: variations = [] } = useGetProductVariationsQuery(
+    product?.id || 0,
+    { skip: !product?.id }
+  );
   
   // Fetch similar products from the same category
   const { data: similarProductsData } = useGetProductsQuery(
@@ -44,7 +52,8 @@ const ProductPage: React.FC = () => {
   const handleAddToCart = () => {
     if (product && quantity > 0) {
       dispatch(addToCart({ product, quantity }));
-      toast.success(`${quantity} ცალი ${product.name} კალათაში დაემატა!`);
+      const variationInfo = selectedVariation ? ` (${selectedVariation.color} - ${selectedVariation.size})` : '';
+      toast.success(`${quantity} ცალი ${product.name}${variationInfo} კალათაში დაემატა!`);
       dispatch(openCart());
     } else {
       toast.error('გთხოვთ აირჩიოთ სწორი რაოდენობა');
@@ -172,9 +181,13 @@ const ProductPage: React.FC = () => {
     return <FaCheck className="text-white" />;
   };
   
-  // Sale helpers
-  const isOnSale = Boolean((product as any).isOnSale) && (product as any).salePrice !== null && (product as any).salePrice !== undefined && String((product as any).salePrice) !== '';
-  const salePriceNumber = isOnSale ? parseFloat(String((product as any).salePrice)) : undefined;
+  // Use variation data if selected, otherwise use base product data
+  const displayPrice = selectedVariation?.price || product?.price;
+  const displaySalePrice = selectedVariation?.salePrice || (product as any)?.salePrice;
+  const displayImages = selectedVariation?.images?.length ? selectedVariation.images : product?.images || [];
+  const safeDisplayImages = displayImages && displayImages.length > 0 ? displayImages : (product?.images || []);
+  const isOnSale = displaySalePrice ? true : false;
+  const salePriceNumber = isOnSale ? parseFloat(String(displaySalePrice)) : undefined;
 
   return (
     <div className="min-h-screen dark-section">
@@ -245,7 +258,7 @@ const ProductPage: React.FC = () => {
             >
               <div className="relative w-full h-full overflow-hidden rounded-2xl">
                 <img
-                  src={getImageUrl(product.images[selectedImage])}
+                  src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
                   alt={product.name}
                   className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
@@ -262,9 +275,9 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
             
-            {product.images.length > 1 && (
+            {safeDisplayImages.length > 1 && (
               <div className="flex space-x-3 overflow-x-auto pb-2">
-                {product.images.map((image, index) => (
+                {safeDisplayImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -302,13 +315,13 @@ const ProductPage: React.FC = () => {
             <div className="glassmorphism-card p-4 md:p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  {isOnSale && salePriceNumber !== undefined ? (
+                  {isOnSale && displaySalePrice ? (
                     <div className="flex items-end space-x-3">
-                      <span className="text-xl md:text-2xl font-bold line-through text-blue-200/70">{formatPrice(parseFloat(product.price))}</span>
-                      <span className="text-2xl md:text-3xl lg:text-4xl font-black text-white">{formatPrice(salePriceNumber)}</span>
+                      <span className="text-xl md:text-2xl font-bold line-through text-blue-200/70">{formatPrice(parseFloat(String(displayPrice)))}</span>
+                      <span className="text-2xl md:text-3xl lg:text-4xl font-black text-white">{formatPrice(parseFloat(String(displaySalePrice)))}</span>
                     </div>
                   ) : (
-                    <span className="text-2xl md:text-3xl lg:text-4xl font-black text-cyan-300">{formatPrice(parseFloat(product.price))}</span>
+                    <span className="text-2xl md:text-3xl lg:text-4xl font-black text-cyan-300">{formatPrice(parseFloat(String(displayPrice)))}</span>
                   )}
                   <div className="flex items-center space-x-2 mt-2">
                     <FaCheck className="text-green-400" />
@@ -325,6 +338,16 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Product Variation Selector */}
+            {variations.length > 0 && (
+              <ProductVariationSelector
+                variations={variations}
+                onVariationSelect={(variation) => {
+                  setSelectedVariation(variation);
+                  setSelectedImage(0); // Reset to first image when variation changes
+                }}
+              />
+            )}
            
 
             {/* Quantity and Add to Cart */}
@@ -508,8 +531,7 @@ const ProductPage: React.FC = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {similarProducts.map((relatedProduct) => (
-                <div key={relatedProduct.id} className="glassmorphism-card group overflow-hidden hover:scale-105 transform transition-all duration-300 hover:shadow-2xl">
-                  <Link to={`/product/${relatedProduct.slug}`}>
+                <Link key={relatedProduct.id} to={`/product/${relatedProduct.slug}`} className="glassmorphism-card group overflow-hidden hover:scale-105 transform transition-all duration-300 hover:shadow-2xl block">
                     <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                       <img
                         src={getImageUrl(relatedProduct.images[0])}
@@ -546,15 +568,10 @@ const ProductPage: React.FC = () => {
                         )}
                       </div>
                       <div className="flex space-x-2 mt-3">
-                        <Link 
-                          to={`/product/${relatedProduct.slug}`}
-                          className="flex-1 glassmorphism-button text-center py-2 text-white font-bold hover:bg-white/20 transition-all duration-300 rounded-xl text-sm"
-                        >
-                          🔍 ნახვა
-                        </Link>
                         <button 
                           onClick={(e) => {
                             e.preventDefault();
+                            e.stopPropagation();
                             dispatch(addToCart({ product: relatedProduct, quantity: 1 }));
                             toast.success(`${relatedProduct.name} კალათაში დაემატა!`);
                             dispatch(openCart());
@@ -565,8 +582,7 @@ const ProductPage: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                  </Link>
-                </div>
+                </Link>
               ))}
             </div>
 
@@ -599,7 +615,7 @@ const ProductPage: React.FC = () => {
           </button>
 
           {/* Navigation arrows */}
-          {product.images.length > 1 && (
+          {safeDisplayImages.length > 1 && (
             <>
               <button
                 onClick={prevImage}
@@ -640,25 +656,25 @@ const ProductPage: React.FC = () => {
           </div>
 
           {/* Image counter */}
-          {product.images.length > 1 && (
+          {safeDisplayImages.length > 1 && (
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg z-10">
-              {modalImageIndex + 1} / {product.images.length}
+              {modalImageIndex + 1} / {safeDisplayImages.length}
             </div>
           )}
 
           {/* Main image */}
           <div className="max-w-8xl max-h-screen w-full h-full flex items-center justify-center p-4">
             <img
-              src={getImageUrl(product.images[modalImageIndex])}
+              src={getImageUrl(safeDisplayImages[modalImageIndex] || product.images[0])}
               alt={`${product.name} - Image ${modalImageIndex + 1}`}
               className="max-w-full max-h-full object-contain transition-transform duration-300"
               style={{ 
                 transform: `scale(${zoomLevel})`,
-                cursor: zoomLevel > 1 ? 'grab' : 'zoom-in'
+                cursor: zoomLevel > 1 ? 'zoom-out' : 'zoom-in'
               }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={handleModalClick}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800';
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800';
               }}
             />
           </div>
