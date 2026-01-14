@@ -383,6 +383,59 @@ const ProductPage: React.FC = () => {
                   ))}
                 </div>
               )}
+
+              {/* Mobile Size Selector */}
+              {variations.length > 0 && (
+                <div className="glassmorphism-card p-3">
+                  <h3 className="text-white font-bold text-base mb-2">📏 აირჩიეთ ზომა</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[...new Set(variations.map(v => v.size))].map((size) => {
+                      const sizeMap: Record<string, string> = {
+                        '40x60': '40x60 სმ',
+                        '60x80': '60x80 სმ',
+                        '80x120': '80x120 სმ',
+                        '100x140': '100x140 სმ',
+                        '120x160': '120x160 სმ',
+                        '150x200': '150x200 სმ',
+                      };
+                      const sizeLabel = sizeMap[size] || size;
+                      const isSelected = selectedVariation?.size === size;
+                      
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => {
+                            // Find variation with this size and current color
+                            const currentColor = selectedVariation?.color;
+                            let variation = variations.find(v => v.size === size && v.color === currentColor);
+                            if (!variation) {
+                              variation = variations.find(v => v.size === size);
+                            }
+                            if (variation) {
+                              setSelectedVariation(variation);
+                              setSelectedImage(0);
+                            }
+                          }}
+                          className={`relative p-2.5 rounded-lg font-semibold text-sm transition-all ${
+                            isSelected
+                              ? 'bg-cyan-500/20 border-2 border-cyan-400 text-cyan-300 scale-105'
+                              : 'bg-white/5 border-2 border-white/20 text-white hover:border-white/40'
+                          }`}
+                        >
+                          {sizeLabel}
+                          {isSelected && (
+                            <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-1">
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Desktop Layout - Original */}
