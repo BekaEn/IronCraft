@@ -91,13 +91,21 @@ const startServer = async () => {
   try {
     // Test database connection
     await sequelize.authenticate();
+    console.log('✅ Database connection established successfully.');
 
-    // Sync database models (auto-add new columns)
-    await sequelize.sync({ alter: true });
+    // Only sync in development, not in production
+    // In production, use migrations to manage schema changes
+    if (process.env.NODE_ENV !== 'production') {
+      await sequelize.sync({ alter: true });
+      console.log('✅ Database models synchronized.');
+    } else {
+      console.log('ℹ️ Production mode: Skipping auto-sync. Use migrations for schema changes.');
+    }
 
     // Start server on all interfaces for network access
     app.listen(PORT, '0.0.0.0', () => {
-         });
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
     process.exit(1);
