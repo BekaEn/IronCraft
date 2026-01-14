@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useGetProductByIdQuery, useGetProductsQuery } from '../services/productsApi';
 import { useGetProductVariationsQuery, type ProductVariation } from '../services/variationsApi';
@@ -22,6 +22,7 @@ const ProductPage: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Detect screen size - only render ProductVariationSelector on desktop
   useEffect(() => {
@@ -84,6 +85,19 @@ const ProductPage: React.FC = () => {
       const variationInfo = selectedVariation ? ` (${selectedVariation.color} - ${selectedVariation.size})` : '';
       toast.success(`${quantity} ცალი ${product.name}${variationInfo} კალათაში დაემატა!`);
       dispatch(openCart());
+    } else {
+      toast.error('გთხოვთ აირჩიოთ სწორი რაოდენობა');
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (product && quantity > 0) {
+      dispatch(addToCart({ 
+        product, 
+        quantity,
+        variation: selectedVariation || undefined
+      }));
+      navigate('/checkout');
     } else {
       toast.error('გთხოვთ აირჩიოთ სწორი რაოდენობა');
     }
@@ -574,6 +588,13 @@ const ProductPage: React.FC = () => {
                   <span>კალათაში დამატება</span>
                 </button>
               </div>
+              
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 px-4 md:px-8 py-3 md:py-4 rounded-2xl text-white font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 md:space-x-3 text-sm md:text-base lg:text-lg"
+              >
+                <span>🛒 ახლავე ყიდვა</span>
+              </button>
 
                {/* Description */}
             <div className="glassmorphism-card p-4 md:p-6">
