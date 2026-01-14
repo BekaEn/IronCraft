@@ -8,9 +8,18 @@ import { authenticateToken, requireAdmin } from '../middleware/auth';
 const router = express.Router();
 
 // Configure multer for image upload
+// Use RAILWAY_VOLUME_MOUNT_PATH for persistent storage on Railway, fallback to local uploads folder
+const getUploadDir = () => {
+  const volumePath = process.env.RAILWAY_VOLUME_MOUNT_PATH;
+  if (volumePath) {
+    return path.join(volumePath, 'custom-orders');
+  }
+  return path.join(__dirname, '../../uploads/custom-orders');
+};
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '../../uploads/custom-orders');
+    const uploadDir = getUploadDir();
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -51,6 +60,7 @@ router.post('/', upload.single('designImage'), async (req, res) => {
       return res.status(400).json({ message: 'All required fields must be provided' });
     }
 
+    // Store path that will be served - use /uploads for both local and Railway Volume
     const designImage = `/uploads/custom-orders/${req.file.filename}`;
 
     const customOrder = await CustomOrder.create({
@@ -159,7 +169,8 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
     }
 
     // Delete the image file
-    const imagePath = path.join(__dirname, '../..', order.designImage);
+    const filename = path.basename(order.designImage);
+    const imagePath = path.join(getUploadDir(), filename);
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
     }

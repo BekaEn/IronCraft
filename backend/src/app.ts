@@ -56,6 +56,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static files for uploaded images
+// Serve from Railway Volume if available, otherwise from local uploads folder
+const uploadsPath = process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, '../uploads');
+app.use('/uploads', express.static(uploadsPath));
+// Also serve from local uploads as fallback
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Health check route
