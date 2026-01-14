@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -12,11 +12,13 @@ interface Variation {
 
 interface ProductVariationsManagerProps {
   productId?: number;
+  initialVariations?: Variation[];
   onVariationsChange?: (variations: Variation[]) => void;
 }
 
 const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
   productId: _productId,
+  initialVariations,
   onVariationsChange,
 }) => {
   // Predefined color options
@@ -48,6 +50,21 @@ const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [variations, setVariations] = useState<Variation[]>([]);
   const [showVariationGrid, setShowVariationGrid] = useState(false);
+
+  // Load initial variations when provided (editing mode)
+  useEffect(() => {
+    if (initialVariations && initialVariations.length > 0) {
+      setVariations(initialVariations);
+      setShowVariationGrid(true);
+      
+      // Extract unique colors and sizes from initial variations
+      const colors = [...new Set(initialVariations.map(v => v.color))];
+      const sizes = [...new Set(initialVariations.map(v => v.size))];
+      
+      setSelectedColors(colors);
+      setSelectedSizes(sizes);
+    }
+  }, [initialVariations]);
 
   const toggleColor = (colorValue: string) => {
     if (selectedColors.includes(colorValue)) {

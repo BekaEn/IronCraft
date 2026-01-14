@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaTimes, FaPlus, FaMinus } from 'react-icons/fa';
 import type { Product } from '../../services/productsApi';
+import { useGetProductVariationsQuery } from '../../services/variationsApi';
 import toast from 'react-hot-toast';
 import ProductVariationsManager from './ProductVariationsManager';
 
@@ -42,6 +43,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [variations, setVariations] = useState<any[]>([]);
+
+  // Fetch existing variations if editing a product
+  const { data: existingVariations } = useGetProductVariationsQuery(
+    product?.id || 0,
+    { skip: !product?.id }
+  );
 
   // Initialize form data when product changes
   useEffect(() => {
@@ -90,6 +97,23 @@ const ProductForm: React.FC<ProductFormProps> = ({
       });
     }
   }, [product]);
+
+  // Load existing variations when they are fetched
+  useEffect(() => {
+    if (existingVariations && existingVariations.length > 0) {
+      // Convert API variations to the format expected by ProductVariationsManager
+      const formattedVariations = existingVariations
+        .filter(v => v.color !== 'Default' && v.size !== 'Standard') // Filter out default variations
+        .map(v => ({
+          color: v.color,
+          size: v.size,
+          price: String(v.price),
+          salePrice: v.salePrice ? String(v.salePrice) : '',
+          images: v.images || [],
+        }));
+      setVariations(formattedVariations);
+    }
+  }, [existingVariations]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -332,6 +356,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           {/* Product Variations Manager */}
           <ProductVariationsManager 
             productId={product?.id}
+            initialVariations={variations}
             onVariationsChange={(newVariations) => {
               setVariations(newVariations);
             }}
