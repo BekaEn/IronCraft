@@ -210,7 +210,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         return;
       }
 
-      // Clean up empty array items
+      // Clean up empty array items and include variations
       const cleanedData = {
         ...formData,
         price: formData.price, // Keep as string since API expects string
@@ -219,48 +219,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
         specifications: {
           material: formData.specifications.material,
         },
+        variations: variations, // Include variations in the product payload
       };
 
-      console.log('📦 Submitting product data:', cleanedData);
-      console.log('🎨 Variations to save after product creation:', variations);
+      console.log('📦 Submitting product data with variations:', cleanedData);
       
       const savedProduct = await onSubmit(cleanedData);
       
-      console.log('✅ Product saved, response:', savedProduct);
-      
-      // Save variations if any exist
-      const productId = (savedProduct as any)?.id || product?.id;
-      if (variations.length > 0 && productId) {
-          try {
-            console.log('Saving variations for product:', productId, variations);
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/${productId}/variations/bulk`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-              },
-              body: JSON.stringify({ variations }),
-            });
-            
-            if (response.ok) {
-              const result = await response.json();
-              console.log('Variations saved successfully:', result);
-              toast.success('ვარიაციები წარმატებით შეინახა!');
-            } else {
-              const errorData = await response.json();
-              console.error('Failed to save variations:', errorData);
-              toast.error(`ვარიაციების შენახვა ვერ მოხერხდა: ${errorData.message || 'Unknown error'}`);
-            }
-        } catch (varError) {
-          console.error('Error saving variations:', varError);
-          toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
-        }
-      } else if (variations.length === 0) {
-        console.log('ℹ️ No variations to save');
-      } else if (!productId) {
-        console.warn('⚠️ Product ID not found. savedProduct:', savedProduct, 'product:', product);
-      }
+      console.log('✅ Product saved with variations, response:', savedProduct);
       
       onClose();
     } catch (error) {

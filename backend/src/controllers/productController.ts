@@ -172,7 +172,35 @@ export const createProduct = async (req: Request, res: Response) => {
         ? Number(body.salePrice)
         : null,
     });
-    res.status(201).json(product);
+
+    // Handle variations if provided
+    let variations = [];
+    if (body.variations) {
+      try {
+        const variationsData = isMultipart ? JSON.parse(body.variations) : body.variations;
+        if (Array.isArray(variationsData) && variationsData.length > 0) {
+          const ProductVariation = require('../models/ProductVariation').default;
+          for (const varData of variationsData) {
+            const variation = await ProductVariation.create({
+              productId: product.id,
+              color: varData.color,
+              size: varData.size,
+              price: varData.price,
+              salePrice: varData.salePrice || null,
+              images: varData.images || [],
+              isActive: true,
+            });
+            variations.push(variation);
+          }
+          console.log(`Created ${variations.length} variations for product ${product.id}`);
+        }
+      } catch (varError) {
+        console.error('Error creating variations:', varError);
+      }
+    }
+
+    const response = product.toJSON ? product.toJSON() : product;
+    res.status(201).json({ ...response, variations });
   } catch (error) {
     console.error('Error creating product:', error);
     res.status(500).json({ message: 'Error creating product', error: (error as Error).message });
@@ -283,9 +311,40 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       console.log('Product after update:', existingProduct.get('images'));
     }
 
+    // Handle variations if provided
+    let variations = [];
+    if (req.body.variations) {
+      try {
+        const variationsData = Array.isArray(req.body.variations) ? req.body.variations : JSON.parse(req.body.variations);
+        if (Array.isArray(variationsData) && variationsData.length > 0) {
+          const ProductVariation = require('../models/ProductVariation').default;
+          
+          // Delete existing variations for this product
+          await ProductVariation.destroy({ where: { productId: idNum } });
+          
+          // Create new variations
+          for (const varData of variationsData) {
+            const variation = await ProductVariation.create({
+              productId: idNum,
+              color: varData.color,
+              size: varData.size,
+              price: varData.price,
+              salePrice: varData.salePrice || null,
+              images: varData.images || [],
+              isActive: true,
+            });
+            variations.push(variation);
+          }
+          console.log(`Updated ${variations.length} variations for product ${idNum}`);
+        }
+      } catch (varError) {
+        console.error('Error updating variations:', varError);
+      }
+    }
+
     const obj2 = (existingProduct.toJSON ? existingProduct.toJSON() : existingProduct) as any;
     if (obj2.salePrice === null) delete obj2.salePrice;
-    res.json(obj2);
+    res.json({ ...obj2, variations });
   } catch (error) {
     console.error('Error updating product:', error);
     res.status(500).json({ message: 'Error updating product', error: (error as Error).message });
