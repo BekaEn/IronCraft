@@ -293,14 +293,14 @@ const ProductPage: React.FC = () => {
                               }
                             }}
                             title={colorInfo.name}
-                            className={`flex-shrink-0 transition-all ${
-                              isSelected
-                                ? 'ring-2 ring-cyan-400'
-                                : 'hover:ring-2 hover:ring-white/50'
-                            }`}
+                            className="flex-shrink-0 transition-all"
                           >
                             <div
-                              className="w-10 h-10 rounded-full border-2 border-white shadow-lg"
+                              className={`w-10 h-10 rounded-full shadow-lg transition-all ${
+                                isSelected
+                                  ? 'border-3 border-cyan-400'
+                                  : 'border-2 border-white hover:border-cyan-300'
+                              }`}
                               style={{ backgroundColor: colorInfo.hex }}
                             />
                           </button>
@@ -311,7 +311,7 @@ const ProductPage: React.FC = () => {
                     <img
                       src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
                       alt={product.name}
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
