@@ -250,55 +250,113 @@ const ProductPage: React.FC = () => {
       <div className="relative w-full max-w-8xl mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-          {/* Product Images */}
-          <div className="space-y-6">
-            <div 
-              className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
-              onClick={() => openImageModal(selectedImage)}
-            >
-              <div className="relative w-full h-full overflow-hidden rounded-2xl">
-                <img
-                  src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
-                  alt={product.name}
-                  className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
-                  <div className="glassmorphism-button p-3 md:p-4 rounded-2xl">
-                    <FaSearchPlus className="text-white text-xl md:text-3xl" />
-                  </div>
-                </div>
-                {/* Glow effect */}
-                <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
-              </div>
-            </div>
-            
-            {safeDisplayImages.length > 1 && (
-              <div className="flex space-x-3 overflow-x-auto pb-2">
-                {safeDisplayImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-24 h-24 rounded-xl border-2 overflow-hidden transition-all duration-300 ${
-                      selectedImage === index 
-                        ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
-                        : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
-                    }`}
-                  >
-                    <img 
-                      src={getImageUrl(image)} 
-                      alt={`${product.name} ${index + 1}`} 
-                      className="w-full h-full object-contain p-2"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+          {/* Product Images with Color Selector */}
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Color Selector - Vertical on left side */}
+            {variations.length > 0 && (
+              <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[500px] order-2 md:order-1 pb-2 md:pb-0">
+                {[...new Set(variations.map(v => v.color))].map((color) => {
+                  const colorMap: Record<string, { name: string; hex: string }> = {
+                    black: { name: 'შავი', hex: '#000000' },
+                    white: { name: 'თეთრი', hex: '#FFFFFF' },
+                    yellow: { name: 'ყვითელი', hex: '#FFD700' },
+                    green: { name: 'მწვანე', hex: '#22C55E' },
+                    red: { name: 'წითელი', hex: '#EF4444' },
+                    blue: { name: 'ლურჯი', hex: '#3B82F6' },
+                    orange: { name: 'ნარინჯისფერი', hex: '#F97316' },
+                    pink: { name: 'ვარდისფერი', hex: '#EC4899' },
+                    purple: { name: 'იისფერი', hex: '#A855F7' },
+                    gray: { name: 'ნაცრისფერი', hex: '#6B7280' },
+                    brown: { name: 'ყავისფერი', hex: '#92400E' },
+                    gold: { name: 'ოქროსფერი', hex: '#D4AF37' },
+                  };
+                  const colorInfo = colorMap[color] || { name: color, hex: '#999999' };
+                  const isSelected = selectedVariation?.color === color;
+                  
+                  return (
+                    <button
+                      key={color}
+                      onClick={() => {
+                        const variation = variations.find(v => v.color === color);
+                        if (variation) {
+                          setSelectedVariation(variation);
+                          setSelectedImage(0);
+                        }
                       }}
-                    />
-                  </button>
-                ))}
+                      title={colorInfo.name}
+                      className={`flex-shrink-0 relative p-1 rounded-full transition-all ${
+                        isSelected
+                          ? 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-gray-900 scale-110'
+                          : 'hover:scale-105'
+                      }`}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-full border-2 border-white/30"
+                        style={{ backgroundColor: colorInfo.hex }}
+                      />
+                      {isSelected && (
+                        <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-0.5">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             )}
+            
+            {/* Images Container */}
+            <div className="flex-1 space-y-4 order-1 md:order-2">
+              <div 
+                className="w-full max-w-md mx-auto aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                onClick={() => openImageModal(selectedImage)}
+              >
+                <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                  <img
+                    src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
+                    <div className="glassmorphism-button p-3 md:p-4 rounded-2xl">
+                      <FaSearchPlus className="text-white text-xl md:text-3xl" />
+                    </div>
+                  </div>
+                  {/* Glow effect */}
+                  <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
+                </div>
+              </div>
+              
+              {safeDisplayImages.length > 1 && (
+                <div className="flex space-x-2 overflow-x-auto pb-2 justify-center">
+                  {safeDisplayImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`flex-shrink-0 w-16 h-16 rounded-lg border-2 overflow-hidden transition-all duration-300 ${
+                        selectedImage === index 
+                          ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
+                          : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
+                      }`}
+                    >
+                      <img 
+                        src={getImageUrl(image)} 
+                        alt={`${product.name} ${index + 1}`} 
+                        className="w-full h-full object-contain p-1"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Product Details */}
@@ -338,15 +396,54 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Product Variation Selector */}
+            {/* Size Selector */}
             {variations.length > 0 && (
-              <ProductVariationSelector
-                variations={variations}
-                onVariationSelect={(variation) => {
-                  setSelectedVariation(variation);
-                  setSelectedImage(0); // Reset to first image when variation changes
-                }}
-              />
+              <div className="glassmorphism-card p-4 md:p-6">
+                <h3 className="text-white font-bold text-lg mb-4">📏 აირჩიეთ ზომა</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {[...new Set(variations.map(v => v.size))].map((size) => {
+                    const sizeMap: Record<string, string> = {
+                      '40x60': '40x60 სმ',
+                      '60x80': '60x80 სმ',
+                      '80x120': '80x120 სმ',
+                      '100x140': '100x140 სმ',
+                      '120x160': '120x160 სმ',
+                      '150x200': '150x200 სმ',
+                    };
+                    const sizeLabel = sizeMap[size] || size;
+                    const isSelected = selectedVariation?.size === size;
+                    
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => {
+                          const variation = variations.find(v => 
+                            v.size === size && v.color === selectedVariation?.color
+                          );
+                          if (variation) {
+                            setSelectedVariation(variation);
+                            setSelectedImage(0);
+                          }
+                        }}
+                        className={`relative p-4 rounded-xl font-bold transition-all ${
+                          isSelected
+                            ? 'bg-cyan-500/20 border-2 border-cyan-400 text-cyan-300 scale-105'
+                            : 'bg-white/5 border-2 border-white/20 text-white hover:border-white/40'
+                        }`}
+                      >
+                        {sizeLabel}
+                        {isSelected && (
+                          <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-1">
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             )}
            
 
