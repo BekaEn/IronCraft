@@ -37,6 +37,13 @@ const ProductPage: React.FC = () => {
     product?.id || 0,
     { skip: !product?.id }
   );
+
+  // Auto-select first variation when variations are loaded
+  useEffect(() => {
+    if (variations.length > 0 && !selectedVariation) {
+      setSelectedVariation(variations[0]);
+    }
+  }, [variations, selectedVariation]);
   
   // Fetch similar products from the same category
   const { data: similarProductsData } = useGetProductsQuery(
