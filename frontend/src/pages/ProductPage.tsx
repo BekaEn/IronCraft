@@ -256,7 +256,7 @@ const ProductPage: React.FC = () => {
             {/* Mobile Layout - Colors overlaid on image */}
             <div className="md:hidden space-y-3">
               <div 
-                className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                className="aspect-[4/3] glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
