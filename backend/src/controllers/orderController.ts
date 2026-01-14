@@ -57,9 +57,15 @@ export const createOrder = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error('Order creation error:', error);
+    console.error('Request body:', JSON.stringify(req.body, null, 2));
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     return res.status(500).json({
       success: false,
-      message: 'შეკვეთის შექმნისას მოხდა შეცდომა'
+      message: 'შეკვეთის შექმნისას მოხდა შეცდომა',
+      error: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : String(error)) : undefined
     });
   }
 };

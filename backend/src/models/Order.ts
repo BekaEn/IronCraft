@@ -20,6 +20,12 @@ export interface OrderAttributes {
     price: number;
     name: string;
     image?: string;
+    variation?: {
+      color: string;
+      size: string;
+      price: string;
+      salePrice?: string | null;
+    };
   }>;
   totalAmount: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
@@ -46,6 +52,12 @@ class Order extends Model<OrderAttributes> implements OrderAttributes {
     price: number;
     name: string;
     image?: string;
+    variation?: {
+      color: string;
+      size: string;
+      price: string;
+      salePrice?: string | null;
+    };
   }>;
   declare totalAmount: number;
   declare status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
