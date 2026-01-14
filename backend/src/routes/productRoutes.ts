@@ -11,6 +11,13 @@ import {
   deleteProduct,
   getCategories
 } from '../controllers/productController';
+import {
+  getProductVariations,
+  createProductVariation,
+  updateProductVariation,
+  deleteProductVariation,
+  bulkUpsertVariations
+} from '../controllers/productVariationController';
 import { authenticateToken, requireAdmin } from '../middleware/auth';
 
 const router = express.Router();
@@ -49,6 +56,13 @@ const upload = multer({
 router.post('/', authenticateToken, requireAdmin, upload.any(), createProduct);
 router.put('/:id', authenticateToken, requireAdmin, updateProduct);
 router.delete('/:id', authenticateToken, requireAdmin, deleteProduct);
+
+// Product variation routes (must come before /:id to avoid conflicts)
+router.get('/:productId/variations', getProductVariations);
+router.post('/:productId/variations', authenticateToken, requireAdmin, upload.any(), createProductVariation);
+router.post('/:productId/variations/bulk', authenticateToken, requireAdmin, bulkUpsertVariations);
+router.put('/variations/:id', authenticateToken, requireAdmin, updateProductVariation);
+router.delete('/variations/:id', authenticateToken, requireAdmin, deleteProductVariation);
 
 // Public routes
 router.get('/', getProducts);

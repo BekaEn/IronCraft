@@ -8,7 +8,6 @@ export interface ProductAttributes {
   description: string;
   detailedDescription?: string[];
   price: number;
-  stock: number;
   images: string[];
   features: string[];
   specifications: {
@@ -37,7 +36,6 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
   declare description: string;
   declare detailedDescription?: string[];
   declare price: number;
-  declare stock: number;
   declare images: string[];
   declare features: string[];
   declare specifications: {
@@ -88,11 +86,6 @@ Product.init({
   price: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
-  },
-  stock: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
   },
   images: {
     type: DataTypes.JSON,

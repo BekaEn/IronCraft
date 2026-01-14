@@ -17,10 +17,6 @@ const MobileBottomNav: React.FC = () => {
 
   const handleBuyNow = () => {
     if (product) {
-      if (product.stock === 0) {
-        toast.error('პროდუქტი მარაგში არ არის');
-        return;
-      }
       dispatch(addToCart({ product, quantity: 1 }));
       toast.success(`${product.name} კალათაში დაემატა!`);
       navigate('/payment');

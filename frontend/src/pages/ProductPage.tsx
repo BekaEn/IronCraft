@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useGetProductByIdQuery, useGetProductsQuery } from '../services/productsApi';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
-import { FaArrowLeft, FaShoppingCart, FaHeart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaSearchPlus, FaSearchMinus, FaShare, FaBatteryFull, FaWifi } from 'react-icons/fa';
+import { FaArrowLeft, FaShoppingCart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaSearchPlus, FaSearchMinus, FaBatteryFull, FaWifi } from 'react-icons/fa';
 import { useAppDispatch } from '../hooks/redux';
 import { addToCart, openCart } from '../store/cartSlice';
 import { formatPrice } from '../utils/formatters';
@@ -42,7 +42,7 @@ const ProductPage: React.FC = () => {
   };
 
   const handleAddToCart = () => {
-    if (product && quantity > 0 && quantity <= product.stock) {
+    if (product && quantity > 0) {
       dispatch(addToCart({ product, quantity }));
       toast.success(`${quantity} ცალი ${product.name} კალათაში დაემატა!`);
       dispatch(openCart());
@@ -203,7 +203,7 @@ const ProductPage: React.FC = () => {
           <>
             <meta property="product:price:amount" content={isOnSale && salePriceNumber ? salePriceNumber.toString() : product.price} />
             <meta property="product:price:currency" content="GEL" />
-            <meta property="product:availability" content={product.stock > 0 ? "in stock" : "out of stock"} />
+            <meta property="product:availability" content="in stock" />
           </>
         )}
       </Helmet>
@@ -325,25 +325,6 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Stock Status */}
-            <div className="glassmorphism-card p-4">
-              {product.stock > 0 ? (
-                <div className="flex items-center space-x-3">
-                  <div className="gradient-success p-2 rounded-xl">
-                    <FaCheck className="text-white" />
-                  </div>
-                  <span className="text-green-300 font-bold text-sm md:text-base">მარაგშია ({product.stock} ცალი ხელმისაწვდომი)</span>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-3">
-                  <div className="gradient-warning p-2 rounded-xl">
-                    <FaTimes className="text-white" />
-                  </div>
-                  <span className="text-red-300 font-bold text-sm md:text-base">მარაგი ამოიწურა</span>
-                </div>
-              )}
-            </div>
-
            
 
             {/* Quantity and Add to Cart */}
@@ -358,7 +339,7 @@ const ProductPage: React.FC = () => {
                   </button>
                   <span className="px-4 md:px-6 py-2 md:py-3 text-white font-bold text-base md:text-lg border-x border-white/20">{quantity}</span>
                   <button
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    onClick={() => setQuantity(quantity + 1)}
                     className="px-3 py-2 md:px-4 md:py-3 text-white hover:text-cyan-300 transition-colors font-bold"
                   >
                     +
@@ -367,8 +348,7 @@ const ProductPage: React.FC = () => {
                 
                 <button
                   onClick={handleAddToCart}
-                  disabled={product.stock === 0}
-                  className="flex-1 gradient-primary px-4 md:px-8 py-3 md:py-4 rounded-2xl text-white font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2 md:space-x-3 text-sm md:text-base lg:text-lg"
+                  className="flex-1 gradient-primary px-4 md:px-8 py-3 md:py-4 rounded-2xl text-white font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 md:space-x-3 text-sm md:text-base lg:text-lg"
                 >
                   <FaShoppingCart className="text-base md:text-xl" />
                   <span>კალათაში დამატება</span>

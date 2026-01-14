@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Product from '../models/Product';
+import ProductVariation from '../models/ProductVariation';
 import { Op, fn, col } from 'sequelize';
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
@@ -26,6 +27,12 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
       offset,
       where,
       order: [['createdAt', 'DESC']],
+      include: [{
+        model: ProductVariation,
+        as: 'variations',
+        where: { isActive: true },
+        required: false,
+      }],
     });
     
     const totalPages = Math.ceil(count / limit);
@@ -55,12 +62,24 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
     
     // Check if id is numeric or a slug
     let product;
+    const includeOptions = {
+      include: [{
+        model: ProductVariation,
+        as: 'variations',
+        where: { isActive: true },
+        required: false,
+      }],
+    };
+    
     if (/^\d+$/.test(idStr)) {
       // Numeric ID
-      product = await Product.findByPk(idStr);
+      product = await Product.findByPk(idStr, includeOptions);
     } else {
       // Slug
-      product = await Product.findOne({ where: { slug: idStr } });
+      product = await Product.findOne({ 
+        where: { slug: idStr },
+        ...includeOptions,
+      });
     }
     
     if (!product) {
