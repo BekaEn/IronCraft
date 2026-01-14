@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useGetProductByIdQuery, useGetProductsQuery } from '../services/productsApi';
@@ -19,7 +19,16 @@ const ProductPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [isDesktop, setIsDesktop] = useState(false);
   const dispatch = useAppDispatch();
+
+  // Detect screen size - only render ProductVariationSelector on desktop
+  useEffect(() => {
+    const checkIsDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkIsDesktop();
+    window.addEventListener('resize', checkIsDesktop);
+    return () => window.removeEventListener('resize', checkIsDesktop);
+  }, []);
   
   const { data: product, isLoading, error } = useGetProductByIdQuery(id!);
   
@@ -462,17 +471,15 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Product Variation Selector - Desktop Only */}
-            {variations.length > 0 && (
-              <div className="hidden md:block">
-                <ProductVariationSelector
-                  variations={variations}
-                  onVariationSelect={(variation) => {
-                    setSelectedVariation(variation);
-                    setSelectedImage(0);
-                  }}
-                />
-              </div>
+            {/* Product Variation Selector - Desktop Only (NOT rendered on mobile) */}
+            {isDesktop && variations.length > 0 && (
+              <ProductVariationSelector
+                variations={variations}
+                onVariationSelect={(variation) => {
+                  setSelectedVariation(variation);
+                  setSelectedImage(0);
+                }}
+              />
             )}
            
 
