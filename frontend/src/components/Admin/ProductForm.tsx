@@ -221,7 +221,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
         },
       };
 
+      console.log('📦 Submitting product data:', cleanedData);
+      console.log('🎨 Variations to save after product creation:', variations);
+      
       const savedProduct = await onSubmit(cleanedData);
+      
+      console.log('✅ Product saved, response:', savedProduct);
       
       // Save variations if any exist
       if (variations.length > 0 && (savedProduct as any)?.id) {
@@ -252,7 +257,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
             console.error('Error saving variations:', varError);
             toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
           }
+        } else {
+          console.warn('⚠️ Product ID not found in saved product response:', savedProduct);
         }
+      } else if (variations.length === 0) {
+        console.log('ℹ️ No variations to save');
+      } else {
+        console.warn('⚠️ Saved product does not have an ID:', savedProduct);
       }
       
       onClose();

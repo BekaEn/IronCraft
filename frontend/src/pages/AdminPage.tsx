@@ -335,10 +335,12 @@ const AdminPage: React.FC = () => {
         // For now, we'll pass images as they are since the backend might accept string arrays
       } as any;
       
-      await createProduct(apiData).unwrap();
+      const result = await createProduct(apiData).unwrap();
+      console.log('✅ Product created with ID:', result.id);
       toast.success('Product created successfully');
       setShowAddProduct(false);
       refetch();
+      return result; // Return the created product so variations can be saved
     } catch (error) {
       toast.error('Failed to create product');
       throw error;
@@ -349,13 +351,14 @@ const AdminPage: React.FC = () => {
     if (!editingProduct) return;
     
     try {
-      await updateProduct({ 
+      const result = await updateProduct({ 
         id: editingProduct.id, 
         data: productData 
       }).unwrap();
       toast.success('Product updated successfully');
       setEditingProduct(null);
       refetch();
+      return result; // Return the updated product
     } catch (error) {
       toast.error('Failed to update product');
       throw error;
