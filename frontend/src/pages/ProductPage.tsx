@@ -296,7 +296,7 @@ const ProductPage: React.FC = () => {
                             className="flex-shrink-0 transition-all"
                           >
                             <div
-                              className={`w-10 h-10 rounded-full shadow-lg transition-all ${
+                              className={`w-8 h-8 rounded-full shadow-lg transition-all ${
                                 isSelected
                                   ? 'border-3 border-cyan-400'
                                   : 'border-2 border-white hover:border-cyan-300'
