@@ -321,8 +321,12 @@ const ProductPage: React.FC = () => {
                     </div>
                   )}
                     <img
-                      key={`mobile-${selectedVariation?.color || 'default'}-${selectedImage}`}
-                      src={getImageUrl(safeDisplayImages[selectedImage] || product.images?.[0])}
+                      key={`mobile-${selectedVariation?.id || 'default'}-${selectedImage}`}
+                      src={getImageUrl(
+                        selectedVariation?.images?.[selectedImage] || 
+                        product.images?.[selectedImage] || 
+                        product.images?.[0]
+                      )}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
@@ -373,8 +377,12 @@ const ProductPage: React.FC = () => {
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
                   <img
-                    key={`desktop-${selectedVariation?.color || 'default'}-${selectedImage}`}
-                    src={getImageUrl(safeDisplayImages[selectedImage] || product.images?.[0])}
+                    key={`desktop-${selectedVariation?.id || 'default'}-${selectedImage}`}
+                    src={getImageUrl(
+                      selectedVariation?.images?.[selectedImage] || 
+                      product.images?.[selectedImage] || 
+                      product.images?.[0]
+                    )}
                     alt={product.name}
                     className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
