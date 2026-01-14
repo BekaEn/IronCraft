@@ -6,6 +6,7 @@ export interface Product {
   detailedDescription?: string[];
   price: string; // API returns price as string
   stock: number;
+  thumbnail?: string;
   images: string[];
   features: string[];
   specifications: {

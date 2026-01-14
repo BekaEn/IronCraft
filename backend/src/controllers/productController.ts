@@ -162,6 +162,7 @@ export const createProduct = async (req: Request, res: Response) => {
       detailedDescription,
       price: Number(body.price),
       category: body.category,
+      thumbnail: body.thumbnail || null,
       features,
       specifications,
       images,
@@ -237,6 +238,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     if (req.body.detailedDescription !== undefined) updateData.detailedDescription = req.body.detailedDescription;
     if (req.body.price !== undefined) updateData.price = Number(req.body.price);
     if (req.body.category !== undefined) updateData.category = req.body.category;
+    if (req.body.thumbnail !== undefined) updateData.thumbnail = req.body.thumbnail || null;
     if (req.body.features !== undefined) updateData.features = req.body.features;
     if (req.body.images !== undefined) {
       console.log('Updating images from:', existingProduct.get('images'), 'to:', req.body.images);

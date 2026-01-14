@@ -49,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.slug}`} className="block">
           <div className="aspect-square overflow-hidden">
             <img
-              src={getImageUrl(product.images?.[0])}
+              src={getImageUrl(product.thumbnail || product.images?.[0])}
               alt={product.name}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {

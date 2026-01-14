@@ -28,6 +28,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     detailedDescription: [''],
     price: '',
     category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+    thumbnail: '',
     features: [''],
     specifications: {
       material: '',
@@ -52,6 +53,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
         category: (product.category || 'anime') as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+        thumbnail: (product as any).thumbnail || '',
         features: product.features?.length > 0 ? product.features : [''],
         specifications: {
           material: product.specifications?.material || '',
@@ -65,6 +67,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         detailedDescription: [''],
         price: '',
         category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+        thumbnail: '',
         features: [''],
         specifications: {
           material: '',
@@ -325,6 +328,24 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">
+                მთავარი სურათი (Thumbnail)
+              </label>
+              <input
+                type="text"
+                id="thumbnail"
+                name="thumbnail"
+                value={formData.thumbnail}
+                onChange={handleInputChange}
+                placeholder="სურათის URL ან ფარდობითი მისამართი"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                ეს სურათი გამოჩნდება პროდუქტების სიაში. თუ არ მიუთითებთ, გამოიყენება პირველი ვარიაციის სურათი.
+              </p>
             </div>
           </div>
 

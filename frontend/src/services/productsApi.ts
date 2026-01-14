@@ -11,6 +11,7 @@ export interface Product {
   detailedDescription?: string[];
   price: string;
   stock: number;
+  thumbnail?: string;
   images: string[];
   features: string[];
   specifications: {
