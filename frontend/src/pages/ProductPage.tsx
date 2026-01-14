@@ -454,15 +454,17 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Product Variation Selector */}
+            {/* Product Variation Selector - Desktop Only */}
             {variations.length > 0 && (
-              <ProductVariationSelector
-                variations={variations}
-                onVariationSelect={(variation) => {
-                  setSelectedVariation(variation);
-                  setSelectedImage(0);
-                }}
-              />
+              <div className="hidden md:block">
+                <ProductVariationSelector
+                  variations={variations}
+                  onVariationSelect={(variation) => {
+                    setSelectedVariation(variation);
+                    setSelectedImage(0);
+                  }}
+                />
+              </div>
             )}
            
 
