@@ -18,7 +18,10 @@ const CartSidebar: React.FC = () => {
   const cartTotal = useAppSelector(selectCartTotal);
   const itemsCount = useAppSelector(selectCartItemsCount);
 
-  const getImageUrl = (imagePath: string) => {
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) {
+      return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80';
+    }
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
@@ -80,7 +83,7 @@ const CartSidebar: React.FC = () => {
                 <div key={item.product.id} className="flex items-center space-x-4 p-4 border rounded-lg">
                   {/* Product Image */}
                   <img
-                    src={getImageUrl(item.product.images[0])}
+                    src={getImageUrl(item.product.thumbnail || item.product.images?.[0])}
                     alt={item.product.name}
                     className="w-16 h-16 object-cover rounded"
                     onError={(e) => {
