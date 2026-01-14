@@ -49,7 +49,7 @@ const MobileBottomNav: React.FC = () => {
               className="flex flex-col items-center text-xs text-white"
             >
               <span className="text-lg">⚡</span>
-              <span>ყიდვა ახლა</span>
+              <span>იყიდე ახლავე</span>
             </button>
           )}
         </div>
