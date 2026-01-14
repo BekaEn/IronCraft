@@ -230,7 +230,10 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     if (req.body.price !== undefined) updateData.price = Number(req.body.price);
     if (req.body.category !== undefined) updateData.category = req.body.category;
     if (req.body.features !== undefined) updateData.features = req.body.features;
-    if (req.body.images !== undefined) updateData.images = req.body.images;
+    if (req.body.images !== undefined) {
+      console.log('Updating images from:', existingProduct.get('images'), 'to:', req.body.images);
+      updateData.images = req.body.images;
+    }
 
     // Merge individual specification fields if provided
     const hasSpecPart = ['material','batteryLife','installation','compatibility','unlockMethods']
@@ -264,7 +267,10 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     }
 
     if (Object.keys(updateData).length > 0 || Object.keys(saleData).length > 0) {
+      console.log('Updating product with data:', { ...updateData, ...saleData });
       await existingProduct.update({ ...updateData, ...saleData });
+      await existingProduct.reload();
+      console.log('Product after update:', existingProduct.get('images'));
     }
 
     const obj2 = (existingProduct.toJSON ? existingProduct.toJSON() : existingProduct) as any;
