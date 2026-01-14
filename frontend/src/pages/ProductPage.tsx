@@ -251,9 +251,36 @@ const ProductPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Product Images */}
-          <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Thumbnail Navigation - Vertical on Mobile, Left side on Desktop */}
+            {safeDisplayImages.length > 1 && (
+              <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] order-2 md:order-1 pb-2 md:pb-0">
+                {safeDisplayImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg border-2 overflow-hidden transition-all duration-300 ${
+                      selectedImage === index 
+                        ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
+                        : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
+                    }`}
+                  >
+                    <img 
+                      src={getImageUrl(image)} 
+                      alt={`${product.name} ${index + 1}`} 
+                      className="w-full h-full object-contain p-1"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            
+            {/* Main Image */}
             <div 
-              className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+              className="flex-1 aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden order-1 md:order-2"
               onClick={() => openImageModal(selectedImage)}
             >
               <div className="relative w-full h-full overflow-hidden rounded-2xl">
@@ -274,31 +301,6 @@ const ProductPage: React.FC = () => {
                 <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
               </div>
             </div>
-            
-            {safeDisplayImages.length > 1 && (
-              <div className="flex space-x-3 overflow-x-auto pb-2">
-                {safeDisplayImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-24 h-24 rounded-xl border-2 overflow-hidden transition-all duration-300 ${
-                      selectedImage === index 
-                        ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
-                        : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
-                    }`}
-                  >
-                    <img 
-                      src={getImageUrl(image)} 
-                      alt={`${product.name} ${index + 1}`} 
-                      className="w-full h-full object-contain p-2"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
-                      }}
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Product Details */}

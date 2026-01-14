@@ -73,7 +73,7 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
       {availableColors.length > 0 && (
         <div className="glassmorphism-card p-4 md:p-6">
           <h3 className="text-white font-bold text-lg mb-4">🎨 აირჩიეთ ფერი</h3>
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="flex flex-wrap gap-3">
             {availableColors.map((color) => {
               const colorInfo = colorMap[color] || { name: color, hex: '#999999' };
               const isSelected = selectedColor === color;
@@ -82,21 +82,19 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
                 <button
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`relative flex flex-col items-center p-3 rounded-xl transition-all ${
+                  title={colorInfo.name}
+                  className={`relative p-1 rounded-full transition-all ${
                     isSelected
-                      ? 'bg-cyan-500/20 border-2 border-cyan-400 scale-105'
-                      : 'bg-white/5 border-2 border-white/20 hover:border-white/40'
+                      ? 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-gray-900 scale-110'
+                      : 'hover:scale-105'
                   }`}
                 >
                   <div
-                    className="w-12 h-12 rounded-full border-2 border-white/30 mb-2"
+                    className="w-8 h-8 rounded-full border-2 border-white/30"
                     style={{ backgroundColor: colorInfo.hex }}
                   />
-                  <span className="text-white text-xs font-medium text-center">
-                    {colorInfo.name}
-                  </span>
                   {isSelected && (
-                    <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-1">
+                    <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-0.5">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
