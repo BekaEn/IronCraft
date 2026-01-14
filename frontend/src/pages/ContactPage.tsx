@@ -93,7 +93,7 @@ const ContactPage: React.FC = () => {
           </h1>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
             მიიღეთ <span className="font-bold text-cyan-300">უფასო კონსულტაცია</span>, 
-            <span className="font-bold text-purple-300"> საბაჟო დიზაინის შეკვეთა</span> ან 
+            <span className="font-bold text-purple-300"> ინდივიდუალური დიზაინის შეკვეთა</span> ან 
             <span className="font-bold text-green-300"> ფასების ინფორმაცია</span>
           </p>
 
@@ -182,7 +182,7 @@ const ContactPage: React.FC = () => {
                 >
                   <option value="" className="bg-slate-800">აირჩიეთ თემა</option>
                   <option value="sales" className="bg-slate-800">🛒 ყიდვის კონსულტაცია</option>
-                  <option value="custom_design" className="bg-slate-800">🎨 საბაჟო დიზაინი</option>
+                  <option value="custom_design" className="bg-slate-800">🎨 ინდივიდუალური დიზაინი</option>
                   <option value="delivery" className="bg-slate-800">🚚 მიწოდების ინფორმაცია</option>
                   <option value="other" className="bg-slate-800">📋 სხვა</option>
                 </select>
@@ -313,7 +313,7 @@ const ContactPage: React.FC = () => {
                   💬 WhatsApp
                 </a>
                 <a href="/custom-order" className="gradient-accent p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
-                  🎨 საბაჟო შეკვეთა
+                  🎨 ინდივიდუალური შეკვეთა
                 </a>
                 <a href="mailto:info@ironcraft.ge" className="gradient-warning p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
                   📧 ელ-ფოსტა

@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
               საქართველოში მეტალის კედლის ხელოვნების წამყვანი მიმწოდებელი.
               <span className="font-bold text-cyan-300"> გაამშვენიერეთ თქვენი სივრცე</span> უნიკალური
               <span className="font-bold text-purple-300"> ხელით დამუშავებული</span> და 
-              <span className="font-bold text-green-300"> საბაჟო დიზაინის</span> ნამუშევრებით.
+              <span className="font-bold text-green-300"> ინდივიდუალური დიზაინის</span> ნამუშევრებით.
             </p>
 
             {/* Trust Badges */}
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
                 🏆 #1 ბრენდი საქართველოში
               </div>
               <div className="glassmorphism-button px-4 py-2 text-white text-sm">
-                🎨 საბაჟო დიზაინები
+                🎨 ინდივიდუალური დიზაინები
               </div>
               <div className="glassmorphism-button px-4 py-2 text-white text-sm">
                 🔥 თერმული საღებავი
@@ -181,7 +181,7 @@ const Footer: React.FC = () => {
               <div className="gradient-warning p-3 rounded-xl inline-block mb-4 group-hover:animate-pulse">
                 <FaPhone className="text-white text-xl" />
               </div>
-              <h4 className="text-white font-bold mb-2">საბაჟო დიზაინი</h4>
+              <h4 className="text-white font-bold mb-2">ინდივიდუალური დიზაინი</h4>
               <p className="text-blue-200 text-sm">თქვენი იდეით</p>
             </div>
             

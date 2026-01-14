@@ -136,7 +136,7 @@ const CustomOrderPage: React.FC = () => {
           </div>
           <h2 className="text-3xl font-black text-white mb-4">შეკვეთა წარმატებით გაიგზავნა!</h2>
           <p className="text-blue-200 text-lg mb-6">
-            თქვენი საბაჟო შეკვეთა მიღებულია. ჩვენი გუნდი მალე დაგიკავშირდებათ დეტალების განსახილველად.
+            თქვენი ინდივიდუალური შეკვეთა მიღებულია. ჩვენი გუნდი მალე დაგიკავშირდებათ დეტალების განსახილველად.
           </p>
           <p className="text-blue-300 text-sm">
             გადამისამართება მთავარ გვერდზე...
@@ -151,7 +151,7 @@ const CustomOrderPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-            საბაჟო შეკვეთა
+            ინდივიდუალური შეკვეთა
           </h1>
           <p className="text-xl text-blue-200">
             ატვირთეთ თქვენი დიზაინი და მიიღეთ უნიკალური მეტალის კედლის ხელოვნება

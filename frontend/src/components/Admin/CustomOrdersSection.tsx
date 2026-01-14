@@ -72,7 +72,7 @@ const CustomOrdersSection: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-black text-white">საბაჟო შეკვეთები</h2>
+        <h2 className="text-3xl font-black text-white">ინდივიდუალური შეკვეთები</h2>
         <div className="text-blue-200">
           სულ: <span className="font-bold text-white">{data?.totalOrders || 0}</span>
         </div>
@@ -80,7 +80,7 @@ const CustomOrdersSection: React.FC = () => {
 
       {!data?.orders || data.orders.length === 0 ? (
         <div className="glassmorphism-card p-12 text-center">
-          <p className="text-blue-200 text-lg">საბაჟო შეკვეთები არ არის</p>
+          <p className="text-blue-200 text-lg">ინდივიდუალური შეკვეთები არ არის</p>
         </div>
       ) : (
         <div className="glassmorphism-card overflow-hidden">

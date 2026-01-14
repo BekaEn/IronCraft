@@ -16,10 +16,10 @@ const FeaturesSection: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-6 text-white">
-            რატომ აირჩიოთ მეტალ არტ საქართველო?
+            რატომ აირჩიოთ IronCraft?
           </h2>
           <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
-            ჩვენ ვქმნით უნიკალურ მეტალის კედლის ხელოვნებას ხელით დამუშავებით და პრემიუმ ხარისხით
+            ჩვენ ვქმნით მეტალის კედლის უნიკალურ დეკორაციას — ხელით დამუშავებით და პრემიუმ ხარისხით.
           </p>
         </div>
 
@@ -30,9 +30,9 @@ const FeaturesSection: React.FC = () => {
             <div className="gradient-primary p-4 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-pulse">
               <FaShieldAlt className="text-white text-2xl" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">რკინის ხარისხი</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">მაღალი ხარისხის მეტალი</h3>
             <p className="text-blue-200 leading-relaxed">
-              მაღალი ხარისხის რკინა თერმული საღებავით დაფარული - გამძლე და ელეგანტური
+              გამძლე მეტალი თერმული დაფარვით — ელეგანტური იერი და ხანგრძლივი გამოყენება.
             </p>
           </div>
 
@@ -41,9 +41,9 @@ const FeaturesSection: React.FC = () => {
             <div className="gradient-accent p-4 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-pulse">
               <FaTools className="text-white text-2xl" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">მარტივი დამონტაჟება</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">მარტივი მონტაჟი</h3>
             <p className="text-blue-200 leading-relaxed">
-              ყველა საჭირო დამონტაჟების აქსესუარი ჩართულია. მარტივი ინსტრუქციები სწრაფი დაყენებისთვის
+              მოყვება საჭირო სამაგრები და ინსტრუქცია — მარტივად და სწრაფად დასამონტაჟებლად.
             </p>
           </div>
 
@@ -52,9 +52,9 @@ const FeaturesSection: React.FC = () => {
             <div className="gradient-warning p-4 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-pulse">
               <FaPaintBrush className="text-white text-2xl" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">საბაჟო დიზაინები</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">ინდივიდუალური დიზაინი</h3>
             <p className="text-blue-200 leading-relaxed">
-              ექსკლუზიური ხელით დამუშავებული დიზაინები - ანიმე, აბსტრაქტული, ბუნება და თქვენი საკუთარი საბაჟო შეკვეთები
+              ექსკლუზიური კოლექციები — ანიმე, აბსტრაქტი, ბუნება და ასევე ინდივიდუალური შეკვეთები.
             </p>
           </div>
 
@@ -63,9 +63,9 @@ const FeaturesSection: React.FC = () => {
             <div className="gradient-primary p-4 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-pulse">
               <FaFire className="text-white text-2xl" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">თერმული საღებავი</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">თერმული დაფარვა</h3>
             <p className="text-blue-200 leading-relaxed">
-              თერმული საღებავით დამუშავებული ზედაპირი - წინააღმდეგობს ხაფანგებს და ინარჩუნებს სილამაზეს
+              თერმული დაფარვა იცავს ზედაპირს დაზიანებისა და კოროზიისგან და ინარჩუნებს ფერს.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ const FeaturesSection: React.FC = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">მარტივი კომუნიკაცია</h3>
             <p className="text-blue-200 leading-relaxed">
-              დაგვიკავშირდით ნებისმიერ დროს ელ-ფოსტით ან ტელეფონით - ჩვენ ყოველთვის მზად ვართ დაგეხმაროთ
+              მოგვწერეთ ან დაგვირეკეთ — სიამოვნებით გაგიწევთ კონსულტაციას ნებისმიერ კითხვაზე.
             </p>
           </div>
 
@@ -85,9 +85,9 @@ const FeaturesSection: React.FC = () => {
             <div className="gradient-warning p-4 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-pulse">
               <FaStar className="text-white text-2xl" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">ხელით დამუშავება</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">ხელით დამუშავებული</h3>
             <p className="text-blue-200 leading-relaxed">
-              თითოეული ნამუშევარი უნიკალურია - ხელით დამუშავებული ყურადღებით და სიყვარულით
+              თითოეული ნამუშევარი უნიკალურია — დამზადებულია ყურადღებით და დეტალებზე ზრუნვით.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ const FeaturesSection: React.FC = () => {
               <span className="text-white"> გარდაქმნისთვის?</span>
             </h3>
             <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-              შემოუერთდით ათასობით კმაყოფილ მომხმარებელს, რომლებიც ენდობიან მეტალ არტ საქართველოს მათი ინტერიერის გასაუმჯობესებლად
+              შემოუერთდით ათასობით კმაყოფილ მომხმარებელს, ვინც IronCraft-ს ენდობა — ინტერიერის გასალამაზებლად.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link

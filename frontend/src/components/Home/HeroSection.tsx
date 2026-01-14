@@ -79,10 +79,10 @@ const HeroSection: React.FC = () => {
                 </h1>
               )}
               
-              <div className="inline-flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-2 text-xs sm:text-sm md:text-base text-white/80 font-medium">
+              {/* <div className="inline-flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-2 text-xs sm:text-sm md:text-base text-white/80 font-medium">
                 <FaShieldAlt className="mr-2 text-xs sm:text-sm" />
                 <span className="hidden sm:inline">№1 კედლის დეკორი საქართველოში</span>
-              </div>
+              </div> */}
             </div>
 
             {/* Value Proposition (from slide description) */}

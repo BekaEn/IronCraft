@@ -271,33 +271,33 @@ const HomePage: React.FC = () => {
               <span className="text-white">გარდაქმნისთვის?</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
-              შეიგრძენით <span className="font-bold text-cyan-300">მეტალის ხელოვნების სილამაზე</span> და{' '}
-              <span className="font-bold text-purple-300">უნიკალური დიზაინი</span>. შესაძლებელია{' '}
-              <span className="font-bold text-green-300">ინდივიდუალური შეკვეთაც</span>.
-            </p>
+  შეიგრძენით <span className="font-bold text-cyan-300">მეტალის ხელოვნების სილამაზე</span> და{' '}
+  <span className="font-bold text-purple-300">უნიკალური დიზაინები</span>. ასევე შესაძლებელია{' '}
+  <span className="font-bold text-green-300">ინდივიდუალური შეკვეთაც</span>.
+</p>
 
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-              <Link
-                to="/products"
-                className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 gradient-primary text-white font-bold rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-sm sm:text-base md:text-lg"
-              >
-                <span>🛒 შეიძინე ახლა</span>
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 glassmorphism-button text-white font-bold rounded-2xl hover:text-cyan-300 transition-all duration-300 text-sm sm:text-base md:text-lg"
-              >
-                <span>📞 კონსულტაცია</span>
-              </Link>
-            </div>
+<div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+  <Link
+    to="/products"
+    className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 gradient-primary text-white font-bold rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-sm sm:text-base md:text-lg"
+  >
+    <span>🛒 შეიძინეთ ახლა</span>
+  </Link>
+  <Link
+    to="/contact"
+    className="inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 glassmorphism-button text-white font-bold rounded-2xl hover:text-cyan-300 transition-all duration-300 text-sm sm:text-base md:text-lg"
+  >
+    <span>📞 მიიღეთ კონსულტაცია</span>
+  </Link>
+</div>
 
-            {/* Trust indicators */}
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mt-8 sm:mt-10">
-              <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">✅ ინდივიდუალური დიზაინი</div>
-              <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">🚚 უფასო მიწოდება</div>
-              <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">🔥 თერმული საღებავი</div>
-              <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">⭐ ხელით დამუშავებული</div>
-            </div>
+{/* Trust indicators */}
+<div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mt-8 sm:mt-10">
+  <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">✅ ინდივიდუალური შეკვეთა</div>
+  <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">🚚 უფასო მიწოდება</div>
+  <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">🔥 თერმული დაფარვა</div>
+  <div className="glassmorphism-button px-3 sm:px-4 py-2 text-white text-xs sm:text-sm">⭐ ხელით დამუშავებული</div>
+</div>
           </div>
         </div>
       </section>

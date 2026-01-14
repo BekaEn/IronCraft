@@ -431,7 +431,7 @@ const ProductPage: React.FC = () => {
                   className="gradient-accent px-6 md:px-8 py-3 md:py-4 rounded-xl text-white font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-3 whitespace-nowrap"
                 >
                   <FaPaintBrush className="text-lg md:text-xl" />
-                  <span className="text-sm md:text-base">საბაჟო შეკვეთა</span>
+                  <span className="text-sm md:text-base">ინდივიდუალური შეკვეთა</span>
                 </Link>
               </div>
             </div>

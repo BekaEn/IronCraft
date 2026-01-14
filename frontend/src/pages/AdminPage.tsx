@@ -462,7 +462,7 @@ const AdminPage: React.FC = () => {
                 }`}
               >
                 <FaPaintBrush className="inline mr-2" />
-                საბაჟო შეკვეთები
+                ინდივიდუალური შეკვეთები
               </button>
             </nav>
           </div>

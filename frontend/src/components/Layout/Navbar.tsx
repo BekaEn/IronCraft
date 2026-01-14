@@ -49,8 +49,8 @@ const Navbar: React.FC = () => {
               <FaShieldAlt className="text-white text-base sm:text-lg md:text-2xl" />
             </div>
             <div className="flex flex-col">
-              <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-white">Metal Art</span>
-              <span className="text-xs text-blue-200">Georgia</span>
+              <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-white">IronCraft</span>
+              <span className="text-xs text-blue-200">აირონ კრაფტი</span>
             </div>
           </Link>
 
