@@ -109,9 +109,9 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
 
       {/* Size Selector */}
       {availableSizes.length > 0 && (
-        <div className="glassmorphism-card p-4 md:p-6">
-          <h3 className="text-white font-bold text-lg mb-4">📏 აირჩიეთ ზომა</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="glassmorphism-card p-3 md:p-6">
+          <h3 className="text-white font-bold text-base mb-2">📏 აირჩიეთ ზომა</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {availableSizes.map((size) => {
               const sizeLabel = sizeMap[size] || size;
               const isSelected = selectedSize === size;
@@ -120,7 +120,7 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`relative p-4 rounded-xl font-bold transition-all ${
+                  className={`relative p-2.5 rounded-lg font-semibold text-sm transition-all ${
                     isSelected
                       ? 'bg-cyan-500/20 border-2 border-cyan-400 text-cyan-300 scale-105'
                       : 'bg-white/5 border-2 border-white/20 text-white hover:border-white/40'

@@ -414,25 +414,25 @@ const ProductPage: React.FC = () => {
             </h1>
 
             {/* Price */}
-            <div className="glassmorphism-card p-4 md:p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="glassmorphism-card p-3 md:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   {isOnSale && displaySalePrice ? (
-                    <div className="flex items-end space-x-3">
-                      <span className="text-xl md:text-2xl font-bold line-through text-blue-200/70">{formatPrice(parseFloat(String(displayPrice)))}</span>
-                      <span className="text-2xl md:text-3xl lg:text-4xl font-black text-white">{formatPrice(parseFloat(String(displaySalePrice)))}</span>
+                    <div className="flex items-end space-x-2">
+                      <span className="text-lg md:text-2xl font-bold line-through text-blue-200/70">{formatPrice(parseFloat(String(displayPrice)))}</span>
+                      <span className="text-xl md:text-3xl lg:text-4xl font-black text-white">{formatPrice(parseFloat(String(displaySalePrice)))}</span>
                     </div>
                   ) : (
-                    <span className="text-2xl md:text-3xl lg:text-4xl font-black text-cyan-300">{formatPrice(parseFloat(String(displayPrice)))}</span>
+                    <span className="text-xl md:text-3xl lg:text-4xl font-black text-cyan-300">{formatPrice(parseFloat(String(displayPrice)))}</span>
                   )}
-                  <div className="flex items-center space-x-2 mt-2">
-                    <FaCheck className="text-green-400" />
-                    <span className="text-green-300 font-bold text-sm md:text-base">უფასო მიწოდება ჩათვლით</span>
+                  <div className="flex items-center space-x-1.5 mt-1.5">
+                    <FaCheck className="text-green-400 w-3 h-3" />
+                    <span className="text-green-300 font-semibold text-xs md:text-base">უფასო მიწოდება ჩათვლით</span>
                   </div>
                 </div>
                 <div className="text-left sm:text-right">
                   {isOnSale && (
-                    <div className="gradient-success px-3 py-2 rounded-xl text-white font-bold text-xs md:text-sm">
+                    <div className="gradient-success px-2.5 py-1.5 rounded-lg text-white font-bold text-xs md:text-sm">
                       SALE
                     </div>
                   )}
