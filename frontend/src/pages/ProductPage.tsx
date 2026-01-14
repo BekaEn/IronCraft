@@ -251,54 +251,165 @@ const ProductPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Product Images */}
-          <div className="space-y-6">
-            <div 
-              className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
-              onClick={() => openImageModal(selectedImage)}
-            >
-              <div className="relative w-full h-full overflow-hidden rounded-2xl">
-                <img
-                  src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
-                  alt={product.name}
-                  className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
-                  <div className="glassmorphism-button p-3 md:p-4 rounded-2xl">
-                    <FaSearchPlus className="text-white text-xl md:text-3xl" />
-                  </div>
+          {/* Mobile: Color selector on left, Desktop: Normal layout */}
+          <div className="md:space-y-6">
+            {/* Mobile Layout - Colors on left side */}
+            <div className="flex md:hidden gap-3">
+              {/* Color Selector - Vertical on left for mobile */}
+              {variations.length > 0 && (
+                <div className="flex flex-col gap-2 overflow-y-auto max-h-[400px]">
+                  {[...new Set(variations.map(v => v.color))].map((color) => {
+                    const colorMap: Record<string, { name: string; hex: string }> = {
+                      black: { name: 'შავი', hex: '#000000' },
+                      white: { name: 'თეთრი', hex: '#FFFFFF' },
+                      yellow: { name: 'ყვითელი', hex: '#FFD700' },
+                      green: { name: 'მწვანე', hex: '#22C55E' },
+                      red: { name: 'წითელი', hex: '#EF4444' },
+                      blue: { name: 'ლურჯი', hex: '#3B82F6' },
+                      orange: { name: 'ნარინჯისფერი', hex: '#F97316' },
+                      pink: { name: 'ვარდისფერი', hex: '#EC4899' },
+                      purple: { name: 'იისფერი', hex: '#A855F7' },
+                      gray: { name: 'ნაცრისფერი', hex: '#6B7280' },
+                      brown: { name: 'ყავისფერი', hex: '#92400E' },
+                      gold: { name: 'ოქროსფერი', hex: '#D4AF37' },
+                    };
+                    const colorInfo = colorMap[color] || { name: color, hex: '#999999' };
+                    const isSelected = selectedVariation?.color === color;
+                    
+                    return (
+                      <button
+                        key={color}
+                        onClick={() => {
+                          const variation = variations.find(v => v.color === color);
+                          if (variation) {
+                            setSelectedVariation(variation);
+                            setSelectedImage(0);
+                          }
+                        }}
+                        title={colorInfo.name}
+                        className={`flex-shrink-0 relative p-1 rounded-full transition-all ${
+                          isSelected
+                            ? 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-gray-900 scale-110'
+                            : 'hover:scale-105'
+                        }`}
+                      >
+                        <div
+                          className="w-8 h-8 rounded-full border-2 border-white/30"
+                          style={{ backgroundColor: colorInfo.hex }}
+                        />
+                        {isSelected && (
+                          <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-0.5">
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
-                {/* Glow effect */}
-                <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
-              </div>
-            </div>
-            
-            {safeDisplayImages.length > 1 && (
-              <div className="flex space-x-3 overflow-x-auto pb-2">
-                {safeDisplayImages.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-24 h-24 rounded-xl border-2 overflow-hidden transition-all duration-300 ${
-                      selectedImage === index 
-                        ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
-                        : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
-                    }`}
-                  >
-                    <img 
-                      src={getImageUrl(image)} 
-                      alt={`${product.name} ${index + 1}`} 
-                      className="w-full h-full object-contain p-2"
+              )}
+              
+              {/* Main Image for mobile */}
+              <div className="flex-1 space-y-3">
+                <div 
+                  className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                  onClick={() => openImageModal(selectedImage)}
+                >
+                  <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                    <img
+                      src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
+                      alt={product.name}
+                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
                     />
-                  </button>
-                ))}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
+                      <div className="glassmorphism-button p-3 rounded-2xl">
+                        <FaSearchPlus className="text-white text-xl" />
+                      </div>
+                    </div>
+                    <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
+                  </div>
+                </div>
+                
+                {safeDisplayImages.length > 1 && (
+                  <div className="flex space-x-2 overflow-x-auto pb-2">
+                    {safeDisplayImages.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedImage(index)}
+                        className={`flex-shrink-0 w-16 h-16 rounded-lg border-2 overflow-hidden transition-all duration-300 ${
+                          selectedImage === index 
+                            ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
+                            : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
+                        }`}
+                      >
+                        <img 
+                          src={getImageUrl(image)} 
+                          alt={`${product.name} ${index + 1}`} 
+                          className="w-full h-full object-contain p-1"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                          }}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+
+            {/* Desktop Layout - Original */}
+            <div className="hidden md:block space-y-6">
+              <div 
+                className="aspect-square glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                onClick={() => openImageModal(selectedImage)}
+              >
+                <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                  <img
+                    src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
+                    <div className="glassmorphism-button p-3 md:p-4 rounded-2xl">
+                      <FaSearchPlus className="text-white text-xl md:text-3xl" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-2 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
+                </div>
+              </div>
+              
+              {safeDisplayImages.length > 1 && (
+                <div className="flex space-x-3 overflow-x-auto pb-2">
+                  {safeDisplayImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`flex-shrink-0 w-24 h-24 rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                        selectedImage === index 
+                          ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-400/30 ring-2 ring-cyan-400/50' 
+                          : 'glassmorphism-button border-white/20 hover:border-white/40 hover:scale-105 hover:bg-white/10'
+                      }`}
+                    >
+                      <img 
+                        src={getImageUrl(image)} 
+                        alt={`${product.name} ${index + 1}`} 
+                        className="w-full h-full object-contain p-2"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Product Details */}
