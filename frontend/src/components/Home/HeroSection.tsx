@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaShieldAlt, FaClock, FaUsers, FaStar, FaPlay, FaLock } from 'react-icons/fa';
+import { FaPalette, FaTruck, FaUsers, FaStar, FaPlay, FaAward, FaHeart, FaShieldAlt } from 'react-icons/fa';
 import PromoBanner from '../UI/PromoBanner';
 import { useGetSlidesQuery } from '../../services/heroSlidesApi';
 
@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
         <div className="mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-muted">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent"></span>
-            <span className="text-white/80">Free 2-day delivery on orders over $99</span>
+            <span className="text-white/80">უფასო მიწოდება 150 ₾+ შენაძენზე</span>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -81,8 +81,7 @@ const HeroSection: React.FC = () => {
               
               <div className="inline-flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-2 text-xs sm:text-sm md:text-base text-white/80 font-medium">
                 <FaShieldAlt className="mr-2 text-xs sm:text-sm" />
-                <span className="hidden sm:inline">საქართველოში #1 მეტალის კედლის ხელოვნების ბრენდი</span>
-                <span className="sm:hidden">#1 კედლის ხელოვნება</span>
+                <span className="hidden sm:inline">№1 კედლის დეკორი საქართველოში</span>
               </div>
             </div>
 
@@ -197,12 +196,12 @@ const HeroSection: React.FC = () => {
             </div>
 
             {/* Floating Security Icons */}
-            <div className="absolute top-4 right-4 w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
-              <FaShieldAlt className="text-white/70 text-2xl" />
+            <div className="absolute top-8 right-4 w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
+              <FaPalette className="text-white/70 text-2xl" />
             </div>
             
             <div className="absolute bottom-8 left-4 w-12 h-12 bg-white/5 rounded-full flex items-center justify-center">
-              <FaLock className="text-white/70 text-xl" />
+              <FaHeart className="text-white/70 text-xl" />
             </div>
           </div>
         </div>
@@ -215,24 +214,24 @@ const HeroSection: React.FC = () => {
             {/* Social Proof Numbers */}
             <div className="text-center">
               <div className="flex items-center justify-center mb-2">
-                <FaShieldAlt className="text-green-400 text-lg" />
+                <FaPalette className="text-purple-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">99.9%</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">სიზუსტე</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">30+</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">უნიკალური დიზაინი</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center mb-2">
-                <FaClock className="text-purple-400 text-lg" />
+                <FaTruck className="text-green-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">24/7</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">მხარდაჭერა</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">უფასო</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">მიწოდება</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center mb-2">
                 <FaUsers className="text-yellow-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-red-500">5000+</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">მომხმარებელი</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-red-500">500+</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">კმაყოფილი კლიენტი</div>
             </div>
             
             {/* Trust Indicators - Desktop Only */}
@@ -240,22 +239,22 @@ const HeroSection: React.FC = () => {
               <div className="flex items-center justify-center mb-2">
                 <FaStar className="text-yellow-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">4.9/5</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">★★★★★ რეიტინგი</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">5/5</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">★★★★★ შეფასება</div>
             </div>
             <div className="hidden lg:block text-center">
               <div className="flex items-center justify-center mb-2">
-                <FaUsers className="text-blue-400 text-lg" />
+                <FaHeart className="text-pink-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-500">5000+</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">კმაყოფილი მომხმარებელი</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-red-500">100%</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">ხელნაკეთი ნამუშევარი</div>
             </div>
             <div className="hidden lg:block text-center">
               <div className="flex items-center justify-center mb-2">
-                <FaLock className="text-green-400 text-lg" />
+                <FaAward className="text-cyan-400 text-lg" />
               </div>
-              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">5</div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium">წელი გარანტია</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">100%</div>
+              <div className="text-xs sm:text-sm text-blue-200 font-medium">ინდივიდუალური შეკვეთა</div>
             </div>
           </div>
         </div>
