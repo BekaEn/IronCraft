@@ -100,19 +100,27 @@ const startServer = async () => {
       console.log('✅ Database models synchronized.');
     } else {
       console.log('ℹ️ Production mode: Skipping auto-sync.');
-      // Run pending migrations in production
-      const { exec } = require('child_process');
-      const util = require('util');
-      const execPromise = util.promisify(exec);
       
+      // Direct database fix for paymentMethod ENUM -> VARCHAR
       try {
-        console.log('🔄 Running database migrations...');
-        const { stdout, stderr } = await execPromise('npx sequelize-cli db:migrate');
-        console.log('✅ Migrations completed:', stdout);
-        if (stderr) console.log('Migration warnings:', stderr);
-      } catch (migrationError: any) {
-        console.error('⚠️ Migration error (continuing anyway):', migrationError.message);
-        // Don't fail startup if migrations fail - table might already exist
+        console.log('🔄 Checking orders table schema...');
+        const [tables]: any = await sequelize.query("SHOW TABLES LIKE 'orders'");
+        
+        if (tables.length > 0) {
+          // Check if paymentMethod is ENUM and change to VARCHAR
+          const [columns]: any = await sequelize.query("SHOW COLUMNS FROM orders WHERE Field = 'paymentMethod'");
+          if (columns.length > 0 && columns[0].Type.includes('enum')) {
+            console.log('🔧 Converting paymentMethod from ENUM to VARCHAR...');
+            await sequelize.query("ALTER TABLE `orders` MODIFY COLUMN `paymentMethod` VARCHAR(50) NOT NULL DEFAULT 'cash'");
+            console.log('✅ paymentMethod column updated to VARCHAR(50)');
+          } else {
+            console.log('✅ paymentMethod column already VARCHAR or table structure OK');
+          }
+        } else {
+          console.log('ℹ️ Orders table does not exist yet - will be created by model sync');
+        }
+      } catch (dbFixError: any) {
+        console.error('⚠️ Database fix error (continuing):', dbFixError.message);
       }
     }
 

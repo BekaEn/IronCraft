@@ -258,10 +258,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
         }
       }
       await existingProduct.reload();
-      const obj = (existingProduct.toJSON ? existingProduct.toJSON() : existingProduct) as any;
-      if (obj.salePrice === null) delete obj.salePrice;
-      res.json(obj);
-      return;
     }
 
     // Handle all field updates including specifications
