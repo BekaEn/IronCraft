@@ -8,13 +8,13 @@ module.exports = {
       const tables = await queryInterface.showAllTables();
       
       if (tables.includes('orders')) {
-        // For MySQL, we need to ALTER the ENUM type to add new value
+        // Change paymentMethod from ENUM to VARCHAR to accept any payment method
         await queryInterface.sequelize.query(
-          "ALTER TABLE `orders` MODIFY COLUMN `paymentMethod` ENUM('online', 'cash', 'bank_transfer') NOT NULL DEFAULT 'cash'"
+          "ALTER TABLE `orders` MODIFY COLUMN `paymentMethod` VARCHAR(50) NOT NULL DEFAULT 'cash'"
         );
-        console.log('✅ Added bank_transfer to paymentMethod ENUM');
+        console.log('✅ Changed paymentMethod to VARCHAR(50)');
       } else {
-        // Create orders table with the correct ENUM
+        // Create orders table with VARCHAR for paymentMethod
         await queryInterface.createTable('orders', {
           id: {
             type: Sequelize.INTEGER,
@@ -42,7 +42,7 @@ module.exports = {
             defaultValue: 'pending',
           },
           paymentMethod: {
-            type: Sequelize.ENUM('online', 'cash', 'bank_transfer'),
+            type: Sequelize.STRING(50),
             allowNull: false,
             defaultValue: 'cash',
           },
@@ -63,7 +63,7 @@ module.exports = {
             allowNull: false,
           },
         });
-        console.log('✅ Created orders table with bank_transfer support');
+        console.log('✅ Created orders table');
       }
     } catch (error) {
       console.error('Migration error:', error.message);

@@ -318,14 +318,23 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
 
     // Handle variations if provided
     let variations = [];
+    console.log('=== VARIATION UPDATE DEBUG ===');
+    console.log('req.body.variations exists:', !!req.body.variations);
+    console.log('req.body.variations type:', typeof req.body.variations);
+    console.log('req.body.variations value:', JSON.stringify(req.body.variations, null, 2));
+    
     if (req.body.variations) {
       try {
         const variationsData = Array.isArray(req.body.variations) ? req.body.variations : JSON.parse(req.body.variations);
+        console.log('Parsed variationsData length:', variationsData?.length);
+        
         if (Array.isArray(variationsData) && variationsData.length > 0) {
           const ProductVariation = require('../models/ProductVariation').default;
           
           // Delete existing variations for this product
-          await ProductVariation.destroy({ where: { productId: idNum } });
+          console.log('Deleting existing variations for product:', idNum);
+          const deleteResult = await ProductVariation.destroy({ where: { productId: idNum } });
+          console.log('Deleted variations count:', deleteResult);
           
           // Create new variations
           for (const varData of variationsData) {
@@ -333,6 +342,8 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
             const filteredImages = Array.isArray(varData.images) 
               ? varData.images.filter((img: string) => img && img.trim() !== '')
               : [];
+            
+            console.log(`Creating variation: ${varData.color}-${varData.size} with ${filteredImages.length} images`);
             
             const variation = await ProductVariation.create({
               productId: idNum,
@@ -345,11 +356,13 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
             });
             variations.push(variation);
           }
-          console.log(`Updated ${variations.length} variations for product ${idNum}`);
+          console.log(`✅ Updated ${variations.length} variations for product ${idNum}`);
         }
       } catch (varError) {
-        console.error('Error updating variations:', varError);
+        console.error('❌ Error updating variations:', varError);
       }
+    } else {
+      console.log('⚠️ No variations in request body');
     }
 
     const obj2 = (existingProduct.toJSON ? existingProduct.toJSON() : existingProduct) as any;

@@ -29,7 +29,7 @@ export interface OrderAttributes {
   }>;
   totalAmount: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  paymentMethod: 'online' | 'cash' | 'bank_transfer';
+  paymentMethod: string;
   paymentStatus: 'pending' | 'completed' | 'failed';
   paymentId?: string;
 }
@@ -61,7 +61,7 @@ class Order extends Model<OrderAttributes> implements OrderAttributes {
   }>;
   declare totalAmount: number;
   declare status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  declare paymentMethod: 'online' | 'cash' | 'bank_transfer';
+  declare paymentMethod: string;
   declare paymentStatus: 'pending' | 'completed' | 'failed';
   declare paymentId?: string;
   declare readonly createdAt: Date;
@@ -99,7 +99,7 @@ Order.init({
     defaultValue: 'pending',
   },
   paymentMethod: {
-    type: DataTypes.ENUM('online', 'cash', 'bank_transfer'),
+    type: DataTypes.STRING(50),
     allowNull: false,
     defaultValue: 'cash',
   },
