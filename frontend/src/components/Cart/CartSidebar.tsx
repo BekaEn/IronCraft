@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaTimes, FaTrash, FaMinus, FaPlus, FaShoppingBag } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { translateColor } from '../../utils/colorTranslations';
 import { 
   setCartOpen, 
   removeFromCart, 
@@ -79,11 +80,15 @@ const CartSidebar: React.FC = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div key={item.product.id} className="flex items-center space-x-4 p-4 border rounded-lg">
+              {cartItems.map((item) => {
+                // Prioritize variation image, then thumbnail, then product images
+                const imageUrl = item.variation?.images?.[0] || item.product.thumbnail || item.product.images?.[0];
+                
+                return (
+                <div key={`${item.product.id}-${item.variation?.color || ''}-${item.variation?.size || ''}`} className="flex items-center space-x-4 p-4 border rounded-lg">
                   {/* Product Image */}
                   <img
-                    src={getImageUrl(item.product.thumbnail || item.product.images?.[0])}
+                    src={getImageUrl(imageUrl)}
                     alt={item.product.name}
                     className="w-16 h-16 object-cover rounded"
                     onError={(e) => {
@@ -96,7 +101,7 @@ const CartSidebar: React.FC = () => {
                     <h3 className="font-medium text-gray-900 text-sm">{item.product.name}</h3>
                     {item.variation && (
                       <p className="text-xs text-gray-600 mt-1">
-                        <span className="font-medium">ფერი:</span> {item.variation.color} | <span className="font-medium">ზომა:</span> {item.variation.size}
+                        <span className="font-medium">ფერი:</span> {translateColor(item.variation.color)} | <span className="font-medium">ზომა:</span> {item.variation.size}
                       </p>
                     )}
                     <p className="text-sm text-gray-500 mt-1">
@@ -150,7 +155,8 @@ const CartSidebar: React.FC = () => {
                     <FaTrash />
                   </button>
                 </div>
-              ))}
+                );
+              })}
 
               {/* Clear Cart Button */}
               {cartItems.length > 0 && (

@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../hooks/redux';
 import { selectCartItems, selectCartTotal, clearCart } from '../store/cartSlice';
 import { FaCreditCard, FaUniversity, FaShieldAlt, FaCheck, FaExclamationTriangle, FaCopy } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { translateColor } from '../utils/colorTranslations';
 
 interface CustomerInfo {
   firstName: string;
@@ -183,10 +184,34 @@ const PaymentPage: React.FC = () => {
               <h3 className="text-2xl font-bold text-white mb-6">შეკვეთის დეტალები</h3>
               
               <div className="space-y-4 mb-6">
-                {cartItems.map((item) => (
-                  <div key={item.product.id} className="flex items-center space-x-4 py-3 border-b border-white/10">
+                {cartItems.map((item) => {
+                  // Get image URL - prioritize variation image, then thumbnail, then product images
+                  const getImageUrl = () => {
+                    let imagePath: string | undefined;
+                    
+                    if (item.variation?.images?.[0]) {
+                      imagePath = item.variation.images[0];
+                    } else if (item.product.thumbnail) {
+                      imagePath = item.product.thumbnail;
+                    } else if (item.product.images?.[0]) {
+                      imagePath = item.product.images[0];
+                    }
+                    
+                    if (!imagePath) {
+                      return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80';
+                    }
+                    
+                    if (imagePath.startsWith('http')) {
+                      return imagePath;
+                    }
+                    
+                    return `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001'}${imagePath}`;
+                  };
+                  
+                  return (
+                  <div key={`${item.product.id}-${item.variation?.color || ''}-${item.variation?.size || ''}`} className="flex items-center space-x-4 py-3 border-b border-white/10">
                     <img
-                      src={item.product.images?.[0] ? (item.product.images[0].startsWith('http') ? item.product.images[0] : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001'}${item.product.images[0]}`) : 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80'}
+                      src={getImageUrl()}
                       alt={item.product.name}
                       className="w-16 h-16 object-cover rounded-lg"
                       onError={(e) => {
@@ -197,7 +222,7 @@ const PaymentPage: React.FC = () => {
                       <h4 className="text-white font-medium text-sm">{item.product.name}</h4>
                       {item.variation && (
                         <p className="text-blue-300 text-xs mt-1">
-                          ფერი: {item.variation.color} | ზომა: {item.variation.size}
+                          ფერი: {translateColor(item.variation.color)} | ზომა: {item.variation.size}
                         </p>
                       )}
                       <p className="text-blue-200 text-sm">რაოდენობა: {item.quantity}</p>
@@ -226,7 +251,8 @@ const PaymentPage: React.FC = () => {
                       )}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="border-t border-white/20 pt-4">
