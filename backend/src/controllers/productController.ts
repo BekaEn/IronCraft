@@ -181,13 +181,18 @@ export const createProduct = async (req: Request, res: Response) => {
         if (Array.isArray(variationsData) && variationsData.length > 0) {
           const ProductVariation = require('../models/ProductVariation').default;
           for (const varData of variationsData) {
+            // Filter out empty image URLs
+            const filteredImages = Array.isArray(varData.images) 
+              ? varData.images.filter((img: string) => img && img.trim() !== '')
+              : [];
+            
             const variation = await ProductVariation.create({
               productId: product.id,
               color: varData.color,
               size: varData.size,
               price: varData.price,
               salePrice: varData.salePrice || null,
-              images: varData.images || [],
+              images: filteredImages,
               isActive: true,
             });
             variations.push(variation);
@@ -324,13 +329,18 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
           
           // Create new variations
           for (const varData of variationsData) {
+            // Filter out empty image URLs
+            const filteredImages = Array.isArray(varData.images) 
+              ? varData.images.filter((img: string) => img && img.trim() !== '')
+              : [];
+            
             const variation = await ProductVariation.create({
               productId: idNum,
               color: varData.color,
               size: varData.size,
               price: varData.price,
               salePrice: varData.salePrice || null,
-              images: varData.images || [],
+              images: filteredImages,
               isActive: true,
             });
             variations.push(variation);

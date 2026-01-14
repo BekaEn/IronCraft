@@ -251,24 +251,6 @@ const ProductPage: React.FC = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      {/* Breadcrumb */}
-      <div className="relative glassmorphism-card border-b border-white/10 rounded-none mt-0.5">
-        <div className="w-full max-w-4xl mx-auto px-2 py-1.5">
-          <div className="flex items-center space-x-2">
-            {/* Back Button */}
-            <Link to="/products" className="glassmorphism-button p-1.5 text-white hover:text-cyan-300 transition-colors group flex-shrink-0" title="პროდუქტებთან დაბრუნება">
-              <FaArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform duration-300" />
-            </Link>
-            <div className="flex items-center space-x-1.5 text-xs text-blue-200 min-w-0">
-              <Link to="/" className="hover:text-white transition-colors flex-shrink-0">მთავარი</Link>
-              <span className="text-white/50 flex-shrink-0">/</span>
-              <Link to="/products" className="hover:text-white transition-colors flex-shrink-0">პროდუქტები</Link>
-              <span className="text-white/50 flex-shrink-0">/</span>
-              <span className="text-white font-bold truncate min-w-0" title={product.name}>{product.name}</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="relative w-full max-w-8xl mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 py-8">
 
