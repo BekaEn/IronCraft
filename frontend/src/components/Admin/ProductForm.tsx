@@ -29,16 +29,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
     price: '',
     category: 'fingerprint' as 'fingerprint' | 'faceid' | 'combo',
     features: [''],
-    images: [''],
     specifications: {
-      unlockMethods: [''],
       material: '',
-      batteryLife: '',
-      installation: '',
-      compatibility: [''],
     },
-    isOnSale: false,
-    salePrice: '',
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,21 +52,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
         category: (product.category || 'fingerprint') as 'fingerprint' | 'faceid' | 'combo',
-        features: product.features && product.features.length > 0 ? product.features : [''],
-        images: product.images && product.images.length > 0 ? product.images : [''],
+        features: product.features?.length > 0 ? product.features : [''],
         specifications: {
-          unlockMethods: product.specifications?.unlockMethods && product.specifications.unlockMethods.length > 0 
-            ? product.specifications.unlockMethods 
-            : [''],
           material: product.specifications?.material || '',
-          batteryLife: product.specifications?.batteryLife || '',
-          installation: product.specifications?.installation || '',
-          compatibility: product.specifications?.compatibility && product.specifications.compatibility.length > 0 
-            ? product.specifications.compatibility 
-            : [''],
         },
-        isOnSale: (product as any).isOnSale || false,
-        salePrice: (product as any).salePrice ? String((product as any).salePrice) : '',
       });
     } else {
       // Reset form for new product
@@ -82,18 +64,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: '',
         detailedDescription: [''],
         price: '',
-        category: 'fingerprint',
+        category: 'fingerprint' as 'fingerprint' | 'faceid' | 'combo',
         features: [''],
-        images: [''],
         specifications: {
-          unlockMethods: [''],
           material: '',
-          batteryLife: '',
-          installation: '',
-          compatibility: [''],
         },
-        isOnSale: false,
-        salePrice: '',
       });
     }
   }, [product]);
@@ -236,14 +211,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
       const cleanedData = {
         ...formData,
         price: formData.price, // Keep as string since API expects string
-        salePrice: formData.salePrice ? formData.salePrice : '',
         features: formData.features.filter(f => f.trim() !== ''),
         detailedDescription: formData.detailedDescription.filter(d => d.trim() !== ''),
-        images: formData.images.filter(i => i.trim() !== ''),
         specifications: {
-          ...formData.specifications,
-          unlockMethods: formData.specifications.unlockMethods.filter(m => m.trim() !== ''),
-          compatibility: formData.specifications.compatibility.filter(c => c.trim() !== ''),
+          material: formData.specifications.material,
         },
       };
 
@@ -362,41 +333,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
             }}
           />
 
-          {/* Sale Controls */}
-          <div className="border-t pt-6">
-            <h4 className="text-lg font-medium text-gray-900 mb-4">Sale Options</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  id="isOnSale"
-                  name="isOnSale"
-                  checked={formData.isOnSale}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                />
-                <label htmlFor="isOnSale" className="text-sm font-medium text-gray-700">
-                  Mark as On Sale
-                </label>
-              </div>
-              <div>
-                <label htmlFor="salePrice" className="block text-sm font-medium text-gray-700 mb-2">
-                  Sale Price (₾)
-                </label>
-                <input
-                  type="number"
-                  id="salePrice"
-                  name="salePrice"
-                  value={formData.salePrice}
-                  onChange={handleInputChange}
-                  step="0.01"
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  disabled={!formData.isOnSale}
-                />
-              </div>
-            </div>
-          </div>
 
           {/* Description */}
           <div>
@@ -481,142 +417,22 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </button>
           </div>
 
-          {/* Images */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">სურათის URL (შეგიძლიათ გამოიყენოთ როგორც სრული ლინკი, ისე ფარდობითი მისამართი)</label>
-            {formData.images.map((image, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <input
-                  type="text"
-                  value={image}
-                  onChange={(e) => handleArrayChange('images', index, e.target.value)}
-                  placeholder="სურათის URL"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeArrayItem('images', index)}
-                  className="text-red-500 hover:text-red-700"
-                  disabled={formData.images.length === 1}
-                >
-                  <FaMinus />
-                </button>
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => addArrayItem('images')}
-              className="text-blue-500 hover:text-blue-700 flex items-center space-x-1"
-            >
-              <FaPlus /> <span>Add Image</span>
-            </button>
-          </div>
 
           {/* Specifications */}
           <div className="border-t pt-6">
-            <h4 className="text-lg font-medium text-gray-900 mb-4">Specifications</h4>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="specifications.material" className="block text-sm font-medium text-gray-700 mb-2">
-                  Material
-                </label>
-                <input
-                  type="text"
-                  name="specifications.material"
-                  value={formData.specifications.material}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="specifications.batteryLife" className="block text-sm font-medium text-gray-700 mb-2">
-                  Battery Life
-                </label>
-                <input
-                  type="text"
-                  name="specifications.batteryLife"
-                  value={formData.specifications.batteryLife}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <label htmlFor="specifications.installation" className="block text-sm font-medium text-gray-700 mb-2">
-                  Installation
-                </label>
-                <input
-                  type="text"
-                  name="specifications.installation"
-                  value={formData.specifications.installation}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-
-            {/* Unlock Methods */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Unlock Methods</label>
-              {formData.specifications.unlockMethods.map((method, index) => (
-                <div key={index} className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="text"
-                    value={method}
-                    onChange={(e) => handleArrayChange('specifications.unlockMethods', index, e.target.value)}
-                    placeholder="Enter unlock method"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem('specifications.unlockMethods', index)}
-                    className="text-red-500 hover:text-red-700"
-                    disabled={formData.specifications.unlockMethods.length === 1}
-                  >
-                    <FaMinus />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => addArrayItem('specifications.unlockMethods')}
-                className="text-blue-500 hover:text-blue-700 flex items-center space-x-1"
-              >
-                <FaPlus /> <span>Add Unlock Method</span>
-              </button>
-            </div>
-
-            {/* Compatibility */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Compatibility</label>
-              {formData.specifications.compatibility.map((device, index) => (
-                <div key={index} className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="text"
-                    value={device}
-                    onChange={(e) => handleArrayChange('specifications.compatibility', index, e.target.value)}
-                    placeholder="Enter compatible device"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem('specifications.compatibility', index)}
-                    className="text-red-500 hover:text-red-700"
-                    disabled={formData.specifications.compatibility.length === 1}
-                  >
-                    <FaMinus />
-                  </button>
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => addArrayItem('specifications.compatibility')}
-                className="text-blue-500 hover:text-blue-700 flex items-center space-x-1"
-              >
-                <FaPlus /> <span>Add Compatible Device</span>
-              </button>
+            <h4 className="text-lg font-medium text-gray-900 mb-4">სპეციფიკაციები</h4>
+            <div>
+              <label htmlFor="specifications.material" className="block text-sm font-medium text-gray-700 mb-2">
+                მასალა
+              </label>
+              <input
+                type="text"
+                name="specifications.material"
+                value={formData.specifications.material}
+                onChange={handleInputChange}
+                placeholder="მაგ: მეტალი, ხის მასალა, და ა.შ."
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           </div>
 
