@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaPalette, FaTruck, FaUsers, FaStar, FaPlay, FaAward, FaHeart, FaShieldAlt } from 'react-icons/fa';
+import { FaPalette, FaTruck, FaUsers, FaStar, FaPlay, FaAward, FaHeart } from 'react-icons/fa';
 import PromoBanner from '../UI/PromoBanner';
 import { useGetSlidesQuery } from '../../services/heroSlidesApi';
 
