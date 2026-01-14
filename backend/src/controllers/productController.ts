@@ -153,7 +153,6 @@ export const createProduct = async (req: Request, res: Response) => {
       description: body.description,
       detailedDescription,
       price: Number(body.price),
-      stock: Number(body.stock),
       category: body.category,
       features,
       specifications,
@@ -255,7 +254,6 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     if (req.body.description !== undefined) updateData.description = req.body.description;
     if (req.body.detailedDescription !== undefined) updateData.detailedDescription = req.body.detailedDescription;
     if (req.body.price !== undefined) updateData.price = Number(req.body.price);
-    if (req.body.stock !== undefined) updateData.stock = Number(req.body.stock);
     if (req.body.category !== undefined) updateData.category = req.body.category;
     if (req.body.features !== undefined) updateData.features = req.body.features;
     if (req.body.images !== undefined) updateData.images = req.body.images;
