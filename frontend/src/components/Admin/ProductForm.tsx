@@ -228,6 +228,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         const productId = (savedProduct as any).id || product?.id;
         if (productId) {
           try {
+            console.log('Saving variations for product:', productId, variations);
             const token = localStorage.getItem('token');
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/${productId}/variations/bulk`, {
               method: 'POST',
@@ -239,9 +240,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
             });
             
             if (response.ok) {
+              const result = await response.json();
+              console.log('Variations saved successfully:', result);
               toast.success('ვარიაციები წარმატებით შეინახა!');
             } else {
-              toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
+              const errorData = await response.json();
+              console.error('Failed to save variations:', errorData);
+              toast.error(`ვარიაციების შენახვა ვერ მოხერხდა: ${errorData.message || 'Unknown error'}`);
             }
           } catch (varError) {
             console.error('Error saving variations:', varError);
