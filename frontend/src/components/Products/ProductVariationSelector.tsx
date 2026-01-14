@@ -43,7 +43,7 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
   const availableColors = [...new Set(variations.map(v => v.color))];
   const availableSizes = [...new Set(variations.map(v => v.size))];
 
-  // Auto-select first options if available
+  // Auto-select first options if available (only on initial mount)
   useEffect(() => {
     if (availableColors.length > 0 && !selectedColor) {
       setSelectedColor(availableColors[0]);
@@ -51,7 +51,8 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
     if (availableSizes.length > 0 && !selectedSize) {
       setSelectedSize(availableSizes[0]);
     }
-  }, [variations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once on mount
 
   // Update selected variation when color or size changes
   useEffect(() => {

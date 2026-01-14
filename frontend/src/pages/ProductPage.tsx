@@ -196,15 +196,6 @@ const ProductPage: React.FC = () => {
   const isOnSale = displaySalePrice ? true : false;
   const salePriceNumber = isOnSale ? parseFloat(String(displaySalePrice)) : undefined;
 
-  // Debug logging
-  console.log('🔍 ProductPage Debug:', {
-    selectedVariation: selectedVariation?.color,
-    variationImages: selectedVariation?.images,
-    displayImages,
-    safeDisplayImages,
-    selectedImage
-  });
-
   return (
     <div className="min-h-screen dark-section">
       <Helmet>
@@ -309,13 +300,8 @@ const ProductPage: React.FC = () => {
                                 variation = variations.find(v => v.color === color);
                               }
                               if (variation) {
-                                console.log('🎨 Mobile color selected:', color);
-                                console.log('📦 Variation found:', variation);
-                                console.log('🖼️ Variation images:', variation.images);
                                 setSelectedVariation(variation);
                                 setSelectedImage(0);
-                              } else {
-                                console.warn('⚠️ No variation found for color:', color);
                               }
                             }}
                             title={colorInfo.name}
