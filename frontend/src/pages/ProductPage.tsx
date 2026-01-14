@@ -267,9 +267,9 @@ const ProductPage: React.FC = () => {
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
-                  {/* Color Selector - Overlaid on top-left */}
+                  {/* Color Selector - Overlaid on bottom-center */}
                   {variations.length > 0 && (
-                    <div className="absolute left-3 top-3 flex flex-col gap-2 z-20">
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex flex-row gap-2 z-20">
                       {[...new Set(variations.map(v => v.color))].map((color) => {
                         const colorMap: Record<string, { name: string; hex: string }> = {
                           black: { name: 'შავი', hex: '#000000' },
