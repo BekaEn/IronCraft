@@ -222,6 +222,16 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
+    // Handle all field updates including specifications
+    const updateData: any = {};
+    if (req.body.name !== undefined) updateData.name = req.body.name;
+    if (req.body.description !== undefined) updateData.description = req.body.description;
+    if (req.body.detailedDescription !== undefined) updateData.detailedDescription = req.body.detailedDescription;
+    if (req.body.price !== undefined) updateData.price = Number(req.body.price);
+    if (req.body.category !== undefined) updateData.category = req.body.category;
+    if (req.body.features !== undefined) updateData.features = req.body.features;
+    if (req.body.images !== undefined) updateData.images = req.body.images;
+
     // Merge individual specification fields if provided
     const hasSpecPart = ['material','batteryLife','installation','compatibility','unlockMethods']
       .some((k) => Object.prototype.hasOwnProperty.call(req.body, k));
@@ -241,22 +251,8 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
         compatibility: req.body.compatibility ?? currentSpecs.compatibility,
       };
       console.log('Merging partial specifications:', merged);
-      existingProduct.set('specifications', merged);
-      await existingProduct.save({ fields: ['specifications'] });
-      await existingProduct.reload();
-      res.json(existingProduct);
-      return;
+      updateData.specifications = merged;
     }
-
-    // Handle other field updates
-    const updateData: any = {};
-    if (req.body.name !== undefined) updateData.name = req.body.name;
-    if (req.body.description !== undefined) updateData.description = req.body.description;
-    if (req.body.detailedDescription !== undefined) updateData.detailedDescription = req.body.detailedDescription;
-    if (req.body.price !== undefined) updateData.price = Number(req.body.price);
-    if (req.body.category !== undefined) updateData.category = req.body.category;
-    if (req.body.features !== undefined) updateData.features = req.body.features;
-    if (req.body.images !== undefined) updateData.images = req.body.images;
 
     // Sale fields can be updated alone
     const saleData: any = {};
