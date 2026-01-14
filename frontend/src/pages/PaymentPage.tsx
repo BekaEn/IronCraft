@@ -220,6 +220,7 @@ const PaymentPage: React.FC = () => {
                             <p className="text-white font-bold">{(parseFloat(String(item.product.salePrice)) * item.quantity).toFixed(2)}₾</p>
                             <p className="text-blue-300/70 line-through text-sm">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
                           </>
+                        ) : (
                           <p className="text-white font-bold">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
                         )
                       )}
