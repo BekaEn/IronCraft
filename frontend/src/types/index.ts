@@ -9,17 +9,7 @@ export interface Product {
   images: string[];
   features: string[];
   specifications: {
-    dimensions?: string;
-    material: string;
-    weight?: string;
-    thickness?: string;
-    finish?: string;
-    mounting?: string;
-    care?: string;
-    unlockMethods?: string[];
-    batteryLife?: string;
-    installation?: string;
-    compatibility?: string[];
+    material?: string;
   };
   category: string;
   isActive: boolean;
