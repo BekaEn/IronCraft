@@ -260,9 +260,9 @@ const ProductPage: React.FC = () => {
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
-                  {/* Color Selector - Overlaid on left side */}
+                  {/* Color Selector - Overlaid on top-left */}
                   {variations.length > 0 && (
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+                    <div className="absolute left-3 top-3 flex flex-col gap-2 z-20">
                       {[...new Set(variations.map(v => v.color))].map((color) => {
                         const colorMap: Record<string, { name: string; hex: string }> = {
                           black: { name: 'შავი', hex: '#000000' },
@@ -293,23 +293,16 @@ const ProductPage: React.FC = () => {
                               }
                             }}
                             title={colorInfo.name}
-                            className={`flex-shrink-0 relative transition-all ${
+                            className={`flex-shrink-0 transition-all ${
                               isSelected
-                                ? 'ring-2 ring-cyan-400 scale-110'
-                                : 'hover:scale-105'
+                                ? 'ring-2 ring-cyan-400'
+                                : 'hover:ring-2 hover:ring-white/50'
                             }`}
                           >
                             <div
-                              className="w-12 h-12 rounded-full border-3 border-white shadow-lg"
+                              className="w-10 h-10 rounded-full border-2 border-white shadow-lg"
                               style={{ backgroundColor: colorInfo.hex }}
                             />
-                            {isSelected && (
-                              <div className="absolute -top-1 -right-1 bg-cyan-400 text-white rounded-full p-1">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                            )}
                           </button>
                         );
                       })}
