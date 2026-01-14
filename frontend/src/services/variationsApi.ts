@@ -27,7 +27,7 @@ export const variationsApi = createApi({
   endpoints: (builder) => ({
     getProductVariations: builder.query<ProductVariation[], number>({
       query: (productId) => `/products/${productId}/variations`,
-      providesTags: (result, error, productId) => [{ type: 'Variations', id: productId }],
+      providesTags: (_result, _error, productId) => [{ type: 'Variations', id: productId }],
     }),
   }),
 });

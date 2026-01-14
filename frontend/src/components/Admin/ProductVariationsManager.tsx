@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaPlus, FaMinus, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 interface Variation {
@@ -16,7 +16,7 @@ interface ProductVariationsManagerProps {
 }
 
 const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
-  productId,
+  productId: _productId,
   onVariationsChange,
 }) => {
   // Predefined color options
