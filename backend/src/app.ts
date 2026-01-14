@@ -99,7 +99,21 @@ const startServer = async () => {
       await sequelize.sync({ alter: true });
       console.log('✅ Database models synchronized.');
     } else {
-      console.log('ℹ️ Production mode: Skipping auto-sync. Use migrations for schema changes.');
+      console.log('ℹ️ Production mode: Skipping auto-sync.');
+      // Run pending migrations in production
+      const { exec } = require('child_process');
+      const util = require('util');
+      const execPromise = util.promisify(exec);
+      
+      try {
+        console.log('🔄 Running database migrations...');
+        const { stdout, stderr } = await execPromise('npx sequelize-cli db:migrate');
+        console.log('✅ Migrations completed:', stdout);
+        if (stderr) console.log('Migration warnings:', stderr);
+      } catch (migrationError: any) {
+        console.error('⚠️ Migration error (continuing anyway):', migrationError.message);
+        // Don't fail startup if migrations fail - table might already exist
+      }
     }
 
     // Start server on all interfaces for network access
