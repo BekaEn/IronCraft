@@ -229,9 +229,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
       console.log('✅ Product saved, response:', savedProduct);
       
       // Save variations if any exist
-      if (variations.length > 0 && (savedProduct as any)?.id) {
-        const productId = (savedProduct as any).id || product?.id;
-        if (productId) {
+      const productId = (savedProduct as any)?.id || product?.id;
+      if (variations.length > 0 && productId) {
           try {
             console.log('Saving variations for product:', productId, variations);
             const token = localStorage.getItem('token');
@@ -253,17 +252,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
               console.error('Failed to save variations:', errorData);
               toast.error(`ვარიაციების შენახვა ვერ მოხერხდა: ${errorData.message || 'Unknown error'}`);
             }
-          } catch (varError) {
-            console.error('Error saving variations:', varError);
-            toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
-          }
-        } else {
-          console.warn('⚠️ Product ID not found in saved product response:', savedProduct);
+        } catch (varError) {
+          console.error('Error saving variations:', varError);
+          toast.error('ვარიაციების შენახვა ვერ მოხერხდა');
         }
       } else if (variations.length === 0) {
         console.log('ℹ️ No variations to save');
-      } else {
-        console.warn('⚠️ Saved product does not have an ID:', savedProduct);
+      } else if (!productId) {
+        console.warn('⚠️ Product ID not found. savedProduct:', savedProduct, 'product:', product);
       }
       
       onClose();
