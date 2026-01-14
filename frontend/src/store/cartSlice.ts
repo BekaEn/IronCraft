@@ -15,14 +15,20 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<{ product: Product; quantity: number }>) => {
-      const { product, quantity } = action.payload;
-      const existingItem = state.items.find(item => item.product.id === product.id);
+    addToCart: (state, action: PayloadAction<{ product: Product; quantity: number; variation?: any }>) => {
+      const { product, quantity, variation } = action.payload;
+      
+      // Check if same product with same variation exists
+      const existingItem = state.items.find(item => 
+        item.product.id === product.id && 
+        (!variation || !item.variation || 
+          (item.variation.color === variation.color && item.variation.size === variation.size))
+      );
       
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        state.items.push({ product, quantity });
+        state.items.push({ product, quantity, variation });
       }
       
       // Save to localStorage
@@ -79,10 +85,18 @@ export const {
 export const selectCartItems = (state: { cart: CartState }) => state.cart.items;
 export const selectCartTotal = (state: { cart: CartState }) => {
   const total = state.cart.items.reduce((total, item) => {
-    const product = item.product as Product;
-    const unitPrice = product.isOnSale && product.salePrice
-      ? parseFloat(product.salePrice as string)
-      : parseFloat(product.price);
+    // Use variation price if available, otherwise use product price
+    let unitPrice: number;
+    if (item.variation) {
+      unitPrice = item.variation.salePrice 
+        ? parseFloat(item.variation.salePrice as string)
+        : parseFloat(item.variation.price);
+    } else {
+      const product = item.product as Product;
+      unitPrice = product.isOnSale && product.salePrice
+        ? parseFloat(product.salePrice as string)
+        : parseFloat(product.price);
+    }
     return total + unitPrice * item.quantity;
   }, 0);
   return parseFloat(total.toFixed(2));

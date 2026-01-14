@@ -93,11 +93,19 @@ const PaymentPage: React.FC = () => {
       const transformedCartItems = cartItems.map(item => ({
         productId: item.product.id,
         quantity: item.quantity,
-        price: item.product.isOnSale && item.product.salePrice
-          ? parseFloat(String(item.product.salePrice))
-          : parseFloat(item.product.price),
+        price: item.variation 
+          ? (item.variation.salePrice ? parseFloat(item.variation.salePrice) : parseFloat(item.variation.price))
+          : (item.product.isOnSale && item.product.salePrice
+              ? parseFloat(String(item.product.salePrice))
+              : parseFloat(item.product.price)),
         name: item.product.name,
-        image: item.product.images?.[0] || ''
+        image: item.product.images?.[0] || '',
+        variation: item.variation ? {
+          color: item.variation.color,
+          size: item.variation.size,
+          price: item.variation.price,
+          salePrice: item.variation.salePrice
+        } : undefined
       }));
 
       const orderData = {
@@ -187,16 +195,33 @@ const PaymentPage: React.FC = () => {
                     />
                     <div className="flex-1">
                       <h4 className="text-white font-medium text-sm">{item.product.name}</h4>
+                      {item.variation && (
+                        <p className="text-blue-300 text-xs mt-1">
+                          ფერი: {item.variation.color} | ზომა: {item.variation.size}
+                        </p>
+                      )}
                       <p className="text-blue-200 text-sm">რაოდენობა: {item.quantity}</p>
                     </div>
                     <div className="text-right">
-                      {item.product.isOnSale && item.product.salePrice ? (
-                        <>
-                          <p className="text-white font-bold">{(parseFloat(String(item.product.salePrice)) * item.quantity).toFixed(2)}₾</p>
-                          <p className="text-blue-300/70 line-through text-sm">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
-                        </>
+                      {item.variation ? (
+                        // Use variation price
+                        item.variation.salePrice ? (
+                          <>
+                            <p className="text-white font-bold">{(parseFloat(item.variation.salePrice) * item.quantity).toFixed(2)}₾</p>
+                            <p className="text-blue-300/70 line-through text-sm">{(parseFloat(item.variation.price) * item.quantity).toFixed(2)}₾</p>
+                          </>
+                        ) : (
+                          <p className="text-white font-bold">{(parseFloat(item.variation.price) * item.quantity).toFixed(2)}₾</p>
+                        )
                       ) : (
-                        <p className="text-white font-bold">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
+                        // Use product price
+                        item.product.isOnSale && item.product.salePrice ? (
+                          <>
+                            <p className="text-white font-bold">{(parseFloat(String(item.product.salePrice)) * item.quantity).toFixed(2)}₾</p>
+                            <p className="text-blue-300/70 line-through text-sm">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
+                          </>
+                          <p className="text-white font-bold">{(parseFloat(item.product.price) * item.quantity).toFixed(2)}₾</p>
+                        )
                       )}
                     </div>
                   </div>

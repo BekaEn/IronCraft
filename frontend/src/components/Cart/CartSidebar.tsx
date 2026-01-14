@@ -91,14 +91,32 @@ const CartSidebar: React.FC = () => {
                   {/* Product Details */}
                   <div className="flex-1">
                     <h3 className="font-medium text-gray-900 text-sm">{item.product.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {item.product.isOnSale && item.product.salePrice ? (
-                        <>
-                          <span className="text-green-600 font-semibold mr-2">{formatPrice(String(item.product.salePrice))}</span>
-                          <span className="line-through opacity-60">{formatPrice(item.product.price)}</span>
-                        </>
+                    {item.variation && (
+                      <p className="text-xs text-gray-600 mt-1">
+                        <span className="font-medium">ფერი:</span> {item.variation.color} | <span className="font-medium">ზომა:</span> {item.variation.size}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-500 mt-1">
+                      {item.variation ? (
+                        // Use variation price
+                        item.variation.salePrice ? (
+                          <>
+                            <span className="text-green-600 font-semibold mr-2">{formatPrice(item.variation.salePrice)}</span>
+                            <span className="line-through opacity-60">{formatPrice(item.variation.price)}</span>
+                          </>
+                        ) : (
+                          formatPrice(item.variation.price)
+                        )
                       ) : (
-                        formatPrice(item.product.price)
+                        // Use product price
+                        item.product.isOnSale && item.product.salePrice ? (
+                          <>
+                            <span className="text-green-600 font-semibold mr-2">{formatPrice(String(item.product.salePrice))}</span>
+                            <span className="line-through opacity-60">{formatPrice(item.product.price)}</span>
+                          </>
+                        ) : (
+                          formatPrice(item.product.price)
+                        )
                       )}
                     </p>
                     

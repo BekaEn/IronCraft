@@ -54,7 +54,11 @@ const ProductPage: React.FC = () => {
 
   const handleAddToCart = () => {
     if (product && quantity > 0) {
-      dispatch(addToCart({ product, quantity }));
+      dispatch(addToCart({ 
+        product, 
+        quantity,
+        variation: selectedVariation || undefined
+      }));
       const variationInfo = selectedVariation ? ` (${selectedVariation.color} - ${selectedVariation.size})` : '';
       toast.success(`${quantity} ცალი ${product.name}${variationInfo} კალათაში დაემატა!`);
       dispatch(openCart());

@@ -23,6 +23,14 @@ export interface Product {
 export interface CartItem {
   product: Product;
   quantity: number;
+  variation?: {
+    id?: number;
+    color: string;
+    size: string;
+    price: string;
+    salePrice?: string | null;
+    images?: string[];
+  };
 }
 
 export interface User {
