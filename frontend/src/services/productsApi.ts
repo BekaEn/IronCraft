@@ -14,11 +14,7 @@ export interface Product {
   images: string[];
   features: string[];
   specifications: {
-    unlockMethods?: string[];
-    material: string;
-    batteryLife: string;
-    installation: string;
-    compatibility: string[];
+    material?: string;
   };
   category: string;
   isActive: boolean;
