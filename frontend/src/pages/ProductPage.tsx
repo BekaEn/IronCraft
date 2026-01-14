@@ -20,6 +20,7 @@ const ProductPage: React.FC = () => {
   const [modalImageIndex, setModalImageIndex] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
   const dispatch = useAppDispatch();
 
   // Detect screen size - only render ProductVariationSelector on desktop
@@ -44,6 +45,11 @@ const ProductPage: React.FC = () => {
       setSelectedVariation(variations[0]);
     }
   }, [variations, selectedVariation]);
+
+  // Reset image loading state when variation or image changes
+  useEffect(() => {
+    setImageLoading(true);
+  }, [selectedVariation?.id, selectedImage]);
   
   // Fetch similar products from the same category
   const { data: similarProductsData } = useGetProductsQuery(
@@ -318,6 +324,12 @@ const ProductPage: React.FC = () => {
                       })}
                     </div>
                   )}
+                    {/* Loading Spinner */}
+                    {imageLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10">
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-cyan-400 border-t-transparent"></div>
+                      </div>
+                    )}
                     <img
                       key={`mobile-${selectedVariation?.id || 'default'}-${selectedImage}`}
                       src={getImageUrl(
@@ -326,8 +338,10 @@ const ProductPage: React.FC = () => {
                         product.images?.[0]
                       )}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                      onLoad={() => setImageLoading(false)}
                       onError={(e) => {
+                        setImageLoading(false);
                         e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
                     />
@@ -427,6 +441,12 @@ const ProductPage: React.FC = () => {
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                  {/* Loading Spinner */}
+                  {imageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10">
+                      <div className="animate-spin rounded-full h-16 w-16 border-4 border-cyan-400 border-t-transparent"></div>
+                    </div>
+                  )}
                   <img
                     key={`desktop-${selectedVariation?.id || 'default'}-${selectedImage}`}
                     src={getImageUrl(
@@ -435,8 +455,10 @@ const ProductPage: React.FC = () => {
                       product.images?.[0]
                     )}
                     alt={product.name}
-                    className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
+                    className={`w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+                    onLoad={() => setImageLoading(false)}
                     onError={(e) => {
+                      setImageLoading(false);
                       e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                     }}
                   />
