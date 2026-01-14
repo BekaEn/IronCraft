@@ -217,9 +217,12 @@ const CustomOrdersSection: React.FC = () => {
                 <h4 className="text-lg font-bold text-white mb-3">დიზაინის სურათი</h4>
                 <div className="bg-white/5 p-4 rounded-lg">
                   <img
-                    src={`http://localhost:5001${selectedOrder.designImage}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}${selectedOrder.designImage}`}
                     alt="Design"
                     className="max-w-full h-auto rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                    }}
                   />
                 </div>
               </div>
