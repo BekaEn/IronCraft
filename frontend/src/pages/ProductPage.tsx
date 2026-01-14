@@ -440,17 +440,15 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Product Variation Selector - Hidden on mobile */}
+            {/* Product Variation Selector */}
             {variations.length > 0 && (
-              <div className="hidden md:block">
-                <ProductVariationSelector
-                  variations={variations}
-                  onVariationSelect={(variation) => {
-                    setSelectedVariation(variation);
-                    setSelectedImage(0);
-                  }}
-                />
-              </div>
+              <ProductVariationSelector
+                variations={variations}
+                onVariationSelect={(variation) => {
+                  setSelectedVariation(variation);
+                  setSelectedImage(0);
+                }}
+              />
             )}
            
 

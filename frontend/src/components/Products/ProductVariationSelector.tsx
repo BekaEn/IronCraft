@@ -69,9 +69,9 @@ const ProductVariationSelector: React.FC<ProductVariationSelectorProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Color Selector */}
+      {/* Color Selector - Hidden on mobile */}
       {availableColors.length > 0 && (
-        <div className="glassmorphism-card p-4 md:p-6">
+        <div className="hidden md:block glassmorphism-card p-4 md:p-6">
           <h3 className="text-white font-bold text-lg mb-4">🎨 აირჩიეთ ფერი</h3>
           <div className="flex flex-wrap gap-3">
             {availableColors.map((color) => {
