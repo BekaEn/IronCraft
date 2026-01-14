@@ -147,9 +147,17 @@ export const createProduct = async (req: Request, res: Response) => {
       images = body.images || [];
     }
 
+    // Auto-generate slug from name if not provided
+    const slug = body.slug || body.name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+
     const product = await Product.create({
       name: body.name,
-      slug: body.slug,
+      slug,
       description: body.description,
       detailedDescription,
       price: Number(body.price),
