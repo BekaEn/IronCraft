@@ -8,7 +8,7 @@ import ProductVariationsManager from './ProductVariationsManager';
 interface ProductFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (productData: Partial<Product>) => Promise<void>;
+  onSubmit: (productData: Partial<Product>) => Promise<Product | void>;
   product?: Product | null; // If provided, we're editing; if null/undefined, we're creating
   title: string;
   submitButtonText: string;
