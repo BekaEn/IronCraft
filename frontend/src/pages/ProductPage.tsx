@@ -325,7 +325,36 @@ const ProductPage: React.FC = () => {
                         e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
+                    
+                    {/* Navigation Arrows on Left Side */}
+                    {safeDisplayImages.length > 1 && (
+                      <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-10">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImage((prev) => (prev === 0 ? safeDisplayImages.length - 1 : prev - 1));
+                          }}
+                          className="glassmorphism-button p-2 rounded-lg hover:bg-white/20 transition-all"
+                        >
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImage((prev) => (prev === safeDisplayImages.length - 1 ? 0 : prev + 1));
+                          }}
+                          className="glassmorphism-button p-2 rounded-lg hover:bg-white/20 transition-all"
+                        >
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl pointer-events-none">
                       <div className="glassmorphism-button p-3 rounded-2xl">
                         <FaSearchPlus className="text-white text-xl" />
                       </div>
