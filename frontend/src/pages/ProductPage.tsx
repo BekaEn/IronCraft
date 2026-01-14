@@ -230,13 +230,13 @@ const ProductPage: React.FC = () => {
 
       {/* Breadcrumb */}
       <div className="relative glassmorphism-card border-b border-white/10 rounded-none mt-0.5">
-        <div className="w-full max-w-4xl mx-auto px-1 sm:px-2 lg:px-3 xl:px-4 py-1">
-          <div className="flex items-center space-x-4">
+        <div className="w-full max-w-4xl mx-auto px-2 py-1.5">
+          <div className="flex items-center space-x-2">
             {/* Back Button */}
-            <Link to="/products" className="glassmorphism-button p-2 text-white hover:text-cyan-300 transition-colors group flex-shrink-0" title="პროდუქტებთან დაბრუნება">
-              <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+            <Link to="/products" className="glassmorphism-button p-1.5 text-white hover:text-cyan-300 transition-colors group flex-shrink-0" title="პროდუქტებთან დაბრუნება">
+              <FaArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform duration-300" />
             </Link>
-            <div className="flex items-center space-x-2 text-sm text-blue-200 min-w-0">
+            <div className="flex items-center space-x-1.5 text-xs text-blue-200 min-w-0">
               <Link to="/" className="hover:text-white transition-colors flex-shrink-0">მთავარი</Link>
               <span className="text-white/50 flex-shrink-0">/</span>
               <Link to="/products" className="hover:text-white transition-colors flex-shrink-0">პროდუქტები</Link>
@@ -256,7 +256,7 @@ const ProductPage: React.FC = () => {
             {/* Mobile Layout - Colors overlaid on image */}
             <div className="md:hidden space-y-3">
               <div 
-                className="w-full h-[400px] glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                className="w-full h-[300px] glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
