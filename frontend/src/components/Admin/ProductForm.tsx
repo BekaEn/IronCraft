@@ -483,15 +483,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
           {/* Images */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Image URLs</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">სურათის URL (შეგიძლიათ გამოიყენოთ როგორც სრული ლინკი, ისე ფარდობითი მისამართი)</label>
             {formData.images.map((image, index) => (
               <div key={index} className="flex items-center space-x-2 mb-2">
                 <input
-                  type="url"
+                  type="text"
                   value={image}
                   onChange={(e) => handleArrayChange('images', index, e.target.value)}
-                  placeholder="Enter image URL"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="სურათის URL"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
                 <button
                   type="button"
