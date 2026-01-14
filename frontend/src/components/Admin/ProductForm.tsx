@@ -27,7 +27,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     description: '',
     detailedDescription: [''],
     price: '',
-    category: 'fingerprint' as 'fingerprint' | 'faceid' | 'combo',
+    category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
     features: [''],
     specifications: {
       material: '',
@@ -51,7 +51,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: product.description || '',
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
-        category: (product.category || 'fingerprint') as 'fingerprint' | 'faceid' | 'combo',
+        category: (product.category || 'anime') as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
         features: product.features?.length > 0 ? product.features : [''],
         specifications: {
           material: product.specifications?.material || '',
@@ -64,7 +64,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: '',
         detailedDescription: [''],
         price: '',
-        category: 'fingerprint' as 'fingerprint' | 'faceid' | 'combo',
+        category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
         features: [''],
         specifications: {
           material: '',
@@ -300,9 +300,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="fingerprint">Fingerprint</option>
-                <option value="faceid">Face ID</option>
-                <option value="combo">Combo</option>
+                <option value="anime">ანიმე</option>
+                <option value="abstract">აბსტრაქტული</option>
+                <option value="nature">ბუნება</option>
+                <option value="custom">მორგებული</option>
+                <option value="geometric">გეომეტრიული</option>
+                <option value="portrait">პორტრეტი</option>
+                <option value="other">სხვა</option>
               </select>
             </div>
 
