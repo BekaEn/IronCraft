@@ -363,7 +363,7 @@ const ProductPage: React.FC = () => {
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
                   <img
-                    src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
+                    src={getImageUrl(safeDisplayImages[selectedImage] || product.images?.[0])}
                     alt={product.name}
                     className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
