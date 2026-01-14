@@ -70,6 +70,13 @@ export const ordersApi = createApi({
     getPaymentStatus: builder.query<any, string>({
       query: (transactionId) => `/payments/status/${transactionId}`,
     }),
+    deleteOrder: builder.mutation<{ success: boolean; message: string }, number>({
+      query: (id) => ({
+        url: `/orders/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Order'],
+    }),
   }),
 });
 
@@ -80,4 +87,5 @@ export const {
   useUpdateOrderStatusMutation,
   useInitiatePaymentMutation,
   useGetPaymentStatusQuery,
+  useDeleteOrderMutation,
 } = ordersApi;

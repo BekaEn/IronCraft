@@ -27,9 +27,15 @@ interface Order {
     price: number;
     name: string;
     image?: string;
+    variation?: {
+      color: string;
+      size: string;
+      price: string;
+      salePrice?: string | null;
+    };
   }>;
   totalAmount: number;
-  paymentMethod: 'online' | 'cash';
+  paymentMethod: 'online' | 'cash' | 'bank_transfer' | string;
   status: string;
   paymentStatus: string;
   createdAt: string;
@@ -67,6 +73,9 @@ const AdminPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [updatingOrderId, setUpdatingOrderId] = useState<number | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [orderDetailsOpen, setOrderDetailsOpen] = useState(false);
+  const [deletingOrderId, setDeletingOrderId] = useState<number | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [contactsLoading, setContactsLoading] = useState(false);
   const [updatingContactId, setUpdatingContactId] = useState<number | null>(null);
@@ -202,6 +211,44 @@ const AdminPage: React.FC = () => {
     } finally {
       setUpdatingOrderId(null);
     }
+  };
+
+  // Delete order
+  const deleteOrder = async (orderId: number) => {
+    if (!confirm('ნამდვილად გსურთ ამ შეკვეთის წაშლა?')) return;
+    
+    setDeletingOrderId(orderId);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${orderId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        toast.success('შეკვეთა წარმატებით წაიშალა');
+        fetchOrders();
+        if (selectedOrder?.id === orderId) {
+          setOrderDetailsOpen(false);
+          setSelectedOrder(null);
+        }
+      } else {
+        toast.error('შეკვეთის წაშლა ვერ მოხერხდა');
+      }
+    } catch (error) {
+      console.error('Delete order error:', error);
+      toast.error('შეკვეთის წაშლისას მოხდა შეცდომა');
+    } finally {
+      setDeletingOrderId(null);
+    }
+  };
+
+  // Open order details
+  const openOrderDetails = (order: Order) => {
+    setSelectedOrder(order);
+    setOrderDetailsOpen(true);
   };
 
   // Fetch contacts
@@ -790,9 +837,13 @@ const AdminPage: React.FC = () => {
                             <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${
                               order.paymentMethod === 'online' 
                                 ? 'bg-blue-500/20 text-blue-300' 
+                                : order.paymentMethod === 'bank_transfer'
+                                ? 'bg-purple-500/20 text-purple-300'
                                 : 'bg-green-500/20 text-green-300'
                             }`}>
-                              {order.paymentMethod === 'online' ? 'Online (TBC)' : 'ნაღდი ფული მიტანისას'}
+                              {order.paymentMethod === 'online' ? 'Online (TBC)' : 
+                               order.paymentMethod === 'bank_transfer' ? 'საბანკო გადარიცხვა' : 
+                               'ნაღდი ფული მიტანისას'}
                             </span>
                             <div className="text-sm text-blue-200 mt-1">{order.paymentStatus}</div>
                           </td>
@@ -849,6 +900,22 @@ const AdminPage: React.FC = () => {
                                   {updatingOrderId === order.id ? '...' : 'გაუქმება'}
                                 </button>
                               )}
+                              
+                              <button
+                                onClick={() => openOrderDetails(order)}
+                                className="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded text-xs hover:bg-cyan-500/30 transition-colors border border-cyan-500/30"
+                              >
+                                <FaEye className="inline mr-1" />
+                                დეტალები
+                              </button>
+                              
+                              <button
+                                onClick={() => deleteOrder(order.id)}
+                                disabled={deletingOrderId === order.id}
+                                className="bg-red-500/20 text-red-300 px-3 py-1 rounded text-xs hover:bg-red-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-red-500/30"
+                              >
+                                {deletingOrderId === order.id ? '...' : <><FaTrash className="inline mr-1" />წაშლა</>}
+                              </button>
                             </div>
                           </td>
                         </tr>
@@ -1145,6 +1212,156 @@ const AdminPage: React.FC = () => {
         title="პროდუქტის რედაქტირება"
         submitButtonText="პროდუქტის განახლება"
       />
+
+      {/* Order Details Modal */}
+      {orderDetailsOpen && selectedOrder && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glassmorphism-card w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-white">{selectedOrder.orderId}</h2>
+                  <p className="text-blue-200 text-sm mt-1">
+                    {new Date(selectedOrder.createdAt).toLocaleString('ka-GE')}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setOrderDetailsOpen(false)}
+                  className="text-white/60 hover:text-white text-2xl"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Status Badges */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                  selectedOrder.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' :
+                  selectedOrder.status === 'processing' ? 'bg-blue-500/20 text-blue-300' :
+                  selectedOrder.status === 'shipped' ? 'bg-purple-500/20 text-purple-300' :
+                  selectedOrder.status === 'delivered' ? 'bg-green-500/20 text-green-300' :
+                  'bg-red-500/20 text-red-300'
+                }`}>
+                  სტატუსი: {selectedOrder.status === 'pending' ? 'მოლოდინში' :
+                    selectedOrder.status === 'processing' ? 'დამუშავება' :
+                    selectedOrder.status === 'shipped' ? 'გაგზავნილი' :
+                    selectedOrder.status === 'delivered' ? 'მიტანილი' :
+                    selectedOrder.status === 'cancelled' ? 'გაუქმებული' : selectedOrder.status}
+                </span>
+                <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                  selectedOrder.paymentMethod === 'online' ? 'bg-blue-500/20 text-blue-300' :
+                  selectedOrder.paymentMethod === 'bank_transfer' ? 'bg-purple-500/20 text-purple-300' :
+                  'bg-green-500/20 text-green-300'
+                }`}>
+                  გადახდა: {selectedOrder.paymentMethod === 'online' ? 'Online (TBC)' : 
+                    selectedOrder.paymentMethod === 'bank_transfer' ? 'საბანკო გადარიცხვა' : 
+                    'ნაღდი ფული'}
+                </span>
+                <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                  selectedOrder.paymentStatus === 'completed' ? 'bg-green-500/20 text-green-300' :
+                  selectedOrder.paymentStatus === 'pending' ? 'bg-yellow-500/20 text-yellow-300' :
+                  'bg-red-500/20 text-red-300'
+                }`}>
+                  გადახდის სტატუსი: {selectedOrder.paymentStatus === 'completed' ? 'დასრულებული' :
+                    selectedOrder.paymentStatus === 'pending' ? 'მოლოდინში' : 'წარუმატებელი'}
+                </span>
+              </div>
+
+              {/* Customer Info */}
+              <div className="bg-white/5 rounded-xl p-4 mb-6">
+                <h3 className="text-lg font-bold text-cyan-300 mb-3">კლიენტის ინფორმაცია</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-blue-200">სახელი:</span>
+                    <span className="text-white ml-2 font-semibold">
+                      {selectedOrder.customerInfo.firstName} {selectedOrder.customerInfo.lastName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-blue-200">ტელეფონი:</span>
+                    <span className="text-white ml-2 font-semibold">{selectedOrder.customerInfo.phone}</span>
+                  </div>
+                  <div>
+                    <span className="text-blue-200">ელ-ფოსტა:</span>
+                    <span className="text-white ml-2 font-semibold">{selectedOrder.customerInfo.email}</span>
+                  </div>
+                  <div>
+                    <span className="text-blue-200">პირადი ნომერი:</span>
+                    <span className="text-white ml-2 font-semibold">{selectedOrder.customerInfo.documentNumber}</span>
+                  </div>
+                  <div className="md:col-span-2">
+                    <span className="text-blue-200">მისამართი:</span>
+                    <span className="text-white ml-2 font-semibold">{selectedOrder.customerInfo.address}</span>
+                  </div>
+                  {selectedOrder.customerInfo.comment && (
+                    <div className="md:col-span-2">
+                      <span className="text-blue-200">კომენტარი:</span>
+                      <span className="text-white ml-2">{selectedOrder.customerInfo.comment}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Order Items */}
+              <div className="bg-white/5 rounded-xl p-4 mb-6">
+                <h3 className="text-lg font-bold text-cyan-300 mb-3">შეკვეთილი პროდუქტები</h3>
+                <div className="space-y-3">
+                  {selectedOrder.items.map((item, index) => (
+                    <div key={index} className="flex items-center gap-4 bg-white/5 rounded-lg p-3">
+                      {item.image && (
+                        <img 
+                          src={item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}${item.image}`} 
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <p className="text-white font-semibold">{item.name}</p>
+                        {(item as any).variation && (
+                          <p className="text-blue-200 text-sm">
+                            ფერი: {(item as any).variation.color} | ზომა: {(item as any).variation.size}
+                          </p>
+                        )}
+                        <p className="text-blue-200 text-sm">რაოდენობა: {item.quantity}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-white font-bold">₾{item.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total */}
+              <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl p-4 mb-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold text-white">ჯამური თანხა:</span>
+                  <span className="text-2xl font-black text-cyan-300">₾{selectedOrder.totalAmount}</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-wrap gap-3 justify-end">
+                <button
+                  onClick={() => deleteOrder(selectedOrder.id)}
+                  disabled={deletingOrderId === selectedOrder.id}
+                  className="bg-red-500/20 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors border border-red-500/30 flex items-center gap-2"
+                >
+                  <FaTrash />
+                  {deletingOrderId === selectedOrder.id ? 'იშლება...' : 'წაშლა'}
+                </button>
+                <button
+                  onClick={() => setOrderDetailsOpen(false)}
+                  className="glassmorphism-button px-6 py-2 text-white"
+                >
+                  დახურვა
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
