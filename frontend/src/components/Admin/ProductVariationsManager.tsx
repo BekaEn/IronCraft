@@ -321,7 +321,7 @@ const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
                     {variation.images.map((image, imageIdx) => (
                       <div key={imageIdx} className="flex items-center space-x-2">
                         <input
-                          type="url"
+                          type="text"
                           value={image}
                           onChange={(e) => updateVariationImage(variation.color, variation.size, imageIdx, e.target.value)}
                           placeholder="სურათის URL"
