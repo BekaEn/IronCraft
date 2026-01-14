@@ -262,7 +262,7 @@ const ProductPage: React.FC = () => {
                   alt={product.name}
                   className="w-full h-full object-contain p-4 md:p-6 group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800';
+                    e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-2xl">
@@ -292,7 +292,7 @@ const ProductPage: React.FC = () => {
                       alt={`${product.name} ${index + 1}`} 
                       className="w-full h-full object-contain p-2"
                       onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=200';
+                        e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
                     />
                   </button>
@@ -538,7 +538,7 @@ const ProductPage: React.FC = () => {
                         alt={relatedProduct.name}
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-4"
                         onError={(e) => {
-                          e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500';
+                          e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                         }}
                       />
                       <div className="absolute top-3 left-3">
@@ -674,7 +674,7 @@ const ProductPage: React.FC = () => {
               }}
               onClick={handleModalClick}
               onError={(e) => {
-                e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800';
+                e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
               }}
             />
           </div>

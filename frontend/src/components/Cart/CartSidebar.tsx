@@ -84,7 +84,7 @@ const CartSidebar: React.FC = () => {
                     alt={item.product.name}
                     className="w-16 h-16 object-cover rounded"
                     onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100';
+                      e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                     }}
                   />
 

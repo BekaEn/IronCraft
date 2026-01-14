@@ -615,7 +615,7 @@ const AdminPage: React.FC = () => {
                       <div className="flex items-center">
                         <img
                           className="h-12 w-12 rounded-lg object-cover"
-                          src={product.images[0] || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100'}
+                          src={product.images[0] || 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80'}
                           alt={product.name}
                         />
                         <div className="ml-4">
