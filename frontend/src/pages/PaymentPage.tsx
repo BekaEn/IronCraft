@@ -178,7 +178,7 @@ const PaymentPage: React.FC = () => {
                 {cartItems.map((item) => (
                   <div key={item.product.id} className="flex items-center space-x-4 py-3 border-b border-white/10">
                     <img
-                      src={item.product.images?.[0]?.startsWith('http') ? item.product.images[0] : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001'}${item.product.images?.[0]}`}
+                      src={item.product.images?.[0] ? (item.product.images[0].startsWith('http') ? item.product.images[0] : `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001'}${item.product.images[0]}`) : 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80'}
                       alt={item.product.name}
                       className="w-16 h-16 object-cover rounded-lg"
                       onError={(e) => {

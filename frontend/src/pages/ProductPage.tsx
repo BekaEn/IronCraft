@@ -41,7 +41,10 @@ const ProductPage: React.FC = () => {
   // Filter out the current product from similar products
   const similarProducts = similarProductsData?.products?.filter(p => p.id !== product?.id).slice(0, 3) || [];
 
-  const getImageUrl = (imagePath: string) => {
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) {
+      return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80';
+    }
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
@@ -135,7 +138,7 @@ const ProductPage: React.FC = () => {
   const pageTitle = product ? `${product.name} | IronCraft` : 'პროდუქტი | IronCraft';
   const pageDescription = product ? product.description : 'მეტალის კედლის ხელოვნება საქართველოში';
   const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:5001';
-  const pageImage = product && product.images.length > 0 ? getImageUrl(product.images[0]) : `${API_BASE}/default-og-image.jpg`;
+  const pageImage = product && product.images?.length > 0 ? getImageUrl(product.images[0]) : `${API_BASE}/default-og-image.jpg`;
   const pageUrl = `${window.location.origin}/product/${id}`;
 
   if (isLoading) {
@@ -309,7 +312,7 @@ const ProductPage: React.FC = () => {
                     </div>
                   )}
                     <img
-                      src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
+                      src={getImageUrl(safeDisplayImages[selectedImage] || product.images?.[0])}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
@@ -636,7 +639,7 @@ const ProductPage: React.FC = () => {
                 <Link key={relatedProduct.id} to={`/product/${relatedProduct.slug}`} className="glassmorphism-card group overflow-hidden hover:scale-105 transform transition-all duration-300 hover:shadow-2xl block">
                     <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                       <img
-                        src={getImageUrl(relatedProduct.images[0])}
+                        src={getImageUrl(relatedProduct.images?.[0])}
                         alt={relatedProduct.name}
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-4"
                         onError={(e) => {
@@ -767,7 +770,7 @@ const ProductPage: React.FC = () => {
           {/* Main image */}
           <div className="max-w-8xl max-h-screen w-full h-full flex items-center justify-center p-4">
             <img
-              src={getImageUrl(safeDisplayImages[modalImageIndex] || product.images[0])}
+              src={getImageUrl(safeDisplayImages[modalImageIndex] || product.images?.[0])}
               alt={`${product.name} - Image ${modalImageIndex + 1}`}
               className="max-w-full max-h-full object-contain transition-transform duration-300"
               style={{ 

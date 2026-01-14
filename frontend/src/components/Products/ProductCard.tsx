@@ -29,7 +29,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     return `₾${parseFloat(price).toFixed(2)}`;
   };
 
-  const getImageUrl = (imagePath: string) => {
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) {
+      return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80';
+    }
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
@@ -46,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.slug}`} className="block">
           <div className="aspect-square overflow-hidden">
             <img
-              src={getImageUrl(product.images[0]) || '/placeholder-lock.jpg'}
+              src={getImageUrl(product.images?.[0])}
               alt={product.name}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
@@ -66,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </Link>
             {/* Feature chips (replace ratings) */}
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {product.features.slice(0, 2).map((feature, idx) => (
+              {product.features?.slice(0, 2).map((feature, idx) => (
                 <span key={idx} className="px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-[10px] text-neutral-200">
                   {feature.length > 24 ? feature.slice(0, 24) + '…' : feature}
                 </span>
