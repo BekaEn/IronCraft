@@ -256,7 +256,7 @@ const ProductPage: React.FC = () => {
             {/* Mobile Layout - Colors overlaid on image */}
             <div className="md:hidden space-y-3">
               <div 
-                className="aspect-[4/3] glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
+                className="w-full h-[400px] glassmorphism-card cursor-pointer hover:shadow-2xl transition-all duration-300 group relative overflow-hidden"
                 onClick={() => openImageModal(selectedImage)}
               >
                 <div className="relative w-full h-full overflow-hidden rounded-2xl">
@@ -311,7 +311,7 @@ const ProductPage: React.FC = () => {
                     <img
                       src={getImageUrl(safeDisplayImages[selectedImage] || product.images[0])}
                       alt={product.name}
-                      className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         e.currentTarget.src = 'https://img.freepik.com/free-vector/error-404-concept-landing-page_52683-13617.jpg?semt=ais_hybrid&w=740&q=80';
                       }}
