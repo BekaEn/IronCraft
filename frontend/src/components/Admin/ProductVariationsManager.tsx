@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus, FaMinus, FaUpload, FaImage, FaSpinner } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -197,35 +197,11 @@ const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
     onVariationsChange?.(newVariations);
   };
 
-  const addVariationImage = (color: string, size: string) => {
-    const newVariations = variations.map(v => {
-      if (v.color === color && v.size === size) {
-        return { ...v, images: [...v.images, ''] };
-      }
-      return v;
-    });
-    setVariations(newVariations);
-    onVariationsChange?.(newVariations);
-  };
-
   const removeVariationImage = (color: string, size: string, imageIndex: number) => {
     const newVariations = variations.map(v => {
       if (v.color === color && v.size === size) {
         const newImages = v.images.filter((_, i) => i !== imageIndex);
         return { ...v, images: newImages.length > 0 ? newImages : [''] };
-      }
-      return v;
-    });
-    setVariations(newVariations);
-    onVariationsChange?.(newVariations);
-  };
-
-  const updateVariationImage = (color: string, size: string, imageIndex: number, value: string) => {
-    const newVariations = variations.map(v => {
-      if (v.color === color && v.size === size) {
-        const newImages = [...v.images];
-        newImages[imageIndex] = value;
-        return { ...v, images: newImages };
       }
       return v;
     });
