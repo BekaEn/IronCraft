@@ -105,7 +105,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { title, description, sortOrder, isActive } = req.body;
     
-    const image = await GalleryImage.findByPk(req.params.id);
+    const image = await GalleryImage.findByPk(String(req.params.id));
     
     if (!image) {
       return res.status(404).json({ message: 'Gallery image not found' });
@@ -154,7 +154,7 @@ router.put('/reorder/bulk', authenticateToken, requireAdmin, async (req, res) =>
 // Delete gallery image (admin only)
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const image = await GalleryImage.findByPk(req.params.id);
+    const image = await GalleryImage.findByPk(String(req.params.id));
     
     if (!image) {
       return res.status(404).json({ message: 'Gallery image not found' });

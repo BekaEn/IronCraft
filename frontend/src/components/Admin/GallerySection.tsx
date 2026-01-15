@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { FaPlus, FaTrash, FaEye, FaEyeSlash, FaTimes, FaGripVertical } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
 import {
   useGetGalleryImagesQuery,
   useUploadGalleryImageMutation,
   useUpdateGalleryImageMutation,
   useDeleteGalleryImageMutation,
-  GalleryImage
 } from '../../services/galleryApi';
+import type { GalleryImage } from '../../services/galleryApi';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import toast from 'react-hot-toast';
 
