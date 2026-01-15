@@ -32,7 +32,7 @@ const FeaturesSection: React.FC = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">მაღალი ხარისხის მეტალი</h3>
             <p className="text-blue-200 leading-relaxed">
-              გამძლე მეტალი თერმული დაფარვით — ელეგანტური იერი და ხანგრძლივი გამოყენება.
+              გამძლე მეტალი თერმული დაფარვით — ელეგანტური იერი და ხანგრძლივი ხარისხი.
             </p>
           </div>
 
@@ -43,7 +43,7 @@ const FeaturesSection: React.FC = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">მარტივი მონტაჟი</h3>
             <p className="text-blue-200 leading-relaxed">
-              მოყვება საჭირო სამაგრები და ინსტრუქცია — მარტივად და სწრაფად დასამონტაჟებლად.
+              მონტაჟდება მარტივად და სწრაფად
             </p>
           </div>
 
@@ -65,7 +65,7 @@ const FeaturesSection: React.FC = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">თერმული დაფარვა</h3>
             <p className="text-blue-200 leading-relaxed">
-              თერმული დაფარვა იცავს ზედაპირს დაზიანებისა და კოროზიისგან და ინარჩუნებს ფერს.
+              თერმული დაფარვა იცავს ზედაპირს დაზიანებისა და კოროზიისგან, ინარჩუნებს ფერს.
             </p>
           </div>
 
@@ -87,7 +87,7 @@ const FeaturesSection: React.FC = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">ხელით დამუშავებული</h3>
             <p className="text-blue-200 leading-relaxed">
-              თითოეული ნამუშევარი უნიკალურია — დამზადებულია ყურადღებით და დეტალებზე ზრუნვით.
+              თითოეული ნამუშევარი უნიკალურია — დამზადებულია ყურადღებითა და დეტალებზე ორიენტირებულობით.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ const FeaturesSection: React.FC = () => {
               <span className="text-white"> გარდაქმნისთვის?</span>
             </h3>
             <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-              შემოუერთდით ათასობით კმაყოფილ მომხმარებელს, ვინც IronCraft-ს ენდობა — ინტერიერის გასალამაზებლად.
+              შემოუერთდით ასობით კმაყოფილ მომხმარებელს, ვინც IronCraft-ს ენდობა — ინტერიერის გასალამაზებლად.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link

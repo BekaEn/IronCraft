@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
                               <span className="gradient-primary px-3 py-1 rounded-full text-white text-xs font-bold">ახალი</span>
                             </div>
                             <p className="text-blue-200 text-sm mb-4">
-                              შექმენით თქვენი საკუთარი მეტალის კედლის დეკორაცია. ატვირთეთ სურათი და მიიღეთ ფასის შეფასება.
+                              შექმენით თქვენი საკუთარი მეტალის კედლის დეკორაცია. ატვირთეთ სურათი, ზომები და ჩვენ პირადად თქვენთვის შევქმნით პროდუქტს.
                             </p>
                             <div className="flex items-center justify-between">
                               <span className="text-white font-bold">დაწყება →</span>
@@ -208,7 +208,7 @@ const HomePage: React.FC = () => {
               <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white mb-3 sm:mb-4">უნიკალური დიზაინი</h3>
               <p className="text-sm sm:text-base text-blue-200 leading-relaxed">
                 <span className="font-bold text-blue-300">ექსკლუზიური კოლექციები</span> — ანიმე, აბსტრაქტული და{' '}
-                <span className="font-bold text-green-300">ინდივიდუალური დიზაინები</span> თქვენი სტილისთვის.
+                <span className="font-bold text-green-300">ინდივიდუალური დიზაინები</span> თქვენი სივრცისთვის.
               </p>
             </div>
           </div>
@@ -220,7 +220,7 @@ const HomePage: React.FC = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
-              <span className="text-white">ათასობით ადამიანის ნდობა</span>
+              <span className="text-white">ასობით ადამიანის ნდობა</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               შემოუერთდით <span className="font-bold text-cyan-300">მეტალის ხელოვნების მოყვარულებს</span>{' '}

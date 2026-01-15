@@ -60,7 +60,7 @@ const CartSidebar: React.FC = () => {
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center space-x-2">
             <FaShoppingBag className="text-blue-600" />
-            <h2 className="text-xl font-semibold">სავაჭრო კალათა ({itemsCount})</h2>
+            <h2 className="text-xl font-semibold">კალათა ({itemsCount})</h2>
           </div>
           <button
             onClick={() => dispatch(setCartOpen(false))}

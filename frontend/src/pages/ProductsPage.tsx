@@ -97,7 +97,7 @@ const ProductsPage: React.FC = () => {
           <p className="text-xl text-blue-100 max-w-4xl mx-auto leading-relaxed">
             აღმოაჩინეთ ჩვენი სრული ასორტიმენტი მეტალის კედლის დეკორაციებისა, რომლებიც 
             <span className="font-bold text-cyan-300"> ხელით დამუშავებული</span> და 
-            <span className="font-bold text-purple-300"> ინდივიდუალური დიზაინით</span> შექმნილია
+            <span className="font-bold text-purple-300"> ინდივიდუალური დიზაინითაა</span> შექმნილი
           </p>
 
           {/* Trust Indicators */}

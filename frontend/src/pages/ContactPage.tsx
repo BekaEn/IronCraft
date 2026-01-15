@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaWhatsapp, FaTelegram, FaHeadset, FaSpinner } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaWhatsapp, FaHeadset, FaSpinner } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const ContactPage: React.FC = () => {
@@ -104,9 +104,6 @@ const ContactPage: React.FC = () => {
             </a>
             <a href="https://wa.me/995555123456" className="glassmorphism-button p-4 text-green-500 hover:text-white group">
               <FaWhatsapp className="text-2xl group-hover:animate-bounce" />
-            </a>
-            <a href="https://t.me/ironcraft" className="glassmorphism-button p-4 text-blue-400 hover:text-white group">
-              <FaTelegram className="text-2xl group-hover:animate-bounce" />
             </a>
             <a href="mailto:info@ironcraft.ge" className="glassmorphism-button p-4 text-blue-500 hover:text-white group">
               <FaEnvelope className="text-2xl group-hover:animate-bounce" />

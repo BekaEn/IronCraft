@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaWhatsapp, FaTelegram, FaShieldAlt, FaClock } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaShieldAlt, FaClock } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
               საქართველოში მეტალის კედლის ხელოვნების წამყვანი მიმწოდებელი.
               <span className="font-bold text-cyan-300"> გაამშვენიერეთ თქვენი სივრცე</span> უნიკალური
               <span className="font-bold text-purple-300"> ხელით დამუშავებული</span> და 
-              <span className="font-bold text-green-300"> ინდივიდუალური დიზაინის</span> ნამუშევრებით.
+              <span className="font-bold text-green-300"> ინდივიდუალური დიზაინით</span>
             </p>
 
             {/* Trust Badges */}
@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
               <a href="https://instagram.com/smartlocksgeorgia" className="glassmorphism-button p-3 text-pink-400 hover:text-white group">
                 <FaInstagram className="text-xl group-hover:animate-bounce" />
               </a>
-              <a href="https://twitter.com/smartlocksge" className="glassmorphism-button p-3 text-blue-300 hover:text-white group">
+              {/* <a href="https://twitter.com/smartlocksge" className="glassmorphism-button p-3 text-blue-300 hover:text-white group">
                 <FaTwitter className="text-xl group-hover:animate-bounce" />
               </a>
               <a href="https://linkedin.com/company/smartlocksgeorgia" className="glassmorphism-button p-3 text-blue-500 hover:text-white group">
@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
               </a>
               <a href="https://t.me/smartlocksgeorgia" className="glassmorphism-button p-3 text-blue-400 hover:text-white group">
                 <FaTelegram className="text-xl group-hover:animate-bounce" />
-              </a>
+              </a> */}
             </div>
           </div>
 

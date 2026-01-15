@@ -294,7 +294,7 @@ const PaymentPage: React.FC = () => {
                     }`}
                   >
                     <FaUniversity className="text-3xl mb-4 mx-auto" />
-                    <h4 className="font-bold text-lg mb-2">ბანკის გადარიცხვა</h4>
+                    <h4 className="font-bold text-lg mb-2">ბანკით გადარიცხვა</h4>
                     <p className="text-sm opacity-75">BOG ან TBC ანგარიშზე</p>
                   </button>
                 </div>
@@ -415,7 +415,7 @@ const PaymentPage: React.FC = () => {
                     <div className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-400/30 rounded-xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-xl font-bold text-white">Bank of Georgia (BOG)</h4>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Bank_of_Georgia_logo.svg/320px-Bank_of_Georgia_logo.svg.png" alt="BOG" className="h-8 opacity-80" onError={(e) => e.currentTarget.style.display = 'none'} />
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_ILKtCqsCRjTmfVoxg0wEXkCSnmgKUfntIQ&s" alt="BOG" className="h-8 opacity-80" onError={(e) => e.currentTarget.style.display = 'none'} />
                       </div>
                       <div className="space-y-3">
                         <div>
@@ -453,7 +453,7 @@ const PaymentPage: React.FC = () => {
                     <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-400/30 rounded-xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-xl font-bold text-white">TBC Bank</h4>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/TBC_Bank_logo.svg/320px-TBC_Bank_logo.svg.png" alt="TBC" className="h-8 opacity-80" onError={(e) => e.currentTarget.style.display = 'none'} />
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSijqghtTLCaZUPIQNdpgvfJw64wHX8YEkGQQ&s" alt="TBC" className="h-8 opacity-80" onError={(e) => e.currentTarget.style.display = 'none'} />
                       </div>
                       <div className="space-y-3">
                         <div>
@@ -504,11 +504,11 @@ const PaymentPage: React.FC = () => {
                             </li>
                             <li className="flex items-start">
                               <span className="mr-2">•</span>
-                              <span>გადახდის შემდეგ ჩვენ დაგიკავშირდებით 24 საათში დადასტურებისთვის</span>
+                              <span>გადახდის შემდეგ ჩვენ დაგიკავშირდებით 24 საათში</span>
                             </li>
                             <li className="flex items-start">
                               <span className="mr-2">•</span>
-                              <span>შეინახეთ გადარიცხვის დადასტურება</span>
+                              <span>შეინახეთ გადარიცხვის დამადასტურებელი ქვითარი</span>
                             </li>
                           </ul>
                         </div>
@@ -569,8 +569,8 @@ const PaymentPage: React.FC = () => {
                     <div className="flex items-start space-x-3">
                       <FaExclamationTriangle className="text-blue-400 flex-shrink-0 mt-1" />
                       <div className="text-blue-200 text-sm">
-                        <p className="font-medium mb-1">ბანკის გადარიცხვა</p>
-                        <p>გადაარიცხეთ თანხა ქვემოთ მოცემულ ანგარიშზე და დაელოდეთ დადასტურებას.</p>
+                        <p className="font-medium mb-1">ბანკით გადარიცხვა:</p>
+                        <p>გადაარიცხეთ ზუსტი თანხა ზემოთ მოცემულ ანგარიშზე და დაელოდეთ ჩვენს ზარს. თბილისში მიწოდება განხორციელდება შეკვეთიდან 10 სამუშაო დღეში, რეგიონებში 20 სამუშაო დღეში.</p>
                       </div>
                     </div>
                   </div>

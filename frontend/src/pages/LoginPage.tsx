@@ -196,21 +196,7 @@ const LoginPage: React.FC = () => {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-8 glassmorphism-card p-6">
-            <h3 className="text-lg font-bold text-white mb-4 text-center">🧪 ტესტური ანგარიშები</h3>
-            <div className="space-y-3">
-              <div className="glassmorphism-button p-3 rounded-xl">
-                <p className="text-white font-bold mb-1">👑 ადმინისტრატორი:</p>
-                <p className="text-blue-200 text-sm font-mono">admin-new@smartlocks.ge</p>
-                <p className="text-green-300 text-sm font-mono">admin123</p>
-              </div>
-              <div className="glassmorphism-button p-3 rounded-xl">
-                <p className="text-white font-bold mb-1">👤 მომხმარებელი:</p>
-                <p className="text-blue-200 text-sm font-mono">fresh@example.com</p>
-                <p className="text-green-300 text-sm font-mono">fresh123</p>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         {/* Back to Home */}

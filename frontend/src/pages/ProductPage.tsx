@@ -542,7 +542,7 @@ const ProductPage: React.FC = () => {
                   )}
                   <div className="flex items-center space-x-1.5 mt-1.5">
                     <FaCheck className="text-green-400 w-3 h-3" />
-                    <span className="text-green-300 font-semibold text-xs md:text-base">უფასო მიწოდება ჩათვლით</span>
+                    <span className="text-green-300 font-semibold text-xs md:text-base">თბილისსა და რეგიონებში მიწოდება უფასოა</span>
                   </div>
                 </div>
                 <div className="text-left sm:text-right">
