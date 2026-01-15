@@ -84,7 +84,7 @@ const ProductPage: React.FC = () => {
 
   const getImageUrl = (imagePath: string | undefined) => {
     if (!imagePath) {
-      return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80';
+      return 'https://media.tenor.com/UnFx-k_lSckAAAAM/amalie-steiness.gif';
     }
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
