@@ -126,6 +126,28 @@ const startServer = async () => {
         } else {
           console.log('ℹ️ Orders table does not exist yet - will be created by model sync');
         }
+
+        // Create gallery_images table if it doesn't exist
+        console.log('🔄 Checking gallery_images table...');
+        const [galleryTables]: any = await sequelize.query("SHOW TABLES LIKE 'gallery_images'");
+        if (galleryTables.length === 0) {
+          console.log('🔧 Creating gallery_images table...');
+          await sequelize.query(`
+            CREATE TABLE gallery_images (
+              id INT AUTO_INCREMENT PRIMARY KEY,
+              title VARCHAR(255) DEFAULT NULL,
+              description TEXT DEFAULT NULL,
+              imagePath VARCHAR(512) NOT NULL,
+              sortOrder INT NOT NULL DEFAULT 0,
+              isActive BOOLEAN NOT NULL DEFAULT TRUE,
+              createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )
+          `);
+          console.log('✅ gallery_images table created');
+        } else {
+          console.log('✅ gallery_images table already exists');
+        }
       } catch (dbFixError: any) {
         console.error('⚠️ Database fix error (continuing):', dbFixError.message);
       }
