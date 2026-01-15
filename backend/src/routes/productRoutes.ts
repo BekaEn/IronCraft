@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import {
   getProducts,
@@ -22,21 +23,34 @@ import { authenticateToken, requireAdmin } from '../middleware/auth';
 
 const router = express.Router();
 
-// Configure multer for image uploads
+// Get upload directory - use Railway Volume if available
+const getUploadDir = () => {
+  const volumePath = process.env.RAILWAY_VOLUME_MOUNT_PATH;
+  if (volumePath) {
+    return path.join(volumePath, 'products');
+  }
+  return path.join(__dirname, '../../uploads/products');
+};
+
+// Configure multer for image uploads - same approach as gallery
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    const uploadDir = getUploadDir();
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const uniqueName = uuidv4() + path.extname(file.originalname);
-    cb(null, uniqueName);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'product-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
 
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 10 * 1024 * 1024, // 10MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
@@ -51,10 +65,32 @@ const upload = multer({
   }
 });
 
+// Image upload endpoint - returns the uploaded file path
+router.post('/upload-image', authenticateToken, requireAdmin, upload.single('image'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image file provided' });
+    }
+    
+    // Return the path that can be used in the frontend
+    const imagePath = `/uploads/products/${req.file.filename}`;
+    console.log('Product image uploaded:', imagePath);
+    
+    return res.json({
+      message: 'Image uploaded successfully',
+      imagePath,
+      filename: req.file.filename
+    });
+  } catch (error: any) {
+    console.error('Error uploading product image:', error);
+    return res.status(500).json({ message: 'Failed to upload image', error: error.message });
+  }
+});
+
 // Admin routes (PUT and DELETE must come before GET /:id to avoid conflicts)
 // Accept multipart for product creation (robust: any fields/files)
 router.post('/', authenticateToken, requireAdmin, upload.any(), createProduct);
-router.put('/:id', authenticateToken, requireAdmin, updateProduct);
+router.put('/:id', authenticateToken, requireAdmin, upload.any(), updateProduct);
 router.delete('/:id', authenticateToken, requireAdmin, deleteProduct);
 
 // Product variation routes (must come before /:id to avoid conflicts)

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaTimes, FaPlus, FaMinus } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { FaTimes, FaPlus, FaMinus, FaUpload, FaImage } from 'react-icons/fa';
 import type { Product } from '../../services/productsApi';
 import { useGetProductVariationsQuery } from '../../services/variationsApi';
 import toast from 'react-hot-toast';
@@ -37,6 +37,61 @@ const ProductForm: React.FC<ProductFormProps> = ({
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [variations, setVariations] = useState<any[]>([]);
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
+  // Handle thumbnail file upload
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('გთხოვთ აირჩიოთ სურათის ფაილი');
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('ფაილის ზომა არ უნდა აღემატებოდეს 10MB-ს');
+      return;
+    }
+
+    setThumbnailUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/products/upload-image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      
+      // Update form data with the uploaded image path
+      setFormData(prev => ({ ...prev, thumbnail: data.imagePath }));
+      setThumbnailPreview(data.imagePath);
+      toast.success('სურათი წარმატებით აიტვირთა');
+    } catch (error) {
+      console.error('Thumbnail upload error:', error);
+      toast.error('სურათის ატვირთვა ვერ მოხერხდა');
+    } finally {
+      setThumbnailUploading(false);
+    }
+  };
 
   // Fetch existing variations if editing a product
   const { data: existingVariations } = useGetProductVariationsQuery(
@@ -47,18 +102,20 @@ const ProductForm: React.FC<ProductFormProps> = ({
   // Initialize form data when product changes
   useEffect(() => {
     if (product) {
+      const thumbPath = (product as any).thumbnail || '';
       setFormData({
         name: product.name || '',
         description: product.description || '',
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
         category: (product.category || 'anime') as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
-        thumbnail: (product as any).thumbnail || '',
+        thumbnail: thumbPath,
         features: product.features?.length > 0 ? product.features : [''],
         specifications: {
           material: product.specifications?.material || '',
         },
       });
+      setThumbnailPreview(thumbPath || null);
     } else {
       // Reset form for new product
       setFormData({
@@ -309,21 +366,63 @@ const ProductForm: React.FC<ProductFormProps> = ({
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 მთავარი სურათი (Thumbnail)
               </label>
-              <input
-                type="text"
-                id="thumbnail"
-                name="thumbnail"
-                value={formData.thumbnail}
-                onChange={handleInputChange}
-                placeholder="სურათის URL ან ფარდობითი მისამართი"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <p className="mt-1 text-sm text-gray-500">
-                ეს სურათი გამოჩნდება პროდუქტების სიაში. თუ არ მიუთითებთ, გამოიყენება პირველი ვარიაციის სურათი.
-              </p>
+              <div className="flex items-start space-x-4">
+                {/* Preview */}
+                <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden flex items-center justify-center bg-gray-50">
+                  {thumbnailPreview ? (
+                    <img 
+                      src={thumbnailPreview.startsWith('http') ? thumbnailPreview : `${API_BASE.replace('/api', '')}${thumbnailPreview}`}
+                      alt="Thumbnail preview"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://via.placeholder.com/128x128?text=No+Image';
+                      }}
+                    />
+                  ) : (
+                    <FaImage className="text-gray-400 text-3xl" />
+                  )}
+                </div>
+                
+                {/* Upload button */}
+                <div className="flex-1">
+                  <input
+                    ref={thumbnailInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleThumbnailUpload}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => thumbnailInputRef.current?.click()}
+                    disabled={thumbnailUploading}
+                    className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {thumbnailUploading ? (
+                      <>
+                        <span className="animate-spin">⏳</span>
+                        <span>იტვირთება...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaUpload />
+                        <span>სურათის ატვირთვა</span>
+                      </>
+                    )}
+                  </button>
+                  <p className="mt-2 text-sm text-gray-500">
+                    ეს სურათი გამოჩნდება პროდუქტების სიაში. მაქს. 10MB, JPG/PNG/WebP
+                  </p>
+                  {formData.thumbnail && (
+                    <p className="mt-1 text-xs text-green-600 truncate">
+                      ✓ {formData.thumbnail}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 

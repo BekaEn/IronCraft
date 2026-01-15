@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { FaPlus, FaMinus, FaUpload, FaImage, FaSpinner } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 interface Variation {
   color: string;
@@ -50,6 +52,63 @@ const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [variations, setVariations] = useState<Variation[]>([]);
   const [showVariationGrid, setShowVariationGrid] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState<Record<string, boolean>>({});
+
+  // Handle image file upload for a variation
+  const handleImageUpload = async (color: string, size: string, file: File) => {
+    const uploadKey = `${color}-${size}`;
+    
+    if (!file.type.startsWith('image/')) {
+      toast.error('გთხოვთ აირჩიოთ სურათის ფაილი');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('ფაილის ზომა არ უნდა აღემატებოდეს 10MB-ს');
+      return;
+    }
+
+    setUploadingImages(prev => ({ ...prev, [uploadKey]: true }));
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/products/upload-image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      
+      // Add uploaded image path to the variation
+      const newVariations = variations.map(v => {
+        if (v.color === color && v.size === size) {
+          // Replace empty string or add new image
+          const existingImages = v.images.filter(img => img.trim() !== '');
+          return { ...v, images: [...existingImages, data.imagePath] };
+        }
+        return v;
+      });
+      
+      setVariations(newVariations);
+      onVariationsChange?.(newVariations);
+      toast.success('სურათი წარმატებით აიტვირთა');
+    } catch (error) {
+      console.error('Image upload error:', error);
+      toast.error('სურათის ატვირთვა ვერ მოხერხდა');
+    } finally {
+      setUploadingImages(prev => ({ ...prev, [uploadKey]: false }));
+    }
+  };
 
   // Load initial variations when provided (editing mode)
   useEffect(() => {
@@ -317,33 +376,75 @@ const ProductVariationsManager: React.FC<ProductVariationsManagerProps> = ({
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     სურათები ({variation.color} - {variation.size})
                   </label>
-                  <div className="space-y-2">
-                    {variation.images.map((image, imageIdx) => (
-                      <div key={imageIdx} className="flex items-center space-x-2">
-                        <input
-                          type="text"
-                          value={image}
-                          onChange={(e) => updateVariationImage(variation.color, variation.size, imageIdx, e.target.value)}
-                          placeholder="სურათის URL"
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  
+                  {/* Uploaded images preview */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {variation.images.filter(img => img.trim() !== '').map((image, imageIdx) => (
+                      <div key={imageIdx} className="relative group">
+                        <img
+                          src={image.startsWith('http') ? image : `${API_BASE.replace('/api', '')}${image}`}
+                          alt={`Variation ${imageIdx + 1}`}
+                          className="w-20 h-20 object-cover rounded-lg border-2 border-gray-200"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://via.placeholder.com/80x80?text=Error';
+                          }}
                         />
                         <button
                           type="button"
                           onClick={() => removeVariationImage(variation.color, variation.size, imageIdx)}
-                          className="text-red-500 hover:text-red-700 p-2"
-                          disabled={variation.images.length === 1}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <FaMinus />
+                          <FaMinus className="w-3 h-3" />
                         </button>
                       </div>
                     ))}
-                    <button
-                      type="button"
-                      onClick={() => addVariationImage(variation.color, variation.size)}
-                      className="text-blue-500 hover:text-blue-700 flex items-center space-x-1 text-sm"
+                    
+                    {/* Empty state */}
+                    {variation.images.filter(img => img.trim() !== '').length === 0 && (
+                      <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                        <FaImage className="text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upload button */}
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          handleImageUpload(variation.color, variation.size, file);
+                          e.target.value = ''; // Reset input
+                        }
+                      }}
+                      className="hidden"
+                      id={`upload-${variation.color}-${variation.size}`}
+                    />
+                    <label
+                      htmlFor={`upload-${variation.color}-${variation.size}`}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                        uploadingImages[`${variation.color}-${variation.size}`]
+                          ? 'bg-gray-300 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}
                     >
-                      <FaPlus /> <span>სურათის დამატება</span>
-                    </button>
+                      {uploadingImages[`${variation.color}-${variation.size}`] ? (
+                        <>
+                          <FaSpinner className="animate-spin" />
+                          <span className="text-sm">იტვირთება...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaUpload />
+                          <span className="text-sm">სურათის ატვირთვა</span>
+                        </>
+                      )}
+                    </label>
+                    <span className="text-xs text-gray-500">
+                      მაქს. 10MB
+                    </span>
                   </div>
                 </div>
               </div>
