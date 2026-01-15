@@ -62,9 +62,9 @@ const Navbar: React.FC = () => {
             <Link to="/products" className="px-6 py-3 text-white hover:text-purple-300 transition-colors font-bold">
               პროდუქტები
             </Link>
-            {/* <Link to="/about" className="px-6 py-3 text-white hover:text-green-300 transition-colors font-bold">
-              ჩვენს შესახებ
-            </Link> */}
+            <Link to="/gallery" className="px-6 py-3 text-white hover:text-green-300 transition-colors font-bold">
+              ნამუშევრები
+            </Link>
             <Link to="/contact" className="px-6 py-3 text-white hover:text-orange-300 transition-colors font-bold">
               კონტაქტი
             </Link>

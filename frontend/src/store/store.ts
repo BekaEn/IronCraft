@@ -4,6 +4,7 @@ import { settingsApi } from '../services/settingsApi';
 import { heroSlidesApi } from '../services/heroSlidesApi';
 import { customOrdersApi } from '../services/customOrdersApi';
 import { variationsApi } from '../services/variationsApi';
+import { galleryApi } from '../services/galleryApi';
 import cartReducer from './cartSlice';
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     [heroSlidesApi.reducerPath]: heroSlidesApi.reducer,
     [customOrdersApi.reducerPath]: customOrdersApi.reducer,
     [variationsApi.reducerPath]: variationsApi.reducer,
+    [galleryApi.reducerPath]: galleryApi.reducer,
     cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -21,7 +23,8 @@ export const store = configureStore({
       settingsApi.middleware, 
       heroSlidesApi.middleware, 
       customOrdersApi.middleware,
-      variationsApi.middleware
+      variationsApi.middleware,
+      galleryApi.middleware
     ),
 });
 

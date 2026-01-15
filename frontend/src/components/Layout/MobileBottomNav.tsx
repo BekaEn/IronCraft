@@ -26,7 +26,7 @@ const MobileBottomNav: React.FC = () => {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 backdrop-blur-xl bg-slate-900/70">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-3 gap-2 p-3">
+        <div className="grid grid-cols-4 gap-1 p-3">
           <Link to="/" className="flex flex-col items-center text-xs text-blue-100 hover:text-white">
             <span className="text-lg">🏠</span>
             <span>მთავარი</span>
@@ -34,6 +34,10 @@ const MobileBottomNav: React.FC = () => {
           <Link to="/products" className="flex flex-col items-center text-xs text-blue-100 hover:text-white">
             <span className="text-lg">🛍️</span>
             <span>პროდუქტები</span>
+          </Link>
+          <Link to="/gallery" className="flex flex-col items-center text-xs text-blue-100 hover:text-white">
+            <span className="text-lg">🖼️</span>
+            <span>ნამუშევრები</span>
           </Link>
           {!isProductPage ? (
             <button
@@ -49,7 +53,7 @@ const MobileBottomNav: React.FC = () => {
               className="flex flex-col items-center text-xs text-white"
             >
               <span className="text-lg">⚡</span>
-              <span>იყიდე ახლავე</span>
+              <span>იყიდე</span>
             </button>
           )}
         </div>

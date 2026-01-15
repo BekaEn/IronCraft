@@ -16,6 +16,7 @@ import AdminPage from './pages/AdminPage';
 import PaymentPage from './pages/PaymentPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import CustomOrderPage from './pages/CustomOrderPage';
+import GalleryPage from './pages/GalleryPage';
 
 // Components
 import Navbar from './components/Layout/Navbar';
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/products" element={<ProductsPage />} />
                     <Route path="/product/:id" element={<ProductPage />} />
                     <Route path="/custom-order" element={<CustomOrderPage />} />
+                    <Route path="/gallery" element={<GalleryPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/login" element={<LoginPage />} />

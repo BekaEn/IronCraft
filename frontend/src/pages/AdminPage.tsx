@@ -7,6 +7,7 @@ import { useGetSettingsQuery, useUpdateSettingsMutation } from '../services/sett
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import ProductForm from '../components/Admin/ProductForm';
 import CustomOrdersSection from '../components/Admin/CustomOrdersSection';
+import GallerySection from '../components/Admin/GallerySection';
 import toast from 'react-hot-toast';
 
 interface Order {
@@ -69,7 +70,7 @@ const AdminPage: React.FC = () => {
   }, [settings]);
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'contacts' | 'hero' | 'custom-orders'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'contacts' | 'hero' | 'custom-orders' | 'gallery'>('products');
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [updatingOrderId, setUpdatingOrderId] = useState<number | null>(null);
@@ -513,6 +514,16 @@ const AdminPage: React.FC = () => {
               >
                 <FaPaintBrush className="inline mr-2" />
                 ინდივიდუალური შეკვეთები
+              </button>
+              <button
+                onClick={() => setActiveTab('gallery')}
+                className={`py-4 px-1 border-b-2 font-semibold text-sm transition-colors ${
+                  activeTab === 'gallery'
+                    ? 'border-cyan-400 text-cyan-300'
+                    : 'border-transparent text-blue-200 hover:text-white hover:border-white/30'
+                }`}
+              >
+                🖼️ ნამუშევრები
               </button>
             </nav>
           </div>
@@ -1191,6 +1202,8 @@ const AdminPage: React.FC = () => {
           </div>
         ) : activeTab === 'custom-orders' ? (
           <CustomOrdersSection />
+        ) : activeTab === 'gallery' ? (
+          <GallerySection />
         ) : null}
       </div>
 

@@ -14,6 +14,7 @@ import customOrderRoutes from './routes/customOrders';
 import { errorHandler } from './middleware/errorHandler';
 import settingRoutes from './routes/settingRoutes';
 import heroSlideRoutes from './routes/heroSlideRoutes';
+import galleryRoutes from './routes/galleryRoutes';
 
 // Import models to ensure they are loaded
 import './models/Product';
@@ -23,6 +24,7 @@ import './models/Contact';
 import './models/CustomOrder';
 import './models/Setting';
 import './models/HeroSlide';
+import './models/GalleryImage';
 
 // Load environment variables
 dotenv.config();
@@ -78,6 +80,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/hero-slides', heroSlideRoutes);
 app.use('/api/contacts', contactRoutes);
+app.use('/api/gallery', galleryRoutes);
 app.use('/api/custom-orders', customOrderRoutes);
 
 // 404 handler
