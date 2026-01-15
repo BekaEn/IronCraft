@@ -160,11 +160,18 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
       return res.status(404).json({ message: 'Gallery image not found' });
     }
 
-    // Delete the image file
-    const filename = path.basename(image.imagePath);
-    const imagePath = path.join(getUploadDir(), filename);
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
+    // Delete the image file if path exists
+    const imgPath = image.get('imagePath') as string;
+    if (imgPath) {
+      const filename = path.basename(imgPath);
+      const fullPath = path.join(getUploadDir(), filename);
+      console.log('Deleting gallery image file:', fullPath);
+      if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+        console.log('File deleted successfully');
+      } else {
+        console.log('File not found at path:', fullPath);
+      }
     }
 
     await image.destroy();
