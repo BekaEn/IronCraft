@@ -38,7 +38,7 @@ const MobileBottomNav: React.FC = () => {
   };
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 backdrop-blur-xl bg-slate-900/70">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[100] border-t border-white/10 backdrop-blur-xl bg-slate-900/70">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-4 gap-1 p-3">
           <Link to="/" className="flex flex-col items-center text-xs text-blue-100 hover:text-white">
@@ -64,8 +64,12 @@ const MobileBottomNav: React.FC = () => {
           ) : (
             <button
               type="button"
-              onClick={handleBuyNow}
-              className="flex flex-col items-center text-xs text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl py-2 px-3 -my-1 shadow-lg hover:shadow-xl transition-all active:scale-95"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleBuyNow();
+              }}
+              className="flex flex-col items-center text-xs text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl py-2 px-3 -my-1 shadow-lg hover:shadow-xl transition-all active:scale-95 pointer-events-auto cursor-pointer"
             >
               <span className="text-lg">⚡</span>
               <span className="font-bold">იყიდე</span>
