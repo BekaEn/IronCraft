@@ -12,15 +12,16 @@ const MobileBottomNav: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const isProductPage = /^\/product\//.test(location.pathname);
-  const matched = location.pathname.match(/^\/product\/(\d+)/);
-  const productId = isProductPage && matched ? Number(matched[1]) : undefined;
-  const { data: product } = useGetProductByIdQuery(productId as number, { skip: !productId });
+  const matched = location.pathname.match(/^\/product\/([^/]+)/);
+  const productId = isProductPage && matched ? matched[1] : undefined;
+  const { data: product } = useGetProductByIdQuery(productId as string, { skip: !productId });
 
   // Get selected variation and quantity from Redux
   const selectedVariation = useAppSelector(selectSelectedVariation);
   const quantity = useAppSelector(selectQuantity);
 
   const handleBuyNow = () => {
+    console.log('Buy Now clicked!', { product, quantity, selectedVariation, productId });
     if (product) {
       dispatch(addToCart({ 
         product, 
@@ -30,6 +31,9 @@ const MobileBottomNav: React.FC = () => {
       const variationInfo = selectedVariation ? ` (${selectedVariation.color} - ${selectedVariation.size})` : '';
       toast.success(`${product.name}${variationInfo} კალათაში დაემატა!`);
       navigate('/payment');
+    } else {
+      console.log('Product not loaded yet');
+      toast.error('პროდუქტი იტვირთება...');
     }
   };
 
@@ -59,9 +63,9 @@ const MobileBottomNav: React.FC = () => {
             </button>
           ) : (
             <button
+              type="button"
               onClick={handleBuyNow}
-              disabled={!product}
-              className="flex flex-col items-center text-xs text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl py-2 px-3 -my-1 shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+              className="flex flex-col items-center text-xs text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl py-2 px-3 -my-1 shadow-lg hover:shadow-xl transition-all active:scale-95"
             >
               <span className="text-lg">⚡</span>
               <span className="font-bold">იყიდე</span>
