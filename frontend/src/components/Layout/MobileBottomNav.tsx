@@ -60,10 +60,11 @@ const MobileBottomNav: React.FC = () => {
           ) : (
             <button
               onClick={handleBuyNow}
-              className="flex flex-col items-center text-xs text-white"
+              disabled={!product}
+              className="flex flex-col items-center text-xs text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl py-2 px-3 -my-1 shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
             >
               <span className="text-lg">⚡</span>
-              <span>იყიდე</span>
+              <span className="font-bold">იყიდე</span>
             </button>
           )}
         </div>
