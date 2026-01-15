@@ -7,6 +7,7 @@ import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { FaArrowLeft, FaShoppingCart, FaShieldAlt, FaCheck, FaFire, FaPaintBrush, FaTimes, FaTools, FaSearchPlus, FaSearchMinus, FaBatteryFull, FaWifi } from 'react-icons/fa';
 import { useAppDispatch } from '../hooks/redux';
 import { addToCart, openCart } from '../store/cartSlice';
+import { setSelectedVariation as setReduxVariation, setQuantity as setReduxQuantity, resetProductSelection } from '../store/productSelectionSlice';
 import { formatPrice } from '../utils/formatters';
 import toast from 'react-hot-toast';
 import ProductVariationSelector from '../components/Products/ProductVariationSelector';
@@ -44,8 +45,26 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     if (variations.length > 0 && !selectedVariation) {
       setSelectedVariation(variations[0]);
+      dispatch(setReduxVariation(variations[0]));
     }
-  }, [variations, selectedVariation]);
+  }, [variations, selectedVariation, dispatch]);
+
+  // Sync selected variation to Redux when it changes
+  useEffect(() => {
+    dispatch(setReduxVariation(selectedVariation));
+  }, [selectedVariation, dispatch]);
+
+  // Sync quantity to Redux when it changes
+  useEffect(() => {
+    dispatch(setReduxQuantity(quantity));
+  }, [quantity, dispatch]);
+
+  // Reset product selection when leaving the page
+  useEffect(() => {
+    return () => {
+      dispatch(resetProductSelection());
+    };
+  }, [dispatch]);
 
   // Reset image loading state when variation or image changes
   useEffect(() => {

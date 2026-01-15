@@ -202,7 +202,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
               <p className="text-gray-400 text-sm">
-                © 2024 <span className="font-bold text-white">IronCraft</span>. ყველა უფლება დაცულია.
+                © 2026 <span className="font-bold text-white">IronCraft</span>. ყველა უფლება დაცულია.
               </p>
               <p className="text-gray-500 text-xs">
                 შექმნილია ❤️-ით საქართველოში | Made with ❤️ in Georgia

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addToCart, openCart } from '../../store/cartSlice';
+import { selectSelectedVariation, selectQuantity } from '../../store/productSelectionSlice';
 import { useGetProductByIdQuery } from '../../services/productsApi';
 import toast from 'react-hot-toast';
 
@@ -15,10 +16,19 @@ const MobileBottomNav: React.FC = () => {
   const productId = isProductPage && matched ? Number(matched[1]) : undefined;
   const { data: product } = useGetProductByIdQuery(productId as number, { skip: !productId });
 
+  // Get selected variation and quantity from Redux
+  const selectedVariation = useAppSelector(selectSelectedVariation);
+  const quantity = useAppSelector(selectQuantity);
+
   const handleBuyNow = () => {
     if (product) {
-      dispatch(addToCart({ product, quantity: 1 }));
-      toast.success(`${product.name} კალათაში დაემატა!`);
+      dispatch(addToCart({ 
+        product, 
+        quantity: quantity || 1,
+        variation: selectedVariation || undefined
+      }));
+      const variationInfo = selectedVariation ? ` (${selectedVariation.color} - ${selectedVariation.size})` : '';
+      toast.success(`${product.name}${variationInfo} კალათაში დაემატა!`);
       navigate('/payment');
     }
   };
