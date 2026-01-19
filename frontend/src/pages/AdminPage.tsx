@@ -760,7 +760,7 @@ const AdminPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/20">
-                {data?.products.map((product, index) => (
+                {data?.products.map((product) => (
                   <tr 
                     key={product.id} 
                     className={`hover:bg-white/5 transition-colors ${draggedProductId === product.id ? 'opacity-50' : ''}`}
