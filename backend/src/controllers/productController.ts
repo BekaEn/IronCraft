@@ -282,6 +282,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       console.log('Updating images from:', existingProduct.get('images'), 'to:', req.body.images);
       updateData.images = req.body.images;
     }
+    if (req.body.sortOrder !== undefined) updateData.sortOrder = Number(req.body.sortOrder);
 
     // Merge individual specification fields if provided
     const hasSpecPart = ['material','batteryLife','installation','compatibility','unlockMethods']
