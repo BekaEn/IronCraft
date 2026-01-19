@@ -29,46 +29,20 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
     const orderField = allowedSortFields.includes(sortBy) ? sortBy : 'sortOrder';
     const orderDirection = sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-    let products, count;
-    
-    try {
-      // Try to sort by the requested field
-      const result = await Product.findAndCountAll({
-        limit,
-        offset,
-        where,
-        order: [[orderField, orderDirection]],
-        include: [{
-          model: ProductVariation,
-          as: 'variations',
-          where: { isActive: true },
-          required: false,
-        }],
-      });
-      products = result.rows;
-      count = result.count;
-    } catch (error: any) {
-      // If sorting fails (likely due to missing column), fallback to createdAt
-      if (error.message && error.message.includes('Unknown column')) {
-        console.log('⚠️ sortOrder column not found, falling back to createdAt');
-        const result = await Product.findAndCountAll({
-          limit,
-          offset,
-          where,
-          order: [['createdAt', 'DESC']],
-          include: [{
-            model: ProductVariation,
-            as: 'variations',
-            where: { isActive: true },
-            required: false,
-          }],
-        });
-        products = result.rows;
-        count = result.count;
-      } else {
-        throw error;
-      }
-    }
+    console.log(`🔍 Sorting by: ${orderField} ${orderDirection}`);
+
+    const { count, rows: products } = await Product.findAndCountAll({
+      limit,
+      offset,
+      where,
+      order: [[orderField, orderDirection]],
+      include: [{
+        model: ProductVariation,
+        as: 'variations',
+        where: { isActive: true },
+        required: false,
+      }],
+    });
     
     const totalPages = Math.ceil(count / limit);
     
