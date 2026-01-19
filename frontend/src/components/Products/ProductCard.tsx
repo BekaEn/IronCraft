@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Example badge left-top; keep dynamic later */}
         {/* <div className="absolute left-2 top-2 z-10 rounded-full bg-indigo-500/90 px-2 py-1 text-[10px] font-medium text-white ring-1 ring-indigo-400/60">Bestseller</div> */}
         <Link to={`/product/${product.slug}`} className="block">
-          <div className="aspect-[3/4] overflow-hidden">
+          <div className="aspect-square overflow-hidden">
             <img
               src={getImageUrl(product.thumbnail || product.images?.[0])}
               alt={product.name}
