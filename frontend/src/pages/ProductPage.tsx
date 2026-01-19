@@ -9,6 +9,7 @@ import { useAppDispatch } from '../hooks/redux';
 import { addToCart, openCart } from '../store/cartSlice';
 import { setSelectedVariation as setReduxVariation, setQuantity as setReduxQuantity, resetProductSelection } from '../store/productSelectionSlice';
 import { formatPrice } from '../utils/formatters';
+import { getCategoryDisplayName } from '../utils/categoryNames';
 import toast from 'react-hot-toast';
 import ProductVariationSelector from '../components/Products/ProductVariationSelector';
 
@@ -761,7 +762,7 @@ const ProductPage: React.FC = () => {
                       />
                       <div className="absolute top-3 left-3">
                         <span className="glass-badge px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                          {relatedProduct.category}
+                          {getCategoryDisplayName(relatedProduct.category)}
                         </span>
                       </div>
                       {relatedProduct.isOnSale && relatedProduct.salePrice && (

@@ -24,7 +24,7 @@ export interface ProductAttributes {
     installation?: string;
     compatibility?: string[];
   };
-  category: 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other';
+  category: 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other' | 'animals' | 'sport' | 'wall_clock';
   isActive: boolean;
   isOnSale?: boolean;
   salePrice?: number | null;
@@ -54,7 +54,7 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
     installation?: string;
     compatibility?: string[];
   };
-  declare category: 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other';
+  declare category: 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other' | 'animals' | 'sport' | 'wall_clock';
   declare isActive: boolean;
   declare isOnSale?: boolean;
   declare salePrice?: number | null;
@@ -112,7 +112,7 @@ Product.init({
     defaultValue: {},
   },
   category: {
-    type: DataTypes.ENUM('anime', 'abstract', 'nature', 'custom', 'geometric', 'portrait', 'other'),
+    type: DataTypes.ENUM('ანიმე', 'აბსტრაქცია', 'ბუნება', 'კუსტომი', 'გეომეტრიური', 'პორტრეტი', 'სხვა', 'ანიმალი', 'სპორტი', 'კედლის საათი'),
     allowNull: false,
   },
   isActive: {

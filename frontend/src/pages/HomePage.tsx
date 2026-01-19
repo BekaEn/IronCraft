@@ -5,6 +5,7 @@ import ProductCard from '../components/Products/ProductCard';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import HeroSection from '../components/Home/HeroSection';
 import FeaturesSection from '../components/Home/FeaturesSection';
+import { getCategoryDisplayName } from '../utils/categoryNames';
 
 const HomePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -49,7 +50,7 @@ const HomePage: React.FC = () => {
                   to={`/products?category=${encodeURIComponent(c.category)}`}
                   className="px-4 py-2 rounded-full border border-white/10 text-white/90 hover:bg-white/10 text-sm"
                 >
-                  {c.category}
+                  {getCategoryDisplayName(c.category)}
                 </Link>
               ))}
             </div>

@@ -27,7 +27,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     description: '',
     detailedDescription: [''],
     price: '',
-    category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+    category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other' | 'animals' | 'sport' | 'wall_clock',
     thumbnail: '',
     features: [''],
     specifications: {
@@ -108,7 +108,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: product.description || '',
         detailedDescription: (product as any).detailedDescription && (product as any).detailedDescription.length > 0 ? (product as any).detailedDescription : [''],
         price: product.price || '',
-        category: (product.category || 'anime') as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+        category: (product.category || 'anime') as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other' | 'animals' | 'sport' | 'wall_clock',
         thumbnail: thumbPath,
         features: product.features?.length > 0 ? product.features : [''],
         specifications: {
@@ -123,7 +123,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         description: '',
         detailedDescription: [''],
         price: '',
-        category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other',
+        category: 'anime' as 'anime' | 'abstract' | 'nature' | 'custom' | 'geometric' | 'portrait' | 'other' | 'animals' | 'sport' | 'wall_clock',
         thumbnail: '',
         features: [''],
         specifications: {
@@ -345,6 +345,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 <option value="geometric">გეომეტრიული</option>
                 <option value="portrait">პორტრეტი</option>
                 <option value="other">სხვა</option>
+                <option value="animals">ცხოველები</option>
+                <option value="sport">სპორტი</option>
+                <option value="wall_clock">საკედლე საათები</option>
               </select>
             </div>
 
