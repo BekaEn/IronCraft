@@ -28,6 +28,7 @@ export interface ProductAttributes {
   isActive: boolean;
   isOnSale?: boolean;
   salePrice?: number | null;
+  sortOrder?: number;
 }
 
 class Product extends Model<ProductAttributes> implements ProductAttributes {
@@ -57,6 +58,7 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
   declare isActive: boolean;
   declare isOnSale?: boolean;
   declare salePrice?: number | null;
+  declare sortOrder?: number;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -126,6 +128,11 @@ Product.init({
     type: DataTypes.DECIMAL(10, 2),
     allowNull: true,
     defaultValue: null,
+  },
+  sortOrder: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0,
   },
 }, {
   sequelize,

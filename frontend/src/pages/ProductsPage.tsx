@@ -8,23 +8,31 @@ const ProductsPage: React.FC = () => {
   const [activeFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [currentFilter, setCurrentFilter] = useState('all');
   
   const { data, isLoading, error, isFetching } = useGetProductsQuery({ 
     category: activeFilter === 'all' ? undefined : activeFilter,
     page: currentPage,
-    limit: 10
+    limit: 10,
+    sortBy: 'sortOrder',
+    sortOrder: 'ASC'
   });
 
   // Accumulate products when new data is fetched
   useEffect(() => {
     if (data?.products) {
-      if (currentPage === 1) {
+      // Reset products only when filter changes
+      if (activeFilter !== currentFilter) {
+        setAllProducts(data.products);
+        setCurrentFilter(activeFilter);
+        setCurrentPage(1);
+      } else if (currentPage === 1) {
         setAllProducts(data.products);
       } else {
         setAllProducts(prev => [...prev, ...data.products]);
       }
     }
-  }, [data, currentPage]);
+  }, [data, currentPage, activeFilter, currentFilter]);
   // const filterButtons = useMemo(() => {
   //   const base = [{ id: 'all', label: 'ყველა პროდუქტი', icon: FaFilter }];
   //   const mapIcon: Record<string, any> = { fingerprint: FaShieldAlt, faceid: FaStar, combo: FaUsers };

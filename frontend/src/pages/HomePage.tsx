@@ -8,7 +8,7 @@ import FeaturesSection from '../components/Home/FeaturesSection';
 
 const HomePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
-  const { data, isLoading, error } = useGetProductsQuery({ limit: 6, search: searchTerm || undefined });
+  const { data, isLoading, error } = useGetProductsQuery({ limit: 8, search: searchTerm || undefined, sortBy: 'sortOrder', sortOrder: 'ASC' });
   const { data: categoriesData } = useGetCategoriesQuery();
 
   // Debug logging
@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-                {data?.products?.slice(0, 6).map((product, index) => {
+                {data?.products?.slice(0, 8).map((product, index) => {
                   // Insert custom order card as 3rd item (index 2)
                   if (index === 2) {
                     return (

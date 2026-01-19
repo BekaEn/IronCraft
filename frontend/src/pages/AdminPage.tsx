@@ -80,6 +80,7 @@ const AdminPage: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [contactsLoading, setContactsLoading] = useState(false);
   const [updatingContactId, setUpdatingContactId] = useState<number | null>(null);
+  const [draggedProductId, setDraggedProductId] = useState<number | null>(null);
   const navigate = useNavigate();
   
   const { data, isLoading, refetch } = useGetProductsQuery({});
@@ -421,6 +422,46 @@ const AdminPage: React.FC = () => {
     return `₾${parseFloat(price).toFixed(2)}`;
   };
 
+  // Drag and drop handlers
+  const handleDragStart = (productId: number) => {
+    setDraggedProductId(productId);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (e: React.DragEvent, targetProductId: number) => {
+    e.preventDefault();
+    if (!draggedProductId || draggedProductId === targetProductId) return;
+
+    const products = data?.products || [];
+    const draggedProduct = products.find(p => p.id === draggedProductId);
+    const targetProduct = products.find(p => p.id === targetProductId);
+
+    if (!draggedProduct || !targetProduct) return;
+
+    // Swap sort orders
+    try {
+      await updateProduct({
+        id: draggedProductId,
+        data: { sortOrder: targetProduct.sortOrder || 0 }
+      }).unwrap();
+      
+      await updateProduct({
+        id: targetProductId,
+        data: { sortOrder: draggedProduct.sortOrder || 0 }
+      }).unwrap();
+
+      toast.success('პროდუქტების დალაგება განახლდა');
+      refetch();
+    } catch (error) {
+      toast.error('დალაგების შეცვლა ვერ მოხერხდა');
+    }
+
+    setDraggedProductId(null);
+  };
+
 
   if (isLoading) {
     return (
@@ -646,9 +687,17 @@ const AdminPage: React.FC = () => {
 
           {/* Products Table */}
           <div className="overflow-x-auto">
+            <div className="mb-4 px-6">
+              <p className="text-blue-200 text-sm">
+                📝 მოცემულობა: გადაათრიეთ პროდუქტები რომ შეცვალოთ მათი დალაგება მთავარ გვერდზე
+              </p>
+            </div>
             <table className="min-w-full divide-y divide-white/20">
               <thead className="bg-white/10">
                 <tr>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-cyan-300 uppercase tracking-wider">
+                    დალაგება
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-cyan-300 uppercase tracking-wider">
                     პროდუქტი
                   </th>
@@ -670,8 +719,25 @@ const AdminPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/20">
-                {data?.products.map((product) => (
-                  <tr key={product.id} className="hover:bg-white/5 transition-colors">
+                {data?.products.map((product, index) => (
+                  <tr 
+                    key={product.id} 
+                    className={`hover:bg-white/5 transition-colors ${draggedProductId === product.id ? 'opacity-50' : ''}`}
+                    draggable
+                    onDragStart={() => handleDragStart(product.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, product.id)}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center cursor-move">
+                        <div className="text-cyan-400 mr-2">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                          </svg>
+                        </div>
+                        <span className="text-white font-semibold">#{index + 1}</span>
+                      </div>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <img

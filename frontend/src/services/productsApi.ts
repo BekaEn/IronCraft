@@ -21,6 +21,7 @@ export interface Product {
   isActive: boolean;
   isOnSale?: boolean;
   salePrice?: string | null;
+  sortOrder?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -59,6 +60,8 @@ export const productsApi = createApi({
       search?: string;
       priceMin?: number;
       priceMax?: number;
+      sortBy?: string;
+      sortOrder?: 'ASC' | 'DESC';
     }>({
       query: (params = {}) => {
         console.log('🚀 Fetching real data from MySQL database...');
@@ -68,6 +71,11 @@ export const productsApi = createApi({
             searchParams.append(key, value.toString());
           }
         });
+        // Default sort by sortOrder ASC if not specified
+        if (!searchParams.has('sortBy')) {
+          searchParams.append('sortBy', 'sortOrder');
+          searchParams.append('sortOrder', 'ASC');
+        }
         return `?${searchParams.toString()}`;
       },
       providesTags: ['Product'],

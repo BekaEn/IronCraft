@@ -10,6 +10,8 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
     const offset = (page - 1) * limit;
     const category = (req.query.category as string) || '';
     const search = (req.query.search as string) || '';
+    const sortBy = (req.query.sortBy as string) || 'sortOrder';
+    const sortOrder = (req.query.sortOrder as string) || 'ASC';
     
     const where: any = { isActive: true };
     if (category && category !== 'all') {
@@ -22,11 +24,16 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
       ];
     }
 
+    // Validate sortBy field
+    const allowedSortFields = ['sortOrder', 'createdAt', 'name', 'price', 'category'];
+    const orderField = allowedSortFields.includes(sortBy) ? sortBy : 'sortOrder';
+    const orderDirection = sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
     const { count, rows: products } = await Product.findAndCountAll({
       limit,
       offset,
       where,
-      order: [['createdAt', 'DESC']],
+      order: [[orderField, orderDirection]],
       include: [{
         model: ProductVariation,
         as: 'variations',
