@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetProductsQuery } from '../services/productsApi';
 import ProductCard from '../components/Products/ProductCard';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
@@ -6,12 +6,25 @@ import { FaStar, FaShieldAlt, FaUsers } from 'react-icons/fa';
 
 const ProductsPage: React.FC = () => {
   const [activeFilter] = useState('all');
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const { data: categoriesData } = useGetCategoriesQuery();
-  const { data, isLoading, error } = useGetProductsQuery({ 
-    category: activeFilter === 'all' ? undefined : activeFilter, 
-    // search: searchTerm 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  
+  const { data, isLoading, error, isFetching } = useGetProductsQuery({ 
+    category: activeFilter === 'all' ? undefined : activeFilter,
+    page: currentPage,
+    limit: 10
   });
+
+  // Accumulate products when new data is fetched
+  useEffect(() => {
+    if (data?.products) {
+      if (currentPage === 1) {
+        setAllProducts(data.products);
+      } else {
+        setAllProducts(prev => [...prev, ...data.products]);
+      }
+    }
+  }, [data, currentPage]);
   // const filterButtons = useMemo(() => {
   //   const base = [{ id: 'all', label: 'ყველა პროდუქტი', icon: FaFilter }];
   //   const mapIcon: Record<string, any> = { fingerprint: FaShieldAlt, faceid: FaStar, combo: FaUsers };
@@ -57,7 +70,7 @@ const ProductsPage: React.FC = () => {
   // }) || [];
   
   // Show all products without filtering
-  const filteredProducts = data?.products || [];
+  const filteredProducts = allProducts || [];
 
   if (isLoading) {
     return (
@@ -204,6 +217,29 @@ const ProductsPage: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            {/* Load More Button */}
+            {data && currentPage < data.totalPages && (
+              <div className="text-center mb-16">
+                <button
+                  onClick={() => setCurrentPage(prev => prev + 1)}
+                  disabled={isFetching}
+                  className="glassmorphism-button px-8 py-4 text-white font-bold text-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isFetching ? (
+                    <>
+                      <LoadingSpinner />
+                      <span className="ml-2">იტვირთება...</span>
+                    </>
+                  ) : (
+                    'მეტის ჩატვირთვა'
+                  )}
+                </button>
+                <p className="text-blue-200 mt-4">
+                  ნაჩვენებია {filteredProducts.length} / {data.totalProducts} პროდუქტი
+                </p>
+              </div>
+            )}
           </>
         )}
 
