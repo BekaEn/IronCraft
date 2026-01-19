@@ -81,6 +81,8 @@ const AdminPage: React.FC = () => {
   const [contactsLoading, setContactsLoading] = useState(false);
   const [updatingContactId, setUpdatingContactId] = useState<number | null>(null);
   const [draggedProductId, setDraggedProductId] = useState<number | null>(null);
+  const [sortOrders, setSortOrders] = useState<{[key: number]: number}>({});
+  const [updatingSort, setUpdatingSort] = useState<number | null>(null);
   const navigate = useNavigate();
   
   const { data, isLoading, refetch } = useGetProductsQuery({});
@@ -344,6 +346,17 @@ const AdminPage: React.FC = () => {
     }
   }, [activeTab]);
 
+  // Initialize sort orders when products data changes
+  useEffect(() => {
+    if (data?.products) {
+      const orders: {[key: number]: number} = {};
+      data.products.forEach(product => {
+        orders[product.id] = product.sortOrder || 0;
+      });
+      setSortOrders(orders);
+    }
+  }, [data]);
+
   // Check if user is admin
   React.useEffect(() => {
     const user = localStorage.getItem('user');
@@ -460,6 +473,30 @@ const AdminPage: React.FC = () => {
     }
 
     setDraggedProductId(null);
+  };
+
+  // Handle sort order input change
+  const handleSortOrderChange = (productId: number, value: string) => {
+    const numValue = parseInt(value) || 0;
+    setSortOrders(prev => ({ ...prev, [productId]: numValue }));
+  };
+
+  // Update sort order
+  const updateSortOrder = async (productId: number) => {
+    setUpdatingSort(productId);
+    try {
+      await updateProduct({
+        id: productId,
+        data: { sortOrder: sortOrders[productId] || 0 }
+      }).unwrap();
+      
+      toast.success('დალაგება განახლდა');
+      refetch();
+    } catch (error) {
+      toast.error('დალაგების შეცვლა ვერ მოხერხდა');
+    } finally {
+      setUpdatingSort(null);
+    }
   };
 
 
@@ -688,9 +725,13 @@ const AdminPage: React.FC = () => {
           {/* Products Table */}
           <div className="overflow-x-auto">
             <div className="mb-4 px-6">
-              <p className="text-blue-200 text-sm">
-                📝 მოცემულობა: გადაათრიეთ პროდუქტები რომ შეცვალოთ მათი დალაგება მთავარ გვერდზე
+              <p className="text-blue-200 text-sm mb-2">
+                📝 მოცემულობის შეცვლის 2 მეთოდი:
               </p>
+              <ul className="text-blue-200 text-sm list-disc list-inside space-y-1">
+                <li>გადაათრიეთ პროდუქტები რომ შეცვალოთ მათი მდებარეობა</li>
+                <li>შეიყვანეთ რიცხვი (0-999) და დააჭირეთ "შენახვა" - 0=პირველი, 1=მეორე, და ა.შ.</li>
+              </ul>
             </div>
             <table className="min-w-full divide-y divide-white/20">
               <thead className="bg-white/10">
@@ -729,13 +770,28 @@ const AdminPage: React.FC = () => {
                     onDrop={(e) => handleDrop(e, product.id)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center cursor-move">
-                        <div className="text-cyan-400 mr-2">
+                      <div className="flex items-center space-x-2">
+                        <div className="text-cyan-400">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                           </svg>
                         </div>
-                        <span className="text-white font-semibold">#{index + 1}</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="999"
+                          value={sortOrders[product.id] || 0}
+                          onChange={(e) => handleSortOrderChange(product.id, e.target.value)}
+                          className="w-16 px-2 py-1 text-sm bg-white/10 border border-white/20 rounded text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                          placeholder="0"
+                        />
+                        <button
+                          onClick={() => updateSortOrder(product.id)}
+                          disabled={updatingSort === product.id}
+                          className="px-2 py-1 text-xs bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white rounded transition-colors"
+                        >
+                          {updatingSort === product.id ? '...' : 'შენახვა'}
+                        </button>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
