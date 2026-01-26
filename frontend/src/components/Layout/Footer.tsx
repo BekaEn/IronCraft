@@ -40,10 +40,10 @@ const Footer: React.FC = () => {
             
             {/* Social Links */}
             <div className="flex space-x-4">
-              <a href="https://facebook.com/smartlocksgeorgia" className="glassmorphism-button p-3 text-blue-400 hover:text-white group">
+              <a href="https://www.facebook.com/profile.php?id=61586717960147" className="glassmorphism-button p-3 text-blue-400 hover:text-white group">
                 <FaFacebook className="text-xl group-hover:animate-bounce" />
               </a>
-              <a href="https://instagram.com/smartlocksgeorgia" className="glassmorphism-button p-3 text-pink-400 hover:text-white group">
+              <a href="https://www.instagram.com/wallartgeo123" className="glassmorphism-button p-3 text-pink-400 hover:text-white group">
                 <FaInstagram className="text-xl group-hover:animate-bounce" />
               </a>
               {/* <a href="https://twitter.com/smartlocksge" className="glassmorphism-button p-3 text-blue-300 hover:text-white group">
@@ -116,8 +116,8 @@ const Footer: React.FC = () => {
                   <FaPhone className="text-white text-sm" />
                 </div>
                 <div>
-                  <a href="tel:+995555123456" className="text-blue-200 hover:text-white font-mono">
-                    +995 555 123 456
+                  <a href="tel:+995579105480" className="text-blue-200 hover:text-white font-mono">
+                    +995 579 10 54 80
                   </a>
                   <p className="text-gray-400 text-xs">სამუშაო საათებში</p>
                 </div>

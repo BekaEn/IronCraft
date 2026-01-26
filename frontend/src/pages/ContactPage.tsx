@@ -99,11 +99,11 @@ const ContactPage: React.FC = () => {
 
           {/* Quick Contact Icons */}
           <div className="flex justify-center gap-4 mt-8">
-            <a href="tel:+995555123456" className="glassmorphism-button p-4 text-green-400 hover:text-white group">
-              <FaPhone className="text-2xl group-hover:animate-bounce" />
+            <a href="tel:+995579105480" className="glassmorphism-button p-4 text-green-400 hover:text-white group">
+              <FaPhone className="text-xl group-hover:animate-bounce" />
             </a>
-            <a href="https://wa.me/995555123456" className="glassmorphism-button p-4 text-green-500 hover:text-white group">
-              <FaWhatsapp className="text-2xl group-hover:animate-bounce" />
+            <a href="https://wa.me/995579105480" className="glassmorphism-button p-4 text-green-500 hover:text-white group">
+              <FaWhatsapp className="text-xl group-hover:animate-bounce" />
             </a>
             <a href="mailto:info@ironcraft.ge" className="glassmorphism-button p-4 text-blue-500 hover:text-white group">
               <FaEnvelope className="text-2xl group-hover:animate-bounce" />
@@ -250,7 +250,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-lg mb-2">ტელეფონი</h3>
-                    <p className="text-blue-200 font-mono text-lg">+995 555 123 456</p>
+                    <p className="text-blue-200 font-mono text-lg">+995 579 10 54 80</p>
                     <p className="text-sm text-gray-400 mt-1">📞 სამუშაო საათებში</p>
                   </div>
                 </div>
@@ -303,10 +303,10 @@ const ContactPage: React.FC = () => {
             <div className="glassmorphism-card p-8">
               <h3 className="text-2xl font-bold text-white mb-6 text-center">სწრაფი მოქმედებები</h3>
               <div className="grid grid-cols-2 gap-4">
-                <a href="tel:+995555123456" className="gradient-primary p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
+                <a href="tel:+995579105480" className="gradient-primary p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
                   📞 დარეკვა
                 </a>
-                <a href="https://wa.me/995555123456" className="gradient-success p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
+                <a href="https://wa.me/995579105480" className="gradient-success p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">
                   💬 WhatsApp
                 </a>
                 <a href="/custom-order" className="gradient-accent p-4 rounded-xl text-white font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-center">

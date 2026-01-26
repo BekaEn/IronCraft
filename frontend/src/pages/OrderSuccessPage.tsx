@@ -99,7 +99,7 @@ const OrderSuccessPage: React.FC = () => {
           <div className="mt-12 glassmorphism-card p-6 max-w-md mx-auto">
             <h3 className="text-lg font-bold text-white mb-4">საკონტაქტო ინფორმაცია</h3>
             <div className="space-y-2 text-blue-200 text-sm">
-              <p>📞 ტელეფონი: +995 555 123 456</p>
+              <p>📞 ტელეფონი: +995 579 10 54 80</p>
               <p>📧 ელ. ფოსტა: info@smartlocks.ge</p>
               <p>🕒 სამუშაო საათები: 09:00 - 18:00</p>
             </div>

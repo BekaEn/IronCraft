@@ -356,7 +356,7 @@ const PaymentPage: React.FC = () => {
                       className={`w-full px-4 py-3 glassmorphism-button text-white placeholder-blue-200 focus:ring-2 focus:ring-cyan-400 focus:border-transparent ${
                         errors.phone ? 'border-red-400' : ''
                       }`}
-                      placeholder="მაგ: +995555123456"
+                      placeholder="მაგ: +995579105480"
                     />
                     {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
                   </div>
@@ -424,16 +424,16 @@ const PaymentPage: React.FC = () => {
                             <p 
                               className="text-white font-mono text-sm sm:text-base md:text-lg cursor-pointer hover:text-cyan-300 transition-colors flex-1"
                               onClick={() => {
-                                navigator.clipboard.writeText('GE00BG0000000000000000');
+                                navigator.clipboard.writeText('GE32BG0000000162377555');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
                               title="დააკლიკეთ კოპირებისთვის"
                             >
-                              GE00BG0000000000000000
+                              GE32BG0000000162377555
                             </p>
                             <button
                               onClick={() => {
-                                navigator.clipboard.writeText('GE00BG0000000000000000');
+                                navigator.clipboard.writeText('GE32BG0000000162377555');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
                               className="text-cyan-400 hover:text-cyan-300 transition-colors flex-shrink-0"
@@ -462,16 +462,16 @@ const PaymentPage: React.FC = () => {
                             <p 
                               className="text-white font-mono text-sm sm:text-base md:text-lg cursor-pointer hover:text-cyan-300 transition-colors flex-1"
                               onClick={() => {
-                                navigator.clipboard.writeText('GE00TB0000000000000000');
+                                navigator.clipboard.writeText('GE89TB7505645061600032');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
                               title="დააკლიკეთ კოპირებისთვის"
                             >
-                              GE00TB0000000000000000
+                              GE89TB7505645061600032
                             </p>
                             <button
                               onClick={() => {
-                                navigator.clipboard.writeText('GE00TB0000000000000000');
+                                navigator.clipboard.writeText('GE89TB7505645061600032');
                                 toast.success('IBAN დაკოპირდა!');
                               }}
                               className="text-cyan-400 hover:text-cyan-300 transition-colors flex-shrink-0"
@@ -480,10 +480,10 @@ const PaymentPage: React.FC = () => {
                             </button>
                           </div>
                         </div>
-                        <div>
+                        {/* <div>
                           <p className="text-blue-200 text-sm mb-1">მიმღები:</p>
                           <p className="text-white font-medium">IronCraft</p>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 

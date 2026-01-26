@@ -127,6 +127,27 @@ const startServer = async () => {
           console.log('ℹ️ Orders table does not exist yet - will be created by model sync');
         }
 
+        // Ensure hero_slides.youtubeUrl can store long URLs (e.g., Facebook reels)
+        console.log('🔄 Checking hero_slides table schema...');
+        const [heroTables]: any = await sequelize.query("SHOW TABLES LIKE 'hero_slides'");
+        if (heroTables.length > 0) {
+          const [heroColumns]: any = await sequelize.query("SHOW COLUMNS FROM hero_slides WHERE Field = 'youtubeUrl'");
+          if (heroColumns.length > 0) {
+            const colType = String(heroColumns[0].Type || '').toLowerCase();
+            if (!colType.includes('text')) {
+              console.log('🔧 Converting hero_slides.youtubeUrl to TEXT...');
+              await sequelize.query("ALTER TABLE `hero_slides` MODIFY COLUMN `youtubeUrl` TEXT NULL");
+              console.log('✅ hero_slides.youtubeUrl updated to TEXT');
+            } else {
+              console.log('✅ hero_slides.youtubeUrl already TEXT');
+            }
+          } else {
+            console.log('ℹ️ hero_slides.youtubeUrl column not found');
+          }
+        } else {
+          console.log('ℹ️ hero_slides table does not exist yet');
+        }
+
         // Create gallery_images table if it doesn't exist
         console.log('🔄 Checking gallery_images table...');
         const [galleryTables]: any = await sequelize.query("SHOW TABLES LIKE 'gallery_images'");

@@ -79,7 +79,7 @@ HeroSlide.init({
     defaultValue: null,
   },
   youtubeUrl: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.TEXT,
     allowNull: true,
     defaultValue: null,
   },
