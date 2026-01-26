@@ -168,11 +168,19 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
       return res.status(404).json({ message: 'Custom order not found' });
     }
 
-    // Delete the image file
-    const filename = path.basename(order.designImage);
-    const imagePath = path.join(getUploadDir(), filename);
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
+    // Delete the image file (best-effort; do not fail the request if file is missing/unreadable)
+    try {
+      if (order.designImage && typeof order.designImage === 'string') {
+        const filename = path.basename(order.designImage);
+        if (filename) {
+          const imagePath = path.join(getUploadDir(), filename);
+          if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+          }
+        }
+      }
+    } catch (fileError: any) {
+      console.error('⚠️ Failed to delete custom order image file (continuing):', fileError?.message || fileError);
     }
 
     await order.destroy();
